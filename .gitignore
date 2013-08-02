@@ -1,0 +1,16 @@
+AUTHORS
+ChangeLog
+*~
+*.swp
+*.pyc
+*.log
+.tox
+.coverage
+*.egg-info/
+build/
+doc/build/
+doc/source/api/
+dist/
+.testrepository/
+.project
+.pydevproject
