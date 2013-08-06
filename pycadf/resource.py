@@ -1,0 +1,121 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2013 IBM Corp.
+#
+# Author: Matt Rutkowski <mrutkows@us.ibm.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+from pycadf import attachment
+from pycadf import cadftaxonomy
+from pycadf import cadftype
+from pycadf import geolocation
+from pycadf import identifier
+
+TYPE_URI_RESOURCE = cadftype.CADF_VERSION_1_0_0 + 'resource'
+
+RESOURCE_KEYNAME_TYPEURI = "typeURI"
+RESOURCE_KEYNAME_ID = "id"
+RESOURCE_KEYNAME_NAME = "name"
+RESOURCE_KEYNAME_DOMAIN = "domain"
+RESOURCE_KEYNAME_REF = "ref"
+RESOURCE_KEYNAME_GEO = "geolocation"
+RESOURCE_KEYNAME_GEOID = "geolocationId"
+RESOURCE_KEYNAME_ATTACHMENTS = "attachments"
+
+RESOURCE_KEYNAMES = [RESOURCE_KEYNAME_TYPEURI,
+                     RESOURCE_KEYNAME_ID,
+                     RESOURCE_KEYNAME_NAME,
+                     RESOURCE_KEYNAME_DOMAIN,
+                     RESOURCE_KEYNAME_REF,
+                     RESOURCE_KEYNAME_GEO,
+                     RESOURCE_KEYNAME_GEOID,
+                     RESOURCE_KEYNAME_ATTACHMENTS]
+
+
+class Resource(cadftype.CADFAbstractType):
+
+    typeURI = cadftype.ValidatorDescriptor(
+        RESOURCE_KEYNAME_TYPEURI, lambda x: cadftaxonomy.is_valid_resource(x))
+    id = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_ID,
+                                      lambda x: identifier.is_valid(x))
+    name = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_NAME,
+                                        lambda x: isinstance(x, str))
+    domain = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_DOMAIN,
+                                          lambda x: isinstance(x, str))
+    # TODO(mrutkows): validate the "ref" attribute is indeed a URI (format),
+    # If it is a URL, we do not need to validate it is accessible/working,
+    # for audit purposes this could have been a valid URL at some point
+    # in the past or a URL that is only valid within some domain (e.g. a
+    # private cloud)
+    ref = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_REF,
+                                       lambda x: isinstance(x, str))
+    geolocation = cadftype.ValidatorDescriptor(
+        RESOURCE_KEYNAME_GEO,
+        lambda x: isinstance(x, geolocation.Geolocation))
+    geolocationId = cadftype.ValidatorDescriptor(
+        RESOURCE_KEYNAME_GEOID, lambda x: identifier.is_valid(x))
+
+    def __init__(self, id=identifier.generate_uuid(),
+                 typeURI=cadftaxonomy.UNKNOWN, name=None, ref=None,
+                 domain=None, geolocation=None, geolocationId=None):
+
+        # Resource.id
+        setattr(self, RESOURCE_KEYNAME_ID, id)
+
+        # Resource.typeURI
+        setattr(self, RESOURCE_KEYNAME_TYPEURI, typeURI)
+
+        # Resource.name
+        if name is not None:
+            setattr(self, RESOURCE_KEYNAME_NAME, name)
+
+        # Resource.ref
+        if ref is not None:
+            setattr(self, RESOURCE_KEYNAME_REF, ref)
+
+        # Resource.domain
+        if domain is not None:
+            setattr(self, RESOURCE_KEYNAME_DOMAIN, domain)
+
+        # Resource.geolocation
+        if geolocation is not None:
+            setattr(self, RESOURCE_KEYNAME_GEO, geolocation)
+
+        # Resource.geolocationId
+        if geolocationId:
+            setattr(self, RESOURCE_KEYNAME_GEOID, geolocationId)
+
+    # Resource.attachments
+    def add_attachment(self, attach_val):
+        if (attach_val is not None
+                and isinstance(attach_val, attachment.Attachment)):
+            if attach_val.is_valid():
+                # Create the list of Attachments if needed
+                if not hasattr(self, RESOURCE_KEYNAME_ATTACHMENTS):
+                    setattr(self, RESOURCE_KEYNAME_ATTACHMENTS, list())
+
+                attachments = getattr(self, RESOURCE_KEYNAME_ATTACHMENTS)
+                attachments.append(attach_val)
+            else:
+                raise ValueError('Invalid attachment')
+        else:
+            raise ValueError('Invalid attachment. Value must be an Attachment')
+
+    # self validate this cadf:Resource type against schema
+    def is_valid(self):
+        return (
+            hasattr(self, RESOURCE_KEYNAME_TYPEURI) and
+            hasattr(self, RESOURCE_KEYNAME_ID)
+        )
+        # TODO(mrutkows): validate the Resource's attribute types

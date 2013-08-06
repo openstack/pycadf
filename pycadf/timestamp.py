@@ -1,0 +1,44 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2013 IBM Corp.
+#
+# Author: Matt Rutkowski <mrutkows@us.ibm.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+import datetime
+import pytz
+
+from pycadf.openstack.common import log as logging
+
+LOG = logging.getLogger(__name__)
+TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z"
+
+
+def get_utc_now(timezone=None):
+    utc_datetime = pytz.utc.localize(datetime.datetime.utcnow())
+    if timezone is not None:
+        try:
+            utc_datetime = utc_datetime.astimezone(pytz.timezone(timezone))
+        except Exception as e:
+            LOG.error('Unknown timezone: %s' % e)
+    return utc_datetime.strftime(TIME_FORMAT)
+
+
+# TODO(mrutkows): validate any cadf:Timestamp (type) record against
+# CADF schema
+def is_valid(value):
+    if not isinstance(value, str):
+        raise ValueError('Timestamp should be a String')
+
+    return True
