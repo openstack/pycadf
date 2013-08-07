@@ -24,7 +24,6 @@ import urlparse
 from pycadf import cadftaxonomy as taxonomy
 from pycadf import cadftype
 from pycadf import eventfactory as factory
-from pycadf.openstack.common import log as logging
 from pycadf import reason
 from pycadf import reporterstep
 from pycadf import resource
@@ -32,8 +31,6 @@ from pycadf import tag
 from pycadf import timestamp
 
 cfg.CONF.import_opt('api_audit_map', 'pycadf.audit', group='audit')
-
-LOG = logging.getLogger(__name__)
 CONF = cfg.CONF
 
 
@@ -65,6 +62,10 @@ class ClientResource(resource.Resource):
             self.status = status
 
 
+class PycadfAuditApiConfigError(Exception):
+    """Error raised when pyCADF fails to configure correctly."""
+
+
 class OpenStackAuditApi(object):
 
     _API_PATHS = []
@@ -80,7 +81,6 @@ class OpenStackAuditApi(object):
         cfg_file = CONF.audit.api_audit_map
         if not os.path.exists(CONF.audit.api_audit_map):
             cfg_file = cfg.CONF.find_file(CONF.audit.api_audit_map)
-        LOG.debug("API path config file: %s", cfg_file)
 
         if cfg_file:
             try:
@@ -104,7 +104,8 @@ class OpenStackAuditApi(object):
                 except ConfigParser.NoSectionError:
                     pass
             except ConfigParser.ParsingError as err:
-                LOG.error('Error parsing audit map file: %s' % err)
+                raise PycadfAuditApiConfigError(
+                    'Error parsing audit map file: %s' % err)
 
     def _get_action(self, req):
         """Take a given Request, parse url path to calculate action type.

@@ -37,6 +37,6 @@ def generate_uuid():
 # TODO(mrutkows): validate any cadf:Identifier (type) record against
 # CADF schema.  This would include schema validation as an optional parm.
 def is_valid(value):
-    if not isinstance(value, str):
+    if not isinstance(value, basestring):
         raise TypeError
     return True

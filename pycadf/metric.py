@@ -40,9 +40,9 @@ class Metric(cadftype.CADFAbstractType):
     metricId = cadftype.ValidatorDescriptor(METRIC_KEYNAME_METRICID,
                                             lambda x: identifier.is_valid(x))
     unit = cadftype.ValidatorDescriptor(METRIC_KEYNAME_UNIT,
-                                        lambda x: isinstance(x, str))
+                                        lambda x: isinstance(x, basestring))
     name = cadftype.ValidatorDescriptor(METRIC_KEYNAME_NAME,
-                                        lambda x: isinstance(x, str))
+                                        lambda x: isinstance(x, basestring))
 
     def __init__(self, metricId=identifier.generate_uuid(),
                  unit=None, name=None):

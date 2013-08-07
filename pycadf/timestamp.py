@@ -19,9 +19,6 @@
 import datetime
 import pytz
 
-from pycadf.openstack.common import log as logging
-
-LOG = logging.getLogger(__name__)
 TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z"
 
 
@@ -30,15 +27,15 @@ def get_utc_now(timezone=None):
     if timezone is not None:
         try:
             utc_datetime = utc_datetime.astimezone(pytz.timezone(timezone))
-        except Exception as e:
-            LOG.error('Unknown timezone: %s' % e)
+        except Exception:
+            utc_datetime.strftime(TIME_FORMAT)
     return utc_datetime.strftime(TIME_FORMAT)
 
 
 # TODO(mrutkows): validate any cadf:Timestamp (type) record against
 # CADF schema
 def is_valid(value):
-    if not isinstance(value, str):
+    if not isinstance(value, basestring):
         raise ValueError('Timestamp should be a String')
 
     return True

@@ -29,6 +29,6 @@ def generate_name_value_tag(name, value):
 
 # TODO(mrutkows): validate any Tag's name?value= format
 def is_valid(value):
-    if not isinstance(value, str):
+    if not isinstance(value, basestring):
         raise TypeError
     return True

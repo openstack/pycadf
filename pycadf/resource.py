@@ -50,16 +50,16 @@ class Resource(cadftype.CADFAbstractType):
     id = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_ID,
                                       lambda x: identifier.is_valid(x))
     name = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_NAME,
-                                        lambda x: isinstance(x, str))
+                                        lambda x: isinstance(x, basestring))
     domain = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_DOMAIN,
-                                          lambda x: isinstance(x, str))
+                                          lambda x: isinstance(x, basestring))
     # TODO(mrutkows): validate the "ref" attribute is indeed a URI (format),
     # If it is a URL, we do not need to validate it is accessible/working,
     # for audit purposes this could have been a valid URL at some point
     # in the past or a URL that is only valid within some domain (e.g. a
     # private cloud)
     ref = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_REF,
-                                       lambda x: isinstance(x, str))
+                                       lambda x: isinstance(x, basestring))
     geolocation = cadftype.ValidatorDescriptor(
         RESOURCE_KEYNAME_GEO,
         lambda x: isinstance(x, geolocation.Geolocation))

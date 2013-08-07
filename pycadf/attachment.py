@@ -33,10 +33,12 @@ class Attachment(cadftype.CADFAbstractType):
     # the set of approved attachment types in order to
     # limit and validate them.
     typeURI = cadftype.ValidatorDescriptor(ATTACHMENT_KEYNAME_TYPEURI,
-                                           lambda x: isinstance(x, str))
+                                           lambda x: isinstance(x,
+                                                                basestring))
     content = cadftype.ValidatorDescriptor(ATTACHMENT_KEYNAME_CONTENT)
     name = cadftype.ValidatorDescriptor(ATTACHMENT_KEYNAME_NAME,
-                                        lambda x: isinstance(x, str))
+                                        lambda x: isinstance(x,
+                                                             basestring))
 
     def __init__(self, typeURI=None, content=None, name=None):
         # Attachment.typeURI

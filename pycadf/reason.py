@@ -33,14 +33,18 @@ REASON_KEYNAMES = [REASON_KEYNAME_REASONTYPE,
 
 class Reason(cadftype.CADFAbstractType):
 
-    reasonType = cadftype.ValidatorDescriptor(REASON_KEYNAME_REASONTYPE,
-                                              lambda x: isinstance(x, str))
-    reasonCode = cadftype.ValidatorDescriptor(REASON_KEYNAME_REASONCODE,
-                                              lambda x: isinstance(x, str))
-    policyType = cadftype.ValidatorDescriptor(REASON_KEYNAME_POLICYTYPE,
-                                              lambda x: isinstance(x, str))
-    policyId = cadftype.ValidatorDescriptor(REASON_KEYNAME_POLICYID,
-                                            lambda x: isinstance(x, str))
+    reasonType = cadftype.ValidatorDescriptor(
+        REASON_KEYNAME_REASONTYPE,
+        lambda x: isinstance(x, basestring))
+    reasonCode = cadftype.ValidatorDescriptor(
+        REASON_KEYNAME_REASONCODE,
+        lambda x: isinstance(x, basestring))
+    policyType = cadftype.ValidatorDescriptor(
+        REASON_KEYNAME_POLICYTYPE,
+        lambda x: isinstance(x, basestring))
+    policyId = cadftype.ValidatorDescriptor(
+        REASON_KEYNAME_POLICYID,
+        lambda x: isinstance(x, basestring))
 
     def __init__(self, reasonType=None, reasonCode=None, policyType=None,
                  policyId=None):

@@ -43,7 +43,7 @@ class Reporterstep(cadftype.CADFAbstractType):
     reporter = cadftype.ValidatorDescriptor(
         REPORTERSTEP_KEYNAME_REPORTER,
         (lambda x: isinstance(x, resource.Resource) or
-         (isinstance(x, str) and
+         (isinstance(x, basestring) and
           (x == 'initiator' or x == 'target'))))
     reporterId = cadftype.ValidatorDescriptor(
         REPORTERSTEP_KEYNAME_REPORTERID, lambda x: identifier.is_valid(x))

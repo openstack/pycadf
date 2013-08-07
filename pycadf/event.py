@@ -92,7 +92,8 @@ class Event(cadftype.CADFAbstractType):
         EVENT_KEYNAME_REASON,
         lambda x: isinstance(x, reason.Reason) and x.is_valid())
     severity = cadftype.ValidatorDescriptor(EVENT_KEYNAME_SEVERITY,
-                                            lambda x: isinstance(x, str))
+                                            lambda x: isinstance(x,
+                                                                 basestring))
 
     def __init__(self, eventType=cadftype.EVENTTYPE_ACTIVITY,
                  id=identifier.generate_uuid(),
