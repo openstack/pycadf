@@ -24,6 +24,7 @@ import urlparse
 from pycadf import cadftaxonomy as taxonomy
 from pycadf import cadftype
 from pycadf import eventfactory as factory
+from pycadf import identifier
 from pycadf import reason
 from pycadf import reporterstep
 from pycadf import resource
@@ -153,7 +154,7 @@ class OpenStackAuditApi(object):
 
         return action
 
-    def gen_event(self, req, correlation_id):
+    def create_event(self, req, correlation_id):
         action = self._get_action(req)
         catalog = ast.literal_eval(req.environ['HTTP_X_SERVICE_CATALOG'])
         for endpoint in catalog:
@@ -199,27 +200,30 @@ class OpenStackAuditApi(object):
                                                   correlation_id))
         return event
 
-    def append_audit_event(self, msg, req, correlation_id):
+    def append_audit_event(self, req):
+        correlation_id = identifier.generate_uuid()
         setattr(req, 'CADF_EVENT_CORRELATION_ID', correlation_id)
-        event = self.gen_event(req, correlation_id)
+        event = self.create_event(req, correlation_id)
         event.add_reporterstep(
             reporterstep.Reporterstep(
                 role=cadftype.REPORTER_ROLE_OBSERVER,
                 reporter='target'))
-        msg['cadf_event'] = event
+        setattr(req, 'cadf_model', event)
+        req.environ['cadf_event'] = event.as_dict()
 
-    def mod_audit_event(self, msg, response, correlation_id):
+    def mod_audit_event(self, req, response):
         if response.status_int >= 200 and response.status_int < 400:
             result = taxonomy.OUTCOME_SUCCESS
         else:
             result = taxonomy.OUTCOME_FAILURE
-        if 'cadf_event' in msg:
-            msg['cadf_event'].outcome = result
-            msg['cadf_event'].reason = \
+        if req.cadf_model:
+            req.cadf_model.outcome = result
+            req.cadf_model.reason = \
                 reason.Reason(reasonType='HTTP',
                               reasonCode=str(response.status_int))
-            msg['cadf_event'].add_reporterstep(
+            req.cadf_model.add_reporterstep(
                 reporterstep.Reporterstep(
                     role=cadftype.REPORTER_ROLE_MODIFIER,
                     reporter='target',
                     reporterTime=timestamp.get_utc_now()))
+        req.environ['cadf_event'] = req.cadf_model.as_dict()

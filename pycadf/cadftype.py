@@ -65,7 +65,8 @@ class ValidatorDescriptor(object):
                 if self.func(value):
                     instance.__dict__[self.name] = value
                 else:
-                    raise ValueError('Value failed validation: %s' % self.func)
+                    raise ValueError('%s failed validation: %s' %
+                                     (self.name, self.func))
             else:
                 instance.__dict__[self.name] = value
         else:

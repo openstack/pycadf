@@ -19,7 +19,6 @@ import uuid
 import webob
 
 from pycadf.audit import api
-from pycadf import identifier
 from pycadf.tests import base
 
 
@@ -56,14 +55,13 @@ class TestAuditApi(base.TestCase):
     def api_request(self, method, url):
         self.ENV_HEADERS['REQUEST_METHOD'] = method
         req = webob.Request.blank(url, environ=self.ENV_HEADERS)
-        msg = {}
-        self.audit_api.append_audit_event(msg, req,
-                                          identifier.generate_uuid())
-        return msg
+        self.audit_api.append_audit_event(req)
+        self.assertTrue(req.CADF_EVENT_CORRELATION_ID)
+        return req
 
     def test_get_list(self):
-        msg = self.api_request('GET', 'http://host:8774/v2/public/servers')
-        payload = msg['cadf_event'].as_dict()
+        req = self.api_request('GET', 'http://host:8774/v2/public/servers')
+        payload = req.environ['cadf_event']
         self.assertEqual(payload['action'], 'list')
         self.assertEqual(payload['typeURI'],
                          'http://schemas.dmtf.org/cloud/audit/1.0/event')
@@ -90,17 +88,17 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['reporterchain'][0]['reporter'], 'target')
 
     def test_get_read(self):
-        msg = self.api_request('GET',
+        req = self.api_request('GET',
                                'http://host:8774/v2/public/servers/' +
                                str(uuid.uuid4()))
-        payload = msg['cadf_event'].as_dict()
+        payload = req.environ['cadf_event']
         self.assertEqual(payload['action'], 'read')
         self.assertEqual(payload['outcome'], 'pending')
 
     def test_get_unknown_endpoint(self):
-        msg = self.api_request('GET',
+        req = self.api_request('GET',
                                'http://unknown:8774/v2/public/servers/')
-        payload = msg['cadf_event'].as_dict()
+        payload = req.environ['cadf_event']
         self.assertEqual(payload['action'], 'list')
         self.assertEqual(payload['outcome'], 'pending')
         self.assertEqual(payload['target']['name'], 'unknown')
@@ -108,34 +106,34 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['target']['typeURI'], 'unknown')
 
     def test_put(self):
-        msg = self.api_request('PUT', 'http://host:8774/v2/public/servers')
-        payload = msg['cadf_event'].as_dict()
+        req = self.api_request('PUT', 'http://host:8774/v2/public/servers')
+        payload = req.environ['cadf_event']
         self.assertEqual(payload['action'], 'update')
         self.assertEqual(payload['outcome'], 'pending')
 
     def test_delete(self):
-        msg = self.api_request('DELETE', 'http://host:8774/v2/public/servers')
-        payload = msg['cadf_event'].as_dict()
+        req = self.api_request('DELETE', 'http://host:8774/v2/public/servers')
+        payload = req.environ['cadf_event']
         self.assertEqual(payload['action'], 'delete')
         self.assertEqual(payload['outcome'], 'pending')
 
     def test_head(self):
-        msg = self.api_request('HEAD', 'http://host:8774/v2/public/servers')
-        payload = msg['cadf_event'].as_dict()
+        req = self.api_request('HEAD', 'http://host:8774/v2/public/servers')
+        payload = req.environ['cadf_event']
         self.assertEqual(payload['action'], 'read')
         self.assertEqual(payload['outcome'], 'pending')
 
     def test_post_update(self):
-        msg = self.api_request('POST',
+        req = self.api_request('POST',
                                'http://host:8774/v2/public/servers/' +
                                str(uuid.uuid4()))
-        payload = msg['cadf_event'].as_dict()
+        payload = req.environ['cadf_event']
         self.assertEqual(payload['action'], 'update')
         self.assertEqual(payload['outcome'], 'pending')
 
     def test_post_create(self):
-        msg = self.api_request('POST', 'http://host:8774/v2/public/servers')
-        payload = msg['cadf_event'].as_dict()
+        req = self.api_request('POST', 'http://host:8774/v2/public/servers')
+        payload = req.environ['cadf_event']
         self.assertEqual(payload['action'], 'create')
         self.assertEqual(payload['outcome'], 'pending')
 
@@ -145,19 +143,16 @@ class TestAuditApi(base.TestCase):
                                   environ=self.ENV_HEADERS)
         req.body = '{"createImage" : {"name" : "new-image","metadata": ' \
                    '{"ImageType": "Gold","ImageVersion": "2.0"}}}'
-        msg = {}
-        self.audit_api.append_audit_event(msg, req,
-                                          identifier.generate_uuid())
-        payload = msg['cadf_event'].as_dict()
+        self.audit_api.append_audit_event(req)
+        payload = req.environ['cadf_event']
         self.assertEqual(payload['action'], 'create')
         self.assertEqual(payload['outcome'], 'pending')
 
     def test_response_mod_msg(self):
-        msg = self.api_request('GET', 'http://host:8774/v2/public/servers')
-        payload = msg['cadf_event'].as_dict()
-        self.audit_api.mod_audit_event(msg, webob.Response(),
-                                       identifier.generate_uuid())
-        payload2 = msg['cadf_event'].as_dict()
+        req = self.api_request('GET', 'http://host:8774/v2/public/servers')
+        payload = req.environ['cadf_event']
+        self.audit_api.mod_audit_event(req, webob.Response())
+        payload2 = req.environ['cadf_event']
         self.assertEqual(payload['id'], payload2['id'])
         self.assertEqual(payload['tags'], payload2['tags'])
         self.assertEqual(payload2['outcome'], 'success')
