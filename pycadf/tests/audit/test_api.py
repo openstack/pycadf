@@ -56,7 +56,7 @@ class TestAuditApi(base.TestCase):
         self.ENV_HEADERS['REQUEST_METHOD'] = method
         req = webob.Request.blank(url, environ=self.ENV_HEADERS)
         self.audit_api.append_audit_event(req)
-        self.assertTrue(req.CADF_EVENT_CORRELATION_ID)
+        self.assertIn('CADF_EVENT_CORRELATION_ID', req.environ)
         return req
 
     def test_get_list(self):

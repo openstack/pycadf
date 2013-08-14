@@ -202,7 +202,7 @@ class OpenStackAuditApi(object):
 
     def append_audit_event(self, req):
         correlation_id = identifier.generate_uuid()
-        setattr(req, 'CADF_EVENT_CORRELATION_ID', correlation_id)
+        req.environ['CADF_EVENT_CORRELATION_ID'] = correlation_id
         event = self.create_event(req, correlation_id)
         event.add_reporterstep(
             reporterstep.Reporterstep(
