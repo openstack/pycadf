@@ -161,3 +161,32 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(len(payload2['reporterchain']), 2)
         self.assertEqual(payload2['reporterchain'][1]['role'], 'modifier')
         self.assertEqual(payload2['reporterchain'][1]['reporter'], 'target')
+
+    def test_no_response(self):
+        req = self.api_request('GET', 'http://host:8774/v2/public/servers')
+        payload = req.environ['cadf_event']
+        self.audit_api.mod_audit_event(req, None)
+        payload2 = req.environ['cadf_event']
+        self.assertEqual(payload['id'], payload2['id'])
+        self.assertEqual(payload['tags'], payload2['tags'])
+        self.assertEqual(payload2['outcome'], 'unknown')
+        self.assertNotIn('reason', payload2)
+        self.assertEqual(len(payload2['reporterchain']), 2)
+        self.assertEqual(payload2['reporterchain'][1]['role'], 'modifier')
+        self.assertEqual(payload2['reporterchain'][1]['reporter'], 'target')
+
+    def test_missing_req(self):
+        self.ENV_HEADERS['REQUEST_METHOD'] = 'GET'
+        req = webob.Request.blank('http://host:8774/v2/public/servers',
+                                  environ=self.ENV_HEADERS)
+        self.assertNotIn('cadf_event', req.environ)
+        self.audit_api.mod_audit_event(req, webob.Response())
+        self.assertIn('cadf_event', req.environ)
+        self.assertIn('CADF_EVENT_CORRELATION_ID', req.environ)
+        payload = req.environ['cadf_event']
+        self.assertEqual(payload['outcome'], 'success')
+        self.assertEqual(payload['reason']['reasonType'], 'HTTP')
+        self.assertEqual(payload['reason']['reasonCode'], '200')
+        self.assertEqual(len(payload['reporterchain']), 1)
+        self.assertEqual(payload['reporterchain'][0]['role'], 'observer')
+        self.assertEqual(payload['reporterchain'][0]['reporter'], 'target')

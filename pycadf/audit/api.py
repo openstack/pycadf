@@ -201,6 +201,10 @@ class OpenStackAuditApi(object):
         return event
 
     def append_audit_event(self, req):
+        """Append a CADF event to req.environ['cadf_event']
+        Also, stores model in request for future process and includes a
+        CADF correlation id.
+        """
         correlation_id = identifier.generate_uuid()
         req.environ['CADF_EVENT_CORRELATION_ID'] = correlation_id
         event = self.create_event(req, correlation_id)
@@ -212,18 +216,27 @@ class OpenStackAuditApi(object):
         req.environ['cadf_event'] = event.as_dict()
 
     def mod_audit_event(self, req, response):
-        if response.status_int >= 200 and response.status_int < 400:
-            result = taxonomy.OUTCOME_SUCCESS
+        """Modifies CADF event in request based on response.
+        If no event exists, a new event is created.
+        """
+        if response:
+            if response.status_int >= 200 and response.status_int < 400:
+                result = taxonomy.OUTCOME_SUCCESS
+            else:
+                result = taxonomy.OUTCOME_FAILURE
         else:
-            result = taxonomy.OUTCOME_FAILURE
-        if req.cadf_model:
-            req.cadf_model.outcome = result
-            req.cadf_model.reason = \
-                reason.Reason(reasonType='HTTP',
-                              reasonCode=str(response.status_int))
+            result = taxonomy.UNKNOWN
+        if hasattr(req, 'cadf_model'):
             req.cadf_model.add_reporterstep(
                 reporterstep.Reporterstep(
                     role=cadftype.REPORTER_ROLE_MODIFIER,
                     reporter='target',
                     reporterTime=timestamp.get_utc_now()))
+        else:
+            self.append_audit_event(req)
+        req.cadf_model.outcome = result
+        if response:
+            req.cadf_model.reason = \
+                reason.Reason(reasonType='HTTP',
+                              reasonCode=str(response.status_int))
         req.environ['cadf_event'] = req.cadf_model.as_dict()
