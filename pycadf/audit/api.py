@@ -201,7 +201,7 @@ class OpenStackAuditApi(object):
         return event
 
     def append_audit_event(self, req):
-        """Append a CADF event to req.environ['cadf_event']
+        """Append a CADF event to req.environ['CADF_EVENT']
         Also, stores model in request for future process and includes a
         CADF correlation id.
         """
@@ -213,7 +213,7 @@ class OpenStackAuditApi(object):
                 role=cadftype.REPORTER_ROLE_OBSERVER,
                 reporter='target'))
         setattr(req, 'cadf_model', event)
-        req.environ['cadf_event'] = event.as_dict()
+        req.environ['CADF_EVENT'] = event.as_dict()
 
     def mod_audit_event(self, req, response):
         """Modifies CADF event in request based on response.
@@ -239,4 +239,4 @@ class OpenStackAuditApi(object):
             req.cadf_model.reason = \
                 reason.Reason(reasonType='HTTP',
                               reasonCode=str(response.status_int))
-        req.environ['cadf_event'] = req.cadf_model.as_dict()
+        req.environ['CADF_EVENT'] = req.cadf_model.as_dict()
