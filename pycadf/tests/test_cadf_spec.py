@@ -16,8 +16,11 @@
 import testtools
 
 from pycadf import attachment
+from pycadf import credential
+from pycadf import endpoint
 from pycadf import event
 from pycadf import geolocation
+from pycadf import host
 from pycadf import identifier
 from pycadf import measurement
 from pycadf import metric
@@ -29,6 +32,30 @@ from pycadf import timestamp
 
 
 class TestCADFSpec(testtools.TestCase):
+    def test_endpoint(self):
+        endp = endpoint.Endpoint(url='http://192.168.0.1',
+                                 name='endpoint name',
+                                 port='8080')
+        dict_endp = endp.as_dict()
+        for key in endpoint.ENDPOINT_KEYNAMES:
+            self.assertIn(key, dict_endp)
+
+    def test_host(self):
+        h = host.Host(id=identifier.generate_uuid(),
+                      address='192.168.0.1',
+                      agent='client',
+                      platform='AIX')
+        dict_host = h.as_dict()
+        for key in host.HOST_KEYNAMES:
+            self.assertIn(key, dict_host)
+
+    def test_credential(self):
+        cred = credential.Credential(type='auth token',
+                                     token=identifier.generate_uuid())
+        dict_cred = cred.as_dict()
+        for key in credential.CRED_KEYNAMES:
+            self.assertIn(key, dict_cred)
+
     def test_geolocation(self):
         geo = geolocation.Geolocation(id=identifier.generate_uuid(),
                                       latitude='43.6481 N',
@@ -75,7 +102,7 @@ class TestCADFSpec(testtools.TestCase):
 
     def test_reporterstep(self):
         step = reporterstep.Reporterstep(
-            role='observer',
+            role='modifier',
             reporter=resource.Resource(typeURI='storage'),
             reporterId=identifier.generate_uuid(),
             reporterTime=timestamp.get_utc_now())
@@ -98,12 +125,16 @@ class TestCADFSpec(testtools.TestCase):
                                 name='res_name',
                                 domain='res_domain',
                                 ref='res_ref',
+                                credential=credential.Credential(
+                                    token=identifier.generate_uuid()),
+                                host=host.Host(address='192.168.0.1'),
                                 geolocation=geolocation.Geolocation(),
                                 geolocationId=identifier.generate_uuid())
 
         res.add_attachment(attachment.Attachment(typeURI='attachURI',
                                                  content='content',
                                                  name='attachment_name'))
+        res.add_address(endpoint.Endpoint(url='http://192.168.0.1'))
         dict_res = res.as_dict()
         for key in resource.RESOURCE_KEYNAMES:
             self.assertIn(key, dict_res)
@@ -117,6 +148,7 @@ class TestCADFSpec(testtools.TestCase):
                          action='read',
                          target=resource.Resource(typeURI='storage'),
                          targetId=identifier.generate_uuid(),
+                         observer='target',
                          outcome='success',
                          reason=reason.Reason(reasonType='HTTP',
                                               reasonCode='200'),
@@ -126,8 +158,11 @@ class TestCADFSpec(testtools.TestCase):
         ev.add_attachment(attachment.Attachment(typeURI='attachURI',
                                                 content='content',
                                                 name='attachment_name'))
+        ev.observer = resource.Resource(typeURI='service/security')
         ev.add_reporterstep(reporterstep.Reporterstep(
             role='observer',
+            reporter=resource.Resource(typeURI='service/security')))
+        ev.add_reporterstep(reporterstep.Reporterstep(
             reporterId=identifier.generate_uuid()))
 
         dict_ev = ev.as_dict()

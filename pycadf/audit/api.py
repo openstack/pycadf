@@ -23,7 +23,10 @@ import urlparse
 
 from pycadf import cadftaxonomy as taxonomy
 from pycadf import cadftype
+from pycadf import credential
+from pycadf import endpoint
 from pycadf import eventfactory as factory
+from pycadf import host
 from pycadf import identifier
 from pycadf import reason
 from pycadf import reporterstep
@@ -31,36 +34,28 @@ from pycadf import resource
 from pycadf import tag
 from pycadf import timestamp
 
-cfg.CONF.import_opt('api_audit_map', 'pycadf.audit', group='audit')
 CONF = cfg.CONF
-
-
-class ServiceResource(resource.Resource):
-    def __init__(self, admin_url=None, private_url=None,
-                 public_url=None, **kwargs):
-        super(ServiceResource, self).__init__(**kwargs)
-        if admin_url is not None:
-            self.adminURL = admin_url
-        if private_url is not None:
-            self.privateURL = private_url
-        if public_url is not None:
-            self.publicURL = public_url
+opts = [
+    cfg.StrOpt('api_audit_map',
+               default='api_audit_map.conf',
+               help='File containing mapping for api paths and '
+                    'service endpoints'),
+]
+CONF.register_opts(opts, group='audit')
 
 
 class ClientResource(resource.Resource):
-    def __init__(self, client_addr=None, user_agent=None,
-                 token=None, tenant=None, status=None, **kwargs):
+    def __init__(self, project_id=None, **kwargs):
         super(ClientResource, self).__init__(**kwargs)
-        if client_addr is not None:
-            self.client_addr = client_addr
-        if user_agent is not None:
-            self.user_agent = user_agent
-        if token is not None:
-            self.token = token
-        if tenant is not None:
-            self.tenant = tenant
-        if status is not None:
-            self.status = status
+        if project_id is not None:
+            self.project_id = project_id
+
+
+class KeystoneCredential(credential.Credential):
+    def __init__(self, identity_status=None, **kwargs):
+        super(KeystoneCredential, self).__init__(**kwargs)
+        if identity_status is not None:
+            self.identity_status = identity_status
 
 
 class PycadfAuditApiConfigError(Exception):
@@ -156,46 +151,60 @@ class OpenStackAuditApi(object):
 
     def create_event(self, req, correlation_id):
         action = self._get_action(req)
+        initiator_host = host.Host(address=req.client_addr,
+                                   agent=req.user_agent)
         catalog = ast.literal_eval(req.environ['HTTP_X_SERVICE_CATALOG'])
-        for endpoint in catalog:
+        for endp in catalog:
             admin_urlparse = urlparse.urlparse(
-                endpoint['endpoints'][0]['adminURL'])
+                endp['endpoints'][0]['adminURL'])
             public_urlparse = urlparse.urlparse(
-                endpoint['endpoints'][0]['publicURL'])
+                endp['endpoints'][0]['publicURL'])
             req_url = urlparse.urlparse(req.host_url)
             if (req_url.netloc == admin_urlparse.netloc
                     or req_url.netloc == public_urlparse.netloc):
-                service_type = self._SERVICE_ENDPOINTS.get(endpoint['type'],
+                service_type = self._SERVICE_ENDPOINTS.get(endp['type'],
                                                            taxonomy.UNKNOWN)
-                service_name = endpoint['name']
-                admin_url = endpoint['endpoints'][0]['adminURL']
-                private_url = endpoint['endpoints'][0]['internalURL']
-                public_url = endpoint['endpoints'][0]['publicURL']
-                service_id = endpoint['endpoints'][0]['id']
+                service_name = endp['name']
+                admin_end = endpoint.Endpoint(
+                    name='admin',
+                    url=endp['endpoints'][0]['adminURL'])
+                private_end = endpoint.Endpoint(
+                    name='private',
+                    url=endp['endpoints'][0]['internalURL'])
+                public_end = endpoint.Endpoint(
+                    name='public',
+                    url=endp['endpoints'][0]['publicURL'])
+                service_id = endp['endpoints'][0]['id']
                 break
         else:
             service_type = service_id = service_name = taxonomy.UNKNOWN
-            admin_url = private_url = public_url = None
+            admin_end = private_end = public_end = None
 
+        initiator = ClientResource(
+            typeURI=taxonomy.ACCOUNT_USER,
+            id=str(req.environ['HTTP_X_USER_ID']),
+            name=req.environ['HTTP_X_USER_NAME'],
+            host=initiator_host,
+            credential=KeystoneCredential(
+                token=req.environ['HTTP_X_AUTH_TOKEN'],
+                identity_status=req.environ['HTTP_X_IDENTITY_STATUS']),
+            project_id=req.environ['HTTP_X_PROJECT_ID'])
+        target = resource.Resource(typeURI=service_type,
+                                   id=service_id,
+                                   name=service_name)
+        if admin_end:
+            target.add_address(admin_end)
+        if private_end:
+            target.add_address(private_end)
+        if public_end:
+            target.add_address(public_end)
         event = factory.EventFactory().new_event(
             eventType=cadftype.EVENTTYPE_ACTIVITY,
             outcome=taxonomy.OUTCOME_PENDING,
             action=action,
-            initiator=ClientResource(
-                typeURI=taxonomy.ACCOUNT_USER,
-                id=str(req.environ['HTTP_X_USER_ID']),
-                name=req.environ['HTTP_X_USER_NAME'],
-                client_addr=req.client_addr,
-                user_agent=req.user_agent,
-                token=req.environ['HTTP_X_AUTH_TOKEN'],
-                tenant=req.environ['HTTP_X_PROJECT_ID'],
-                status=req.environ['HTTP_X_IDENTITY_STATUS']),
-            target=ServiceResource(typeURI=service_type,
-                                   id=service_id,
-                                   name=service_name,
-                                   private_url=private_url,
-                                   public_url=public_url,
-                                   admin_url=admin_url))
+            initiator=initiator,
+            target=target,
+            observer='target')
         event.add_tag(tag.generate_name_value_tag('correlation_id',
                                                   correlation_id))
         return event
@@ -208,10 +217,6 @@ class OpenStackAuditApi(object):
         correlation_id = identifier.generate_uuid()
         req.environ['CADF_EVENT_CORRELATION_ID'] = correlation_id
         event = self.create_event(req, correlation_id)
-        event.add_reporterstep(
-            reporterstep.Reporterstep(
-                role=cadftype.REPORTER_ROLE_OBSERVER,
-                reporter='target'))
         setattr(req, 'cadf_model', event)
         req.environ['CADF_EVENT'] = event.as_dict()
 

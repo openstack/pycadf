@@ -19,7 +19,10 @@
 from pycadf import attachment
 from pycadf import cadftaxonomy
 from pycadf import cadftype
+from pycadf import credential
+from pycadf import endpoint
 from pycadf import geolocation
+from pycadf import host
 from pycadf import identifier
 
 TYPE_URI_RESOURCE = cadftype.CADF_VERSION_1_0_0 + 'resource'
@@ -28,18 +31,24 @@ RESOURCE_KEYNAME_TYPEURI = "typeURI"
 RESOURCE_KEYNAME_ID = "id"
 RESOURCE_KEYNAME_NAME = "name"
 RESOURCE_KEYNAME_DOMAIN = "domain"
+RESOURCE_KEYNAME_CRED = "credential"
 RESOURCE_KEYNAME_REF = "ref"
 RESOURCE_KEYNAME_GEO = "geolocation"
 RESOURCE_KEYNAME_GEOID = "geolocationId"
+RESOURCE_KEYNAME_HOST = "host"
+RESOURCE_KEYNAME_ADDRS = "addresses"
 RESOURCE_KEYNAME_ATTACHMENTS = "attachments"
 
 RESOURCE_KEYNAMES = [RESOURCE_KEYNAME_TYPEURI,
                      RESOURCE_KEYNAME_ID,
                      RESOURCE_KEYNAME_NAME,
                      RESOURCE_KEYNAME_DOMAIN,
+                     RESOURCE_KEYNAME_CRED,
                      RESOURCE_KEYNAME_REF,
                      RESOURCE_KEYNAME_GEO,
                      RESOURCE_KEYNAME_GEOID,
+                     RESOURCE_KEYNAME_HOST,
+                     RESOURCE_KEYNAME_ADDRS,
                      RESOURCE_KEYNAME_ATTACHMENTS]
 
 
@@ -53,6 +62,11 @@ class Resource(cadftype.CADFAbstractType):
                                         lambda x: isinstance(x, basestring))
     domain = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_DOMAIN,
                                           lambda x: isinstance(x, basestring))
+    credential = cadftype.ValidatorDescriptor(
+        RESOURCE_KEYNAME_CRED, (lambda x: isinstance(x, credential.Credential)
+                                and x.is_valid()))
+    host = cadftype.ValidatorDescriptor(
+        RESOURCE_KEYNAME_HOST, lambda x: isinstance(x, host.Host))
     # TODO(mrutkows): validate the "ref" attribute is indeed a URI (format),
     # If it is a URL, we do not need to validate it is accessible/working,
     # for audit purposes this could have been a valid URL at some point
@@ -68,7 +82,8 @@ class Resource(cadftype.CADFAbstractType):
 
     def __init__(self, id=identifier.generate_uuid(),
                  typeURI=cadftaxonomy.UNKNOWN, name=None, ref=None,
-                 domain=None, geolocation=None, geolocationId=None):
+                 domain=None, credential=None, host=None,
+                 geolocation=None, geolocationId=None):
 
         # Resource.id
         setattr(self, RESOURCE_KEYNAME_ID, id)
@@ -88,6 +103,14 @@ class Resource(cadftype.CADFAbstractType):
         if domain is not None:
             setattr(self, RESOURCE_KEYNAME_DOMAIN, domain)
 
+        # Resource.credential
+        if credential is not None:
+            setattr(self, RESOURCE_KEYNAME_CRED, credential)
+
+        # Resource.host
+        if host is not None:
+            setattr(self, RESOURCE_KEYNAME_HOST, host)
+
         # Resource.geolocation
         if geolocation is not None:
             setattr(self, RESOURCE_KEYNAME_GEO, geolocation)
@@ -95,6 +118,21 @@ class Resource(cadftype.CADFAbstractType):
         # Resource.geolocationId
         if geolocationId:
             setattr(self, RESOURCE_KEYNAME_GEOID, geolocationId)
+
+    # Resource.address
+    def add_address(self, addr):
+        if (addr is not None and isinstance(addr, endpoint.Endpoint)):
+            if addr.is_valid():
+                # Create the list of Endpoints if needed
+                if not hasattr(self, RESOURCE_KEYNAME_ADDRS):
+                    setattr(self, RESOURCE_KEYNAME_ADDRS, list())
+
+                addrs = getattr(self, RESOURCE_KEYNAME_ADDRS)
+                addrs.append(addr)
+            else:
+                raise ValueError('Invalid endpoint')
+        else:
+            raise ValueError('Invalid endpoint. Value must be an Endpoint')
 
     # Resource.attachments
     def add_attachment(self, attach_val):

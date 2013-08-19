@@ -50,7 +50,7 @@ class Reporterstep(cadftype.CADFAbstractType):
     reporterTime = cadftype.ValidatorDescriptor(
         REPORTERSTEP_KEYNAME_REPORTERTIME, lambda x: timestamp.is_valid(x))
 
-    def __init__(self, role=cadftype.REPORTER_ROLE_OBSERVER,
+    def __init__(self, role=cadftype.REPORTER_ROLE_MODIFIER,
                  reporterTime=None, reporter=None, reporterId=None):
         # Reporterstep.role
         setattr(self, REPORTERSTEP_KEYNAME_ROLE, role)

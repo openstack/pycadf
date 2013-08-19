@@ -45,6 +45,7 @@ EVENT_KEYNAME_SEVERITY = "severity"
 EVENT_KEYNAME_MEASUREMENTS = "measurements"
 EVENT_KEYNAME_TAGS = "tags"
 EVENT_KEYNAME_ATTACHMENTS = "attachments"
+EVENT_KEYNAME_OBSERVER = "observer"
 EVENT_KEYNAME_REPORTERCHAIN = "reporterchain"
 
 EVENT_KEYNAMES = [EVENT_KEYNAME_TYPEURI,
@@ -62,6 +63,7 @@ EVENT_KEYNAMES = [EVENT_KEYNAME_TYPEURI,
                   EVENT_KEYNAME_MEASUREMENTS,
                   EVENT_KEYNAME_TAGS,
                   EVENT_KEYNAME_ATTACHMENTS,
+                  EVENT_KEYNAME_OBSERVER,
                   EVENT_KEYNAME_REPORTERCHAIN]
 
 
@@ -94,13 +96,18 @@ class Event(cadftype.CADFAbstractType):
     severity = cadftype.ValidatorDescriptor(EVENT_KEYNAME_SEVERITY,
                                             lambda x: isinstance(x,
                                                                  basestring))
+    observer = cadftype.ValidatorDescriptor(
+        EVENT_KEYNAME_OBSERVER,
+        (lambda x: isinstance(x, resource.Resource) or
+         (isinstance(x, basestring) and
+          (x == 'initiator' or x == 'target'))))
 
     def __init__(self, eventType=cadftype.EVENTTYPE_ACTIVITY,
                  id=identifier.generate_uuid(),
                  eventTime=timestamp.get_utc_now(),
                  action=cadftaxonomy.UNKNOWN, outcome=cadftaxonomy.UNKNOWN,
                  initiator=None, initiatorId=None, target=None, targetId=None,
-                 severity=None, reason=None):
+                 severity=None, reason=None, observer=None):
 
         # Establish typeURI for the CADF Event data type
         # TODO(mrutkows): support extended typeURIs for Event subtypes
@@ -120,6 +127,9 @@ class Event(cadftype.CADFAbstractType):
 
         # Event.outcome (Mandatory)
         setattr(self, EVENT_KEYNAME_OUTCOME, outcome)
+
+        # Event.observer (Mandatory)
+        setattr(self, EVENT_KEYNAME_OBSERVER, observer)
 
         # Event.initiator (Mandatory if no initiatorId)
         if initiator is not None:
@@ -145,15 +155,14 @@ class Event(cadftype.CADFAbstractType):
         if reason is not None:
             setattr(self, EVENT_KEYNAME_REASON, reason)
 
-        # Event.reporterchain (Mandatory)
-        # Prepare the Event.reporterchain (list of cadf:Reporterstep) since
-        # at least one cadf:Reporterstep entry is required
-        setattr(self, EVENT_KEYNAME_REPORTERCHAIN, list())
-
     # Event.reporterchain
     def add_reporterstep(self, step):
         if step is not None and isinstance(step, reporterstep.Reporterstep):
             if step.is_valid():
+                # Create the list of Reportersteps if needed
+                if not hasattr(self, EVENT_KEYNAME_REPORTERCHAIN):
+                    setattr(self, EVENT_KEYNAME_REPORTERCHAIN, list())
+
                 reporterchain = getattr(self,
                                         EVENT_KEYNAME_REPORTERCHAIN)
                 reporterchain.append(step)
@@ -224,6 +233,5 @@ class Event(cadftype.CADFAbstractType):
             hasattr(self, EVENT_KEYNAME_ACTION) and
             hasattr(self, EVENT_KEYNAME_OUTCOME) and
             hasattr(self, EVENT_KEYNAME_INITIATOR) and
-            hasattr(self, EVENT_KEYNAME_TARGET) and
-            hasattr(self, EVENT_KEYNAME_REPORTERCHAIN)
+            hasattr(self, EVENT_KEYNAME_TARGET)
         )

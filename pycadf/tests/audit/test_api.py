@@ -54,7 +54,8 @@ class TestAuditApi(base.TestCase):
 
     def api_request(self, method, url):
         self.ENV_HEADERS['REQUEST_METHOD'] = method
-        req = webob.Request.blank(url, environ=self.ENV_HEADERS)
+        req = webob.Request.blank(url, environ=self.ENV_HEADERS,
+                                  remote_addr='192.168.0.1')
         self.audit_api.append_audit_event(req)
         self.assertIn('CADF_EVENT_CORRELATION_ID', req.environ)
         return req
@@ -67,25 +68,26 @@ class TestAuditApi(base.TestCase):
                          'http://schemas.dmtf.org/cloud/audit/1.0/event')
         self.assertEqual(payload['outcome'], 'pending')
         self.assertEqual(payload['eventType'], 'activity')
-        self.assertEqual(payload['target']['publicURL'],
-                         'http://host:8774/v2/public')
-        self.assertEqual(payload['target']['privateURL'],
-                         'http://host:8774/v2/internal')
-        self.assertEqual(payload['target']['adminURL'],
-                         'http://host:8774/v2/admin')
         self.assertEqual(payload['target']['name'], 'nova')
         self.assertEqual(payload['target']['id'], 'resource_id')
         self.assertEqual(payload['target']['typeURI'], 'service/compute')
+        self.assertEqual(len(payload['target']['addresses']), 3)
+        self.assertEqual(payload['target']['addresses'][0]['name'], 'admin')
+        self.assertEqual(payload['target']['addresses'][0]['url'],
+                         'http://host:8774/v2/admin')
         self.assertEqual(payload['initiator']['id'], 'user_id')
         self.assertEqual(payload['initiator']['name'], 'user_name')
-        self.assertEqual(payload['initiator']['token'], 'token')
-        self.assertEqual(payload['initiator']['tenant'], 'tenant_id')
+        self.assertEqual(payload['initiator']['project_id'], 'tenant_id')
+        self.assertEqual(payload['initiator']['host']['address'],
+                         '192.168.0.1')
         self.assertEqual(payload['initiator']['typeURI'],
                          'service/security/account/user')
+        self.assertEqual(payload['initiator']['credential']['token'], 'token')
+        self.assertEqual(payload['initiator']['credential']['identity_status'],
+                         'Confirmed')
         self.assertNotIn('reason', payload)
-        self.assertEqual(len(payload['reporterchain']), 1)
-        self.assertEqual(payload['reporterchain'][0]['role'], 'observer')
-        self.assertEqual(payload['reporterchain'][0]['reporter'], 'target')
+        self.assertNotIn('reporterchain', payload)
+        self.assertEqual(payload['observer'], 'target')
 
     def test_get_read(self):
         req = self.api_request('GET',
@@ -158,9 +160,9 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload2['outcome'], 'success')
         self.assertEqual(payload2['reason']['reasonType'], 'HTTP')
         self.assertEqual(payload2['reason']['reasonCode'], '200')
-        self.assertEqual(len(payload2['reporterchain']), 2)
-        self.assertEqual(payload2['reporterchain'][1]['role'], 'modifier')
-        self.assertEqual(payload2['reporterchain'][1]['reporter'], 'target')
+        self.assertEqual(len(payload2['reporterchain']), 1)
+        self.assertEqual(payload2['reporterchain'][0]['role'], 'modifier')
+        self.assertEqual(payload2['reporterchain'][0]['reporter'], 'target')
 
     def test_no_response(self):
         req = self.api_request('GET', 'http://host:8774/v2/public/servers')
@@ -171,9 +173,9 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['tags'], payload2['tags'])
         self.assertEqual(payload2['outcome'], 'unknown')
         self.assertNotIn('reason', payload2)
-        self.assertEqual(len(payload2['reporterchain']), 2)
-        self.assertEqual(payload2['reporterchain'][1]['role'], 'modifier')
-        self.assertEqual(payload2['reporterchain'][1]['reporter'], 'target')
+        self.assertEqual(len(payload2['reporterchain']), 1)
+        self.assertEqual(payload2['reporterchain'][0]['role'], 'modifier')
+        self.assertEqual(payload2['reporterchain'][0]['reporter'], 'target')
 
     def test_missing_req(self):
         self.ENV_HEADERS['REQUEST_METHOD'] = 'GET'
@@ -187,6 +189,5 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['outcome'], 'success')
         self.assertEqual(payload['reason']['reasonType'], 'HTTP')
         self.assertEqual(payload['reason']['reasonCode'], '200')
-        self.assertEqual(len(payload['reporterchain']), 1)
-        self.assertEqual(payload['reporterchain'][0]['role'], 'observer')
-        self.assertEqual(payload['reporterchain'][0]['reporter'], 'target')
+        self.assertEqual(payload['observer'], 'target')
+        self.assertNotIn('reporterchain', payload)
