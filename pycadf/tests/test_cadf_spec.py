@@ -13,6 +13,8 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
+import time
+
 import testtools
 
 from pycadf import attachment
@@ -168,3 +170,24 @@ class TestCADFSpec(testtools.TestCase):
         dict_ev = ev.as_dict()
         for key in event.EVENT_KEYNAMES:
             self.assertIn(key, dict_ev)
+
+    def test_event_unique(self):
+        ev = event.Event(eventType='activity',
+                         initiator=resource.Resource(typeURI='storage'),
+                         initiatorId=identifier.generate_uuid(),
+                         action='read',
+                         target=resource.Resource(typeURI='storage'),
+                         targetId=identifier.generate_uuid(),
+                         observer='target',
+                         outcome='success')
+        time.sleep(1)
+        ev2 = event.Event(eventType='activity',
+                          initiator=resource.Resource(typeURI='storage'),
+                          initiatorId=identifier.generate_uuid(),
+                          action='read',
+                          target=resource.Resource(typeURI='storage'),
+                          targetId=identifier.generate_uuid(),
+                          observer='target',
+                          outcome='success')
+        self.assertNotEqual(ev.id, ev2.id)
+        self.assertNotEqual(ev.eventTime, ev2.eventTime)

@@ -80,13 +80,12 @@ class Resource(cadftype.CADFAbstractType):
     geolocationId = cadftype.ValidatorDescriptor(
         RESOURCE_KEYNAME_GEOID, lambda x: identifier.is_valid(x))
 
-    def __init__(self, id=identifier.generate_uuid(),
-                 typeURI=cadftaxonomy.UNKNOWN, name=None, ref=None,
-                 domain=None, credential=None, host=None,
+    def __init__(self, id=None, typeURI=cadftaxonomy.UNKNOWN, name=None,
+                 ref=None, domain=None, credential=None, host=None,
                  geolocation=None, geolocationId=None):
 
         # Resource.id
-        setattr(self, RESOURCE_KEYNAME_ID, id)
+        setattr(self, RESOURCE_KEYNAME_ID, id or identifier.generate_uuid())
 
         # Resource.typeURI
         setattr(self, RESOURCE_KEYNAME_TYPEURI, typeURI)

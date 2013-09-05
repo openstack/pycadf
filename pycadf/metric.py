@@ -44,10 +44,10 @@ class Metric(cadftype.CADFAbstractType):
     name = cadftype.ValidatorDescriptor(METRIC_KEYNAME_NAME,
                                         lambda x: isinstance(x, basestring))
 
-    def __init__(self, metricId=identifier.generate_uuid(),
-                 unit=None, name=None):
+    def __init__(self, metricId=None, unit=None, name=None):
         # Metric.id
-        setattr(self, METRIC_KEYNAME_METRICID, metricId)
+        setattr(self, METRIC_KEYNAME_METRICID,
+                metricId or identifier.generate_uuid())
 
         # Metric.unit
         if unit is not None:

@@ -103,8 +103,7 @@ class Event(cadftype.CADFAbstractType):
           (x == 'initiator' or x == 'target'))))
 
     def __init__(self, eventType=cadftype.EVENTTYPE_ACTIVITY,
-                 id=identifier.generate_uuid(),
-                 eventTime=timestamp.get_utc_now(),
+                 id=None, eventTime=None,
                  action=cadftaxonomy.UNKNOWN, outcome=cadftaxonomy.UNKNOWN,
                  initiator=None, initiatorId=None, target=None, targetId=None,
                  severity=None, reason=None, observer=None):
@@ -117,10 +116,11 @@ class Event(cadftype.CADFAbstractType):
         setattr(self, EVENT_KEYNAME_EVENTTYPE, eventType)
 
         # Event.id (Mandatory)
-        setattr(self, EVENT_KEYNAME_ID, id)
+        setattr(self, EVENT_KEYNAME_ID, id or identifier.generate_uuid())
 
         # Event.eventTime (Mandatory)
-        setattr(self, EVENT_KEYNAME_EVENTTIME, eventTime)
+        setattr(self, EVENT_KEYNAME_EVENTTIME,
+                eventTime or timestamp.get_utc_now())
 
         # Event.action (Mandatory)
         setattr(self, EVENT_KEYNAME_ACTION, action)
