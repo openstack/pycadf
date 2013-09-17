@@ -16,6 +16,7 @@
 # under the License.
 
 import ast
+import collections
 import ConfigParser
 import os
 from oslo.config import cfg
@@ -68,6 +69,10 @@ class OpenStackAuditApi(object):
     _BODY_ACTIONS = {}
     _SERVICE_ENDPOINTS = {}
 
+    Service = collections.namedtuple('Service',
+                                     ['id', 'name', 'type', 'admin_endp',
+                                     'public_endp', 'private_endp'])
+
     def __init__(self):
         self._configure_audit_map()
 
@@ -86,6 +91,8 @@ class OpenStackAuditApi(object):
                 try:
                     paths = audit_map.get('DEFAULT', 'api_paths')
                     self._API_PATHS = paths.lstrip().split('\n')
+                    self._DEFAULT_TARGET_ENDPOINT_TYPE = \
+                        audit_map.get('DEFAULT', 'target_endpoint_type')
                 except ConfigParser.NoSectionError:
                     pass
 
@@ -149,11 +156,37 @@ class OpenStackAuditApi(object):
 
         return action
 
+    def _get_service_info(self, endp):
+        service = self.Service(
+            type=self._SERVICE_ENDPOINTS.get(
+                endp['type'],
+                taxonomy.UNKNOWN),
+            name=endp['name'],
+            id=endp['endpoints'][0]['id'],
+            admin_endp=endpoint.Endpoint(
+                name='admin',
+                url=endp['endpoints'][0]['adminURL']),
+            private_endp=endpoint.Endpoint(
+                name='private',
+                url=endp['endpoints'][0]['internalURL']),
+            public_endp=endpoint.Endpoint(
+                name='public',
+                url=endp['endpoints'][0]['publicURL']))
+
+        return service
+
     def create_event(self, req, correlation_id):
         action = self._get_action(req)
         initiator_host = host.Host(address=req.client_addr,
                                    agent=req.user_agent)
         catalog = ast.literal_eval(req.environ['HTTP_X_SERVICE_CATALOG'])
+        service_info = self.Service(type=taxonomy.UNKNOWN,
+                                    name=taxonomy.UNKNOWN,
+                                    id=taxonomy.UNKNOWN,
+                                    admin_endp=None,
+                                    private_endp=None,
+                                    public_endp=None)
+        default_endpoint = None
         for endp in catalog:
             admin_urlparse = urlparse.urlparse(
                 endp['endpoints'][0]['adminURL'])
@@ -162,23 +195,14 @@ class OpenStackAuditApi(object):
             req_url = urlparse.urlparse(req.host_url)
             if (req_url.netloc == admin_urlparse.netloc
                     or req_url.netloc == public_urlparse.netloc):
-                service_type = self._SERVICE_ENDPOINTS.get(endp['type'],
-                                                           taxonomy.UNKNOWN)
-                service_name = endp['name']
-                admin_end = endpoint.Endpoint(
-                    name='admin',
-                    url=endp['endpoints'][0]['adminURL'])
-                private_end = endpoint.Endpoint(
-                    name='private',
-                    url=endp['endpoints'][0]['internalURL'])
-                public_end = endpoint.Endpoint(
-                    name='public',
-                    url=endp['endpoints'][0]['publicURL'])
-                service_id = endp['endpoints'][0]['id']
+                service_info = self._get_service_info(endp)
                 break
+            elif (self._DEFAULT_TARGET_ENDPOINT_TYPE
+                  and endp['type'] == self._DEFAULT_TARGET_ENDPOINT_TYPE):
+                default_endpoint = endp
         else:
-            service_type = service_id = service_name = taxonomy.UNKNOWN
-            admin_end = private_end = public_end = None
+            if default_endpoint:
+                service_info = self._get_service_info(default_endpoint)
 
         initiator = ClientResource(
             typeURI=taxonomy.ACCOUNT_USER,
@@ -189,15 +213,15 @@ class OpenStackAuditApi(object):
                 token=req.environ['HTTP_X_AUTH_TOKEN'],
                 identity_status=req.environ['HTTP_X_IDENTITY_STATUS']),
             project_id=req.environ['HTTP_X_PROJECT_ID'])
-        target = resource.Resource(typeURI=service_type,
-                                   id=service_id,
-                                   name=service_name)
-        if admin_end:
-            target.add_address(admin_end)
-        if private_end:
-            target.add_address(private_end)
-        if public_end:
-            target.add_address(public_end)
+        target = resource.Resource(typeURI=service_info.type,
+                                   id=service_info.id,
+                                   name=service_info.name)
+        if service_info.admin_endp:
+            target.add_address(service_info.admin_endp)
+        if service_info.private_endp:
+            target.add_address(service_info.private_endp)
+        if service_info.public_endp:
+            target.add_address(service_info.public_endp)
         event = factory.EventFactory().new_event(
             eventType=cadftype.EVENTTYPE_ACTIVITY,
             outcome=taxonomy.OUTCOME_PENDING,
