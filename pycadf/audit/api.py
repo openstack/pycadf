@@ -65,9 +65,10 @@ class PycadfAuditApiConfigError(Exception):
 
 class OpenStackAuditApi(object):
 
-    _API_PATHS = []
-    _BODY_ACTIONS = {}
-    _SERVICE_ENDPOINTS = {}
+    _api_paths = []
+    _body_actions = {}
+    _service_endpoints = {}
+    _default_target_endpoint_type = None
 
     Service = collections.namedtuple('Service',
                                      ['id', 'name', 'type', 'admin_endp',
@@ -90,19 +91,19 @@ class OpenStackAuditApi(object):
 
                 try:
                     paths = audit_map.get('DEFAULT', 'api_paths')
-                    self._API_PATHS = paths.lstrip().split('\n')
-                    self._DEFAULT_TARGET_ENDPOINT_TYPE = \
+                    self._api_paths = paths.lstrip().split('\n')
+                    self._default_target_endpoint_type = \
                         audit_map.get('DEFAULT', 'target_endpoint_type')
                 except ConfigParser.NoSectionError:
                     pass
 
                 try:
-                    self._BODY_ACTIONS = dict(audit_map.items('body_actions'))
+                    self._body_actions = dict(audit_map.items('body_actions'))
                 except ConfigParser.NoSectionError:
                     pass
 
                 try:
-                    self._SERVICE_ENDPOINTS = \
+                    self._service_endpoints = \
                         dict(audit_map.items('service_endpoints'))
                 except ConfigParser.NoSectionError:
                     pass
@@ -132,16 +133,16 @@ class OpenStackAuditApi(object):
             if path[path.rfind('/') + 1:] == 'action':
                 if req.json:
                     body_action = req.json.keys()[0]
-                    action = self._BODY_ACTIONS.get(body_action,
+                    action = self._body_actions.get(body_action,
                                                     taxonomy.ACTION_CREATE)
                 else:
                     action = taxonomy.ACTION_CREATE
-            elif path[path.rfind('/') + 1:] not in self._API_PATHS:
+            elif path[path.rfind('/') + 1:] not in self._api_paths:
                 action = taxonomy.ACTION_UPDATE
             else:
                 action = taxonomy.ACTION_CREATE
         elif method == 'GET':
-            if path[path.rfind('/') + 1:] in self._API_PATHS:
+            if path[path.rfind('/') + 1:] in self._api_paths:
                 action = taxonomy.ACTION_LIST
             else:
                 action = taxonomy.ACTION_READ
@@ -158,7 +159,7 @@ class OpenStackAuditApi(object):
 
     def _get_service_info(self, endp):
         service = self.Service(
-            type=self._SERVICE_ENDPOINTS.get(
+            type=self._service_endpoints.get(
                 endp['type'],
                 taxonomy.UNKNOWN),
             name=endp['name'],
@@ -197,8 +198,8 @@ class OpenStackAuditApi(object):
                     or req_url.netloc == public_urlparse.netloc):
                 service_info = self._get_service_info(endp)
                 break
-            elif (self._DEFAULT_TARGET_ENDPOINT_TYPE
-                  and endp['type'] == self._DEFAULT_TARGET_ENDPOINT_TYPE):
+            elif (self._default_target_endpoint_type
+                  and endp['type'] == self._default_target_endpoint_type):
                 default_endpoint = endp
         else:
             if default_endpoint:
