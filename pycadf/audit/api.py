@@ -92,20 +92,23 @@ class OpenStackAuditApi(object):
                 try:
                     paths = audit_map.get('DEFAULT', 'api_paths')
                     self._api_paths = paths.lstrip().split('\n')
-                    self._default_target_endpoint_type = \
-                        audit_map.get('DEFAULT', 'target_endpoint_type')
+                    try:
+                        self._default_target_endpoint_type = \
+                            audit_map.get('DEFAULT', 'target_endpoint_type')
+                    except ConfigParser.NoOptionError:
+                        pass
                 except ConfigParser.NoSectionError:
                     pass
 
                 try:
                     self._body_actions = dict(audit_map.items('body_actions'))
-                except ConfigParser.NoSectionError:
+                except ConfigParser.Error:
                     pass
 
                 try:
                     self._service_endpoints = \
                         dict(audit_map.items('service_endpoints'))
-                except ConfigParser.NoSectionError:
+                except ConfigParser.Error:
                     pass
             except ConfigParser.ParsingError as err:
                 raise PycadfAuditApiConfigError(

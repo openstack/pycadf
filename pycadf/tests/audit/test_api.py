@@ -107,6 +107,28 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['target']['id'], 'unknown')
         self.assertEqual(payload['target']['typeURI'], 'unknown')
 
+    def test_get_unknown_endpoint_default_set(self):
+        tmpfile = self.temp_config_file_path()
+        with open(tmpfile, "w") as f:
+            f.write("[DEFAULT]\n")
+            f.write("target_endpoint_type = compute \n")
+            f.write("api_paths = servers\n\n")
+            f.write("[service_endpoints]\n")
+            f.write("compute = service/compute")
+        cfg.CONF.set_override('api_audit_map', tmpfile, group='audit')
+        self.audit_api = api.OpenStackAuditApi()
+
+        self.assertEqual(self.audit_api._default_target_endpoint_type,
+                         'compute')
+        req = self.api_request('GET',
+                               'http://unknown:8774/v2/public/servers/')
+        payload = req.environ['CADF_EVENT']
+        self.assertEqual(payload['action'], 'list')
+        self.assertEqual(payload['outcome'], 'pending')
+        self.assertEqual(payload['target']['name'], 'nova')
+        self.assertEqual(payload['target']['id'], 'resource_id')
+        self.assertEqual(payload['target']['typeURI'], 'service/compute')
+
     def test_put(self):
         req = self.api_request('PUT', 'http://host:8774/v2/public/servers')
         payload = req.environ['CADF_EVENT']
@@ -191,3 +213,16 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['reason']['reasonCode'], '200')
         self.assertEqual(payload['observer'], 'target')
         self.assertNotIn('reporterchain', payload)
+
+
+class TestAuditApiConf(base.TestCase):
+    def test_missing_default_option(self):
+        tmpfile = self.temp_config_file_path()
+        # NOTE(gordc): ensure target_endpoint_type is not in conf file
+        with open(tmpfile, "w") as f:
+            f.write("[DEFAULT]\n")
+            f.write("api_paths = servers\n\n")
+            f.write("[service_endpoints]\n")
+            f.write("compute = service/compute")
+        cfg.CONF.set_override('api_audit_map', tmpfile, group='audit')
+        self.audit_api = api.OpenStackAuditApi()

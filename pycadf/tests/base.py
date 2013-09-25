@@ -16,6 +16,7 @@
 
 """Test base classes.
 """
+import fixtures
 import os.path
 from oslo.config import cfg
 import testtools
@@ -25,6 +26,7 @@ class TestCase(testtools.TestCase):
 
     def setUp(self):
         super(TestCase, self).setUp()
+        self.tempdir = self.useFixture(fixtures.TempDir())
         cfg.CONF([], project='pycadf')
 
     def path_get(self, project_file=None):
@@ -37,6 +39,9 @@ class TestCase(testtools.TestCase):
             return os.path.join(root, project_file)
         else:
             return root
+
+    def temp_config_file_path(self, name='api_audit_map.conf'):
+        return os.path.join(self.tempdir.path, name)
 
     def tearDown(self):
         cfg.CONF.reset()
