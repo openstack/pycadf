@@ -150,7 +150,7 @@ class TestCADFSpec(testtools.TestCase):
                          action='read',
                          target=resource.Resource(typeURI='storage'),
                          targetId=identifier.generate_uuid(),
-                         observer='target',
+                         observer=resource.Resource(id='target'),
                          outcome='success',
                          reason=reason.Reason(reasonType='HTTP',
                                               reasonCode='200'),
@@ -178,7 +178,7 @@ class TestCADFSpec(testtools.TestCase):
                          action='read',
                          target=resource.Resource(typeURI='storage'),
                          targetId=identifier.generate_uuid(),
-                         observer='target',
+                         observer=resource.Resource(id='target'),
                          outcome='success')
         time.sleep(1)
         ev2 = event.Event(eventType='activity',
@@ -187,7 +187,29 @@ class TestCADFSpec(testtools.TestCase):
                           action='read',
                           target=resource.Resource(typeURI='storage'),
                           targetId=identifier.generate_uuid(),
-                          observer='target',
+                          observer=resource.Resource(id='target'),
                           outcome='success')
         self.assertNotEqual(ev.id, ev2.id)
         self.assertNotEqual(ev.eventTime, ev2.eventTime)
+
+    def test_event_resource_shortform(self):
+        self.assertRaises(ValueError,
+                          lambda: event.Event(
+                              eventType='activity',
+                              initiator=resource.Resource(typeURI='storage'),
+                              initiatorId=identifier.generate_uuid(),
+                              action='read',
+                              target=resource.Resource(id='target'),
+                              targetId=identifier.generate_uuid(),
+                              observer=resource.Resource(id='target'),
+                              outcome='success'))
+        self.assertRaises(ValueError,
+                          lambda: event.Event(
+                              eventType='activity',
+                              initiator=resource.Resource(id='initiator'),
+                              initiatorId=identifier.generate_uuid(),
+                              action='read',
+                              target=resource.Resource(typeURI='storage'),
+                              targetId=identifier.generate_uuid(),
+                              observer=resource.Resource(id='target'),
+                              outcome='success'))

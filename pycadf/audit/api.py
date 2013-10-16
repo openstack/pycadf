@@ -232,7 +232,7 @@ class OpenStackAuditApi(object):
             action=action,
             initiator=initiator,
             target=target,
-            observer='target')
+            observer=resource.Resource(id='target'))
         event.add_tag(tag.generate_name_value_tag('correlation_id',
                                                   correlation_id))
         return event
@@ -263,7 +263,7 @@ class OpenStackAuditApi(object):
             req.cadf_model.add_reporterstep(
                 reporterstep.Reporterstep(
                     role=cadftype.REPORTER_ROLE_MODIFIER,
-                    reporter='target',
+                    reporter=resource.Resource(id='target'),
                     reporterTime=timestamp.get_utc_now()))
         else:
             self.append_audit_event(req)

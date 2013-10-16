@@ -77,15 +77,16 @@ class Event(cadftype.CADFAbstractType):
                                              lambda x: timestamp.is_valid(x))
     initiator = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_INITIATOR,
-        (lambda x: isinstance(x, resource.Resource) and
-         x.is_valid()))
+        (lambda x: isinstance(x, resource.Resource) and x.is_valid()
+         and x.id != 'initiator'))
     initiatorId = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_INITIATORID, lambda x: identifier.is_valid(x))
     action = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_ACTION, lambda x: cadftaxonomy.is_valid_action(x))
     target = cadftype.ValidatorDescriptor(
-        EVENT_KEYNAME_TARGET, (lambda x: isinstance(x, resource.Resource) and
-                               x.is_valid()))
+        EVENT_KEYNAME_TARGET,
+        (lambda x: isinstance(x, resource.Resource) and x.is_valid()
+         and x.id != 'target'))
     targetId = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_TARGETID, lambda x: identifier.is_valid(x))
     outcome = cadftype.ValidatorDescriptor(
@@ -98,9 +99,7 @@ class Event(cadftype.CADFAbstractType):
                                                                  basestring))
     observer = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_OBSERVER,
-        (lambda x: isinstance(x, resource.Resource) or
-         (isinstance(x, basestring) and
-          (x == 'initiator' or x == 'target'))))
+        (lambda x: isinstance(x, resource.Resource) and x.is_valid()))
 
     def __init__(self, eventType=cadftype.EVENTTYPE_ACTIVITY,
                  id=None, eventTime=None,

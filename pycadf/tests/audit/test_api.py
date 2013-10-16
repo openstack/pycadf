@@ -87,7 +87,7 @@ class TestAuditApi(base.TestCase):
                          'Confirmed')
         self.assertNotIn('reason', payload)
         self.assertNotIn('reporterchain', payload)
-        self.assertEqual(payload['observer'], 'target')
+        self.assertEqual(payload['observer']['id'], 'target')
 
     def test_get_read(self):
         req = self.api_request('GET',
@@ -184,7 +184,8 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload2['reason']['reasonCode'], '200')
         self.assertEqual(len(payload2['reporterchain']), 1)
         self.assertEqual(payload2['reporterchain'][0]['role'], 'modifier')
-        self.assertEqual(payload2['reporterchain'][0]['reporter'], 'target')
+        self.assertEqual(payload2['reporterchain'][0]['reporter']['id'],
+                         'target')
 
     def test_no_response(self):
         req = self.api_request('GET', 'http://host:8774/v2/public/servers')
@@ -197,7 +198,8 @@ class TestAuditApi(base.TestCase):
         self.assertNotIn('reason', payload2)
         self.assertEqual(len(payload2['reporterchain']), 1)
         self.assertEqual(payload2['reporterchain'][0]['role'], 'modifier')
-        self.assertEqual(payload2['reporterchain'][0]['reporter'], 'target')
+        self.assertEqual(payload2['reporterchain'][0]['reporter']['id'],
+                         'target')
 
     def test_missing_req(self):
         self.ENV_HEADERS['REQUEST_METHOD'] = 'GET'
@@ -211,7 +213,7 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['outcome'], 'success')
         self.assertEqual(payload['reason']['reasonType'], 'HTTP')
         self.assertEqual(payload['reason']['reasonCode'], '200')
-        self.assertEqual(payload['observer'], 'target')
+        self.assertEqual(payload['observer']['id'], 'target')
         self.assertNotIn('reporterchain', payload)
 
 
