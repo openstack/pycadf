@@ -15,23 +15,25 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-
 import uuid
 
-from pycadf import cadftype
-from pycadf import timestamp
+from oslo.config import cfg
+
+CONF = cfg.CONF
+opts = [
+    cfg.StrOpt('namespace',
+               default='openstack',
+               help='namespace prefix for generated id'),
+]
+CONF.register_opts(opts, group='audit')
 
 
-# TODO(mrutkows): Add openstack namespace prefix (e.g. 'openstack:') to all
-# cadf:Identifiers
 # TODO(mrutkows): make the namespace prefix configurable and have it resolve to
 # a full openstack namespace/domain value via some declaration (e.g.
 # "openstack:" == "http:\\www.openstack.org\")...
 def generate_uuid():
-    uuid_temp = uuid.uuid5(uuid.NAMESPACE_DNS,
-                           cadftype.CADF_VERSION_1_0_0
-                           + timestamp.get_utc_now())
-    return str(uuid_temp)
+    prefix = CONF.audit.namespace + ':' if CONF.audit.namespace else ''
+    return prefix + str(uuid.uuid4())
 
 
 # TODO(mrutkows): validate any cadf:Identifier (type) record against
