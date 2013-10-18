@@ -63,7 +63,7 @@ class TestAuditApi(base.TestCase):
     def test_get_list(self):
         req = self.api_request('GET', 'http://host:8774/v2/public/servers')
         payload = req.environ['CADF_EVENT']
-        self.assertEqual(payload['action'], 'list')
+        self.assertEqual(payload['action'], 'read/list')
         self.assertEqual(payload['typeURI'],
                          'http://schemas.dmtf.org/cloud/audit/1.0/event')
         self.assertEqual(payload['outcome'], 'pending')
@@ -101,7 +101,7 @@ class TestAuditApi(base.TestCase):
         req = self.api_request('GET',
                                'http://unknown:8774/v2/public/servers/')
         payload = req.environ['CADF_EVENT']
-        self.assertEqual(payload['action'], 'list')
+        self.assertEqual(payload['action'], 'read/list')
         self.assertEqual(payload['outcome'], 'pending')
         self.assertEqual(payload['target']['name'], 'unknown')
         self.assertEqual(payload['target']['id'], 'unknown')
@@ -123,7 +123,7 @@ class TestAuditApi(base.TestCase):
         req = self.api_request('GET',
                                'http://unknown:8774/v2/public/servers/')
         payload = req.environ['CADF_EVENT']
-        self.assertEqual(payload['action'], 'list')
+        self.assertEqual(payload['action'], 'read/list')
         self.assertEqual(payload['outcome'], 'pending')
         self.assertEqual(payload['target']['name'], 'nova')
         self.assertEqual(payload['target']['id'], 'resource_id')

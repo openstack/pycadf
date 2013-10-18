@@ -28,7 +28,7 @@ ACTION_READ = 'read'
 ACTION_UPDATE = 'update'
 ACTION_DELETE = 'delete'
 # OpenStack specific, Profile or change CADF spec. to add this action
-ACTION_LIST = 'list'
+ACTION_LIST = 'read/list'
 
 # TODO(mrutkows): Make global using WSGI mechanism
 ACTION_TAXONOMY = frozenset([
