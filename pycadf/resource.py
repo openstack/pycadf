@@ -88,7 +88,9 @@ class Resource(cadftype.CADFAbstractType):
         setattr(self, RESOURCE_KEYNAME_ID, id or identifier.generate_uuid())
 
         # Resource.typeURI
-        setattr(self, RESOURCE_KEYNAME_TYPEURI, typeURI)
+        if (getattr(self, RESOURCE_KEYNAME_ID) != "target" and
+                getattr(self, RESOURCE_KEYNAME_ID) != "initiator"):
+            setattr(self, RESOURCE_KEYNAME_TYPEURI, typeURI)
 
         # Resource.name
         if name is not None:
