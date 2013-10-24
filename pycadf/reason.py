@@ -68,7 +68,7 @@ class Reason(cadftype.CADFAbstractType):
     # TODO(mrutkows): validate this cadf:Reason type against schema
     def is_valid(self):
         # MUST have at least one valid pairing of reason+code or policy+id
-        return ((hasattr(self, REASON_KEYNAME_REASONTYPE) and
-                 hasattr(self, REASON_KEYNAME_REASONCODE)) or
-                (hasattr(self, REASON_KEYNAME_POLICYTYPE) and
-                 hasattr(self, REASON_KEYNAME_POLICYID)))
+        return ((self._isset(REASON_KEYNAME_REASONTYPE) and
+                 self._isset(REASON_KEYNAME_REASONCODE)) or
+                (self._isset(REASON_KEYNAME_POLICYTYPE) and
+                 self._isset(REASON_KEYNAME_POLICYID)))

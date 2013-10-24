@@ -64,4 +64,6 @@ class Measurement(cadftype.CADFAbstractType):
 
     # self validate this cadf:Measurement type against schema
     def is_valid(self):
-        return hasattr(self, MEASUREMENT_KEYNAME_RESULT)
+        return (self._isset(MEASUREMENT_KEYNAME_RESULT) and
+                (self._isset(MEASUREMENT_KEYNAME_METRIC) ^
+                 self._isset(MEASUREMENT_KEYNAME_METRICID)))

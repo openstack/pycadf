@@ -59,7 +59,4 @@ class Host(cadftype.CADFAbstractType):
 
     # TODO(mrutkows): validate this cadf:Host type against schema
     def is_valid(self):
-        return (hasattr(self, HOST_KEYNAME_ID) or
-                hasattr(self, HOST_KEYNAME_ADDR) or
-                hasattr(self, HOST_KEYNAME_AGENT) or
-                hasattr(self, HOST_KEYNAME_PLATFORM))
+        return True

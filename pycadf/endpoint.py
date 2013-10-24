@@ -49,4 +49,4 @@ class Endpoint(cadftype.CADFAbstractType):
 
     # TODO(mrutkows): validate this cadf:ENDPOINT type against schema
     def is_valid(self):
-        return hasattr(self, ENDPOINT_KEYNAME_URL)
+        return self._isset(ENDPOINT_KEYNAME_URL)

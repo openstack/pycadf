@@ -118,8 +118,4 @@ class Geolocation(cadftype.CADFAbstractType):
 
     # self validate cadf:Geolocation type
     def is_valid(self):
-        # TODO(mrutkows): validate specific attribute type/format
-        for attr in GEO_KEYNAMES:
-            if not hasattr(self, attr):
-                return False
         return True

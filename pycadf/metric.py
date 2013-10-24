@@ -68,6 +68,6 @@ class Metric(cadftype.CADFAbstractType):
     def is_valid(self):
         # Existence test, id, and unit attributes must both exist
         return (
-            hasattr(self, METRIC_KEYNAME_METRICID) and
-            hasattr(self, METRIC_KEYNAME_UNIT)
+            self._isset(METRIC_KEYNAME_METRICID) and
+            self._isset(METRIC_KEYNAME_UNIT)
         )

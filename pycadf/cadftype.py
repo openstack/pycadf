@@ -85,6 +85,15 @@ class CADFAbstractType(object):
         """Return dict representation of Event."""
         return jsonutils.to_primitive(self, convert_instances=True)
 
+    def _isset(self, attr):
+        """Check to see if attribute is defined."""
+        try:
+            if isinstance(getattr(self, attr), ValidatorDescriptor):
+                return False
+            return True
+        except AttributeError:
+            return False
+
     # TODO(mrutkows): Eventually, we want to use the OrderedDict (introduced
     # in Python 2.7) type for all CADF classes to store attributes in a
     # canonical form.  Currently, OpenStack/Jenkins requires 2.6 compatibility

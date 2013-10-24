@@ -57,7 +57,7 @@ class Attachment(cadftype.CADFAbstractType):
     def is_valid(self):
         # Existence test, All attributes must exist for valid Attachment type
         return (
-            hasattr(self, ATTACHMENT_KEYNAME_TYPEURI) and
-            hasattr(self, ATTACHMENT_KEYNAME_NAME) and
-            hasattr(self, ATTACHMENT_KEYNAME_CONTENT)
+            self._isset(ATTACHMENT_KEYNAME_TYPEURI) and
+            self._isset(ATTACHMENT_KEYNAME_NAME) and
+            self._isset(ATTACHMENT_KEYNAME_CONTENT)
         )

@@ -68,7 +68,7 @@ class Reporterstep(cadftype.CADFAbstractType):
     # self validate this cadf:Reporterstep type against schema
     def is_valid(self):
         return (
-            hasattr(self, REPORTERSTEP_KEYNAME_ROLE) and
-            (hasattr(self, REPORTERSTEP_KEYNAME_REPORTER) or
-             hasattr(self, REPORTERSTEP_KEYNAME_REPORTERID))
+            self._isset(REPORTERSTEP_KEYNAME_ROLE) and
+            (self._isset(REPORTERSTEP_KEYNAME_REPORTER) ^
+             self._isset(REPORTERSTEP_KEYNAME_REPORTERID))
         )

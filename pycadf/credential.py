@@ -46,4 +46,4 @@ class Credential(cadftype.CADFAbstractType):
     # TODO(mrutkows): validate this cadf:Credential type against schema
     def is_valid(self):
         # TODO(mrutkows): validate specific attribute type/format
-        return hasattr(self, CRED_KEYNAME_TOKEN)
+        return self._isset(CRED_KEYNAME_TOKEN)

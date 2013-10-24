@@ -153,8 +153,9 @@ class Resource(cadftype.CADFAbstractType):
 
     # self validate this cadf:Resource type against schema
     def is_valid(self):
-        return (hasattr(self, RESOURCE_KEYNAME_ID) and
-                (getattr(self, RESOURCE_KEYNAME_ID) == "target" or
-                 getattr(self, RESOURCE_KEYNAME_ID) == "initiator" or
-                 hasattr(self, RESOURCE_KEYNAME_TYPEURI)))
+        return (self._isset(RESOURCE_KEYNAME_ID) and
+                (self._isset(RESOURCE_KEYNAME_TYPEURI) or
+                 ((getattr(self, RESOURCE_KEYNAME_ID) == "target" or
+                   getattr(self, RESOURCE_KEYNAME_ID) == "initiator") and
+                  len(vars(self).keys()) == 1)))
         # TODO(mrutkows): validate the Resource's attribute types
