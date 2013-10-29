@@ -69,15 +69,16 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['outcome'], 'pending')
         self.assertEqual(payload['eventType'], 'activity')
         self.assertEqual(payload['target']['name'], 'nova')
-        self.assertEqual(payload['target']['id'], 'resource_id')
+        self.assertEqual(payload['target']['id'], 'openstack:resource_id')
         self.assertEqual(payload['target']['typeURI'], 'service/compute')
         self.assertEqual(len(payload['target']['addresses']), 3)
         self.assertEqual(payload['target']['addresses'][0]['name'], 'admin')
         self.assertEqual(payload['target']['addresses'][0]['url'],
                          'http://host:8774/v2/admin')
-        self.assertEqual(payload['initiator']['id'], 'user_id')
+        self.assertEqual(payload['initiator']['id'], 'openstack:user_id')
         self.assertEqual(payload['initiator']['name'], 'user_name')
-        self.assertEqual(payload['initiator']['project_id'], 'tenant_id')
+        self.assertEqual(payload['initiator']['project_id'],
+                         'openstack:tenant_id')
         self.assertEqual(payload['initiator']['host']['address'],
                          '192.168.0.1')
         self.assertEqual(payload['initiator']['typeURI'],
@@ -126,7 +127,7 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['action'], 'read/list')
         self.assertEqual(payload['outcome'], 'pending')
         self.assertEqual(payload['target']['name'], 'nova')
-        self.assertEqual(payload['target']['id'], 'resource_id')
+        self.assertEqual(payload['target']['id'], 'openstack:resource_id')
         self.assertEqual(payload['target']['typeURI'], 'service/compute')
 
     def test_put(self):

@@ -32,8 +32,12 @@ CONF.register_opts(opts, group='audit')
 # a full openstack namespace/domain value via some declaration (e.g.
 # "openstack:" == "http:\\www.openstack.org\")...
 def generate_uuid():
+    return norm_ns(str(uuid.uuid4()))
+
+
+def norm_ns(str_id):
     prefix = CONF.audit.namespace + ':' if CONF.audit.namespace else ''
-    return prefix + str(uuid.uuid4())
+    return prefix + str_id
 
 
 # TODO(mrutkows): validate any cadf:Identifier (type) record against
