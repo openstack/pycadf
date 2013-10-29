@@ -166,7 +166,7 @@ class OpenStackAuditApi(object):
                 endp['type'],
                 taxonomy.UNKNOWN),
             name=endp['name'],
-            id=endp['endpoints'][0]['id'],
+            id=identifier.norm_ns(endp['endpoints'][0]['id']),
             admin_endp=endpoint.Endpoint(
                 name='admin',
                 url=endp['endpoints'][0]['adminURL']),
@@ -210,13 +210,13 @@ class OpenStackAuditApi(object):
 
         initiator = ClientResource(
             typeURI=taxonomy.ACCOUNT_USER,
-            id=str(req.environ['HTTP_X_USER_ID']),
+            id=identifier.norm_ns(str(req.environ['HTTP_X_USER_ID'])),
             name=req.environ['HTTP_X_USER_NAME'],
             host=initiator_host,
             credential=KeystoneCredential(
                 token=req.environ['HTTP_X_AUTH_TOKEN'],
                 identity_status=req.environ['HTTP_X_IDENTITY_STATUS']),
-            project_id=req.environ['HTTP_X_PROJECT_ID'])
+            project_id=identifier.norm_ns(req.environ['HTTP_X_PROJECT_ID']))
         target = resource.Resource(typeURI=service_info.type,
                                    id=service_info.id,
                                    name=service_info.name)
