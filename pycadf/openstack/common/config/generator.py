@@ -1,5 +1,3 @@
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
-
 # Copyright 2012 SINA Corporation
 # All Rights Reserved.
 #
@@ -28,6 +26,7 @@ import sys
 import textwrap
 
 from oslo.config import cfg
+import six
 
 from pycadf.openstack.common import gettextutils
 from pycadf.openstack.common import importutils
@@ -78,12 +77,15 @@ def generate(srcfiles):
     # The options list is a list of (module, options) tuples
     opts_by_group = {'DEFAULT': []}
 
-    for module_name in os.getenv(
-            "OSLO_CONFIG_GENERATOR_EXTRA_MODULES", "").split(','):
-        module = _import_module(module_name)
-        if module:
-            for group, opts in _list_opts(module):
-                opts_by_group.setdefault(group, []).append((module_name, opts))
+    extra_modules = os.getenv("PYCADF_CONFIG_GENERATOR_EXTRA_MODULES", "")
+    if extra_modules:
+        for module_name in extra_modules.split(','):
+            module_name = module_name.strip()
+            module = _import_module(module_name)
+            if module:
+                for group, opts in _list_opts(module):
+                    opts_by_group.setdefault(group, []).append((module_name,
+                                                                opts))
 
     for pkg_name in pkg_names:
         mods = mods_by_pkg.get(pkg_name)
@@ -111,10 +113,8 @@ def _import_module(mod_str):
             return sys.modules[mod_str[4:]]
         else:
             return importutils.import_module(mod_str)
-    except ImportError as ie:
-        sys.stderr.write("%s\n" % str(ie))
-        return None
-    except Exception:
+    except Exception as e:
+        sys.stderr.write("Error importing module %s: %s\n" % (mod_str, str(e)))
         return None
 
 
@@ -233,7 +233,7 @@ def _print_opt(opt):
         if opt_default is None:
             print('#%s=<None>' % opt_name)
         elif opt_type == STROPT:
-            assert(isinstance(opt_default, basestring))
+            assert(isinstance(opt_default, six.string_types))
             print('#%s=%s' % (opt_name, _sanitize_default(opt_name,
                                                           opt_default)))
         elif opt_type == BOOLOPT:
