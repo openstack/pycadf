@@ -9,7 +9,7 @@ ChangeLog
 *.egg-info/
 build/
 doc/build/
-doc/source/api/
+doc/source/api/autoindex.rst
 dist/
 .testrepository/
 .project
