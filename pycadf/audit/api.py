@@ -17,10 +17,11 @@
 
 import ast
 import collections
-import ConfigParser
 import os
 from oslo.config import cfg
 import urlparse
+
+from six.moves import configparser
 
 from pycadf import cadftaxonomy as taxonomy
 from pycadf import cadftype
@@ -86,7 +87,7 @@ class OpenStackAuditApi(object):
 
         if cfg_file:
             try:
-                audit_map = ConfigParser.SafeConfigParser()
+                audit_map = configparser.SafeConfigParser()
                 audit_map.readfp(open(cfg_file))
 
                 try:
@@ -95,22 +96,22 @@ class OpenStackAuditApi(object):
                     try:
                         self._default_target_endpoint_type = \
                             audit_map.get('DEFAULT', 'target_endpoint_type')
-                    except ConfigParser.NoOptionError:
+                    except configparser.NoOptionError:
                         pass
-                except ConfigParser.NoSectionError:
+                except configparser.NoSectionError:
                     pass
 
                 try:
                     self._body_actions = dict(audit_map.items('body_actions'))
-                except ConfigParser.Error:
+                except configparser.Error:
                     pass
 
                 try:
                     self._service_endpoints = \
                         dict(audit_map.items('service_endpoints'))
-                except ConfigParser.Error:
+                except configparser.Error:
                     pass
-            except ConfigParser.ParsingError as err:
+            except configparser.ParsingError as err:
                 raise PycadfAuditApiConfigError(
                     'Error parsing audit map file: %s' % err)
 
