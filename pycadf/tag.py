@@ -16,6 +16,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import six
+
 
 def generate_name_value_tag(name, value):
     # TODO(mrutkows): detailed test/concatenation of independent values
@@ -29,6 +31,6 @@ def generate_name_value_tag(name, value):
 
 # TODO(mrutkows): validate any Tag's name?value= format
 def is_valid(value):
-    if not isinstance(value, basestring):
+    if not isinstance(value, six.string_types):
         raise TypeError
     return True
