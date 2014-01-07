@@ -166,8 +166,8 @@ class TestAuditApi(base.TestCase):
         self.ENV_HEADERS['REQUEST_METHOD'] = 'POST'
         req = webob.Request.blank('http://host:8774/v2/public/servers/action',
                                   environ=self.ENV_HEADERS)
-        req.body = '{"createImage" : {"name" : "new-image","metadata": ' \
-                   '{"ImageType": "Gold","ImageVersion": "2.0"}}}'
+        req.body = b'{"createImage" : {"name" : "new-image","metadata": ' \
+                   b'{"ImageType": "Gold","ImageVersion": "2.0"}}}'
         self.audit_api.append_audit_event(req)
         payload = req.environ['CADF_EVENT']
         self.assertEqual(payload['action'], 'create')
