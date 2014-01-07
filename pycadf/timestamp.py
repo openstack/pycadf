@@ -18,6 +18,7 @@
 
 import datetime
 import pytz
+import six
 
 TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z"
 
@@ -35,7 +36,7 @@ def get_utc_now(timezone=None):
 # TODO(mrutkows): validate any cadf:Timestamp (type) record against
 # CADF schema
 def is_valid(value):
-    if not isinstance(value, basestring):
+    if not isinstance(value, six.string_types):
         raise ValueError('Timestamp should be a String')
 
     return True

@@ -16,6 +16,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import six
+
 from pycadf import attachment
 from pycadf import cadftaxonomy
 from pycadf import cadftype
@@ -59,9 +61,11 @@ class Resource(cadftype.CADFAbstractType):
     id = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_ID,
                                       lambda x: identifier.is_valid(x))
     name = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_NAME,
-                                        lambda x: isinstance(x, basestring))
+                                        lambda x: isinstance(x,
+                                                             six.string_types))
     domain = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_DOMAIN,
-                                          lambda x: isinstance(x, basestring))
+                                          lambda x: isinstance(
+                                              x, six.string_types))
     credential = cadftype.ValidatorDescriptor(
         RESOURCE_KEYNAME_CRED, (lambda x: isinstance(x, credential.Credential)
                                 and x.is_valid()))
@@ -73,7 +77,8 @@ class Resource(cadftype.CADFAbstractType):
     # in the past or a URL that is only valid within some domain (e.g. a
     # private cloud)
     ref = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_REF,
-                                       lambda x: isinstance(x, basestring))
+                                       lambda x: isinstance(x,
+                                                            six.string_types))
     geolocation = cadftype.ValidatorDescriptor(
         RESOURCE_KEYNAME_GEO,
         lambda x: isinstance(x, geolocation.Geolocation))

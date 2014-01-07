@@ -15,6 +15,8 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
+
+import six
 import uuid
 
 from oslo.config import cfg
@@ -43,6 +45,6 @@ def norm_ns(str_id):
 # TODO(mrutkows): validate any cadf:Identifier (type) record against
 # CADF schema.  This would include schema validation as an optional parm.
 def is_valid(value):
-    if not isinstance(value, basestring):
+    if not isinstance(value, six.string_types):
         raise TypeError
     return True

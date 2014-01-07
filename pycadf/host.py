@@ -14,6 +14,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import six
+
 from pycadf import cadftype
 from pycadf import identifier
 
@@ -35,11 +37,11 @@ class Host(cadftype.CADFAbstractType):
     id = cadftype.ValidatorDescriptor(
         HOST_KEYNAME_ID, lambda x: identifier.is_valid(x))
     address = cadftype.ValidatorDescriptor(
-        HOST_KEYNAME_ADDR, lambda x: isinstance(x, basestring))
+        HOST_KEYNAME_ADDR, lambda x: isinstance(x, six.string_types))
     agent = cadftype.ValidatorDescriptor(
-        HOST_KEYNAME_AGENT, lambda x: isinstance(x, basestring))
+        HOST_KEYNAME_AGENT, lambda x: isinstance(x, six.string_types))
     platform = cadftype.ValidatorDescriptor(
-        HOST_KEYNAME_PLATFORM, lambda x: isinstance(x, basestring))
+        HOST_KEYNAME_PLATFORM, lambda x: isinstance(x, six.string_types))
 
     def __init__(self, id=None, address=None, agent=None,
                  platform=None):
