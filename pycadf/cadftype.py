@@ -17,6 +17,7 @@
 # under the License.
 
 import abc
+import six
 
 from pycadf.openstack.common import jsonutils
 
@@ -73,9 +74,8 @@ class ValidatorDescriptor(object):
             raise ValueError('%s must not be None.' % self.name)
 
 
-class CADFAbstractType(object):
+class CADFAbstractType(six.with_metaclass(abc.ABCMeta, object)):
     """The abstract base class for all CADF (complex) data types (classes)."""
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def is_valid(self, value):
