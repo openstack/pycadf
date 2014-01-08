@@ -19,9 +19,9 @@ import ast
 import collections
 import os
 from oslo.config import cfg
-import urlparse
 
 from six.moves import configparser
+from six.moves.urllib import parse as urlparse
 
 from pycadf import cadftaxonomy as taxonomy
 from pycadf import cadftype
