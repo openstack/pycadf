@@ -136,7 +136,7 @@ class OpenStackAuditApi(object):
         if method == 'POST':
             if path[path.rfind('/') + 1:] == 'action':
                 if req.json:
-                    body_action = req.json.keys()[0]
+                    body_action = list(req.json.keys())[0]
                     action = self._body_actions.get(body_action,
                                                     taxonomy.ACTION_CREATE)
                 else:
