@@ -64,7 +64,10 @@ ACTION_TAXONOMY = frozenset([
 
 # TODO(mrutkows): validate absolute URIs as well
 def is_valid_action(value):
-    return value in ACTION_TAXONOMY
+    for type in ACTION_TAXONOMY:
+        if value.startswith(type):
+            return True
+    return False
 
 
 TYPE_URI_OUTCOME = cadftype.CADF_VERSION_1_0_0 + 'outcome'
@@ -176,4 +179,7 @@ RESOURCE_TAXONOMY = frozenset([
 
 # TODO(mrutkows): validate absolute URIs as well
 def is_valid_resource(value):
-    return value in RESOURCE_TAXONOMY
+    for type in RESOURCE_TAXONOMY:
+        if value.startswith(type):
+            return True
+    return False

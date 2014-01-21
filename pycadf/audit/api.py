@@ -19,6 +19,7 @@ import ast
 import collections
 import os
 from oslo.config import cfg
+import re
 
 from six.moves import configparser
 from six.moves.urllib import parse as urlparse
@@ -46,6 +47,58 @@ opts = [
 CONF.register_opts(opts, group='audit')
 
 
+AuditMap = collections.namedtuple('AuditMap',
+                                  ['path_kw',
+                                   'custom_actions',
+                                   'service_endpoints',
+                                   'default_target_endpoint_type'])
+
+
+def _configure_audit_map():
+    """Configure to recognize and map known api paths."""
+
+    path_kw = {}
+    custom_actions = {}
+    service_endpoints = {}
+    default_target_endpoint_type = None
+
+    cfg_file = CONF.audit.api_audit_map
+    if not os.path.exists(CONF.audit.api_audit_map):
+        cfg_file = cfg.CONF.find_file(CONF.audit.api_audit_map)
+
+    if cfg_file:
+        try:
+            map_conf = configparser.SafeConfigParser()
+            map_conf.readfp(open(cfg_file))
+
+            try:
+                default_target_endpoint_type = \
+                    map_conf.get('DEFAULT', 'target_endpoint_type')
+            except configparser.NoOptionError:
+                pass
+
+            try:
+                custom_actions = dict(map_conf.items('custom_actions'))
+            except configparser.Error:
+                pass
+
+            try:
+                path_kw = dict(map_conf.items('path_keywords'))
+            except configparser.Error:
+                pass
+
+            try:
+                service_endpoints = dict(map_conf.items('service_endpoints'))
+            except configparser.Error:
+                pass
+        except configparser.ParsingError as err:
+            raise PycadfAuditApiConfigError(
+                'Error parsing audit map file: %s' % err)
+    return AuditMap(path_kw=path_kw, custom_actions=custom_actions,
+                    service_endpoints=service_endpoints,
+                    default_target_endpoint_type=default_target_endpoint_type)
+
+
 class ClientResource(resource.Resource):
     def __init__(self, project_id=None, **kwargs):
         super(ClientResource, self).__init__(**kwargs)
@@ -66,60 +119,18 @@ class PycadfAuditApiConfigError(Exception):
 
 class OpenStackAuditApi(object):
 
-    _api_paths = []
-    _body_actions = {}
-    _service_endpoints = {}
-    _default_target_endpoint_type = None
+    _MAP = None
 
     Service = collections.namedtuple('Service',
                                      ['id', 'name', 'type', 'admin_endp',
                                      'public_endp', 'private_endp'])
 
-    def __init__(self):
-        self._configure_audit_map()
-
-    def _configure_audit_map(self):
-        """Configure to recognize and map known api paths."""
-
-        cfg_file = CONF.audit.api_audit_map
-        if not os.path.exists(CONF.audit.api_audit_map):
-            cfg_file = cfg.CONF.find_file(CONF.audit.api_audit_map)
-
-        if cfg_file:
-            try:
-                audit_map = configparser.SafeConfigParser()
-                audit_map.readfp(open(cfg_file))
-
-                try:
-                    paths = audit_map.get('DEFAULT', 'api_paths')
-                    self._api_paths = paths.lstrip().split('\n')
-                    try:
-                        self._default_target_endpoint_type = \
-                            audit_map.get('DEFAULT', 'target_endpoint_type')
-                    except configparser.NoOptionError:
-                        pass
-                except configparser.NoSectionError:
-                    pass
-
-                try:
-                    self._body_actions = dict(audit_map.items('body_actions'))
-                except configparser.Error:
-                    pass
-
-                try:
-                    self._service_endpoints = \
-                        dict(audit_map.items('service_endpoints'))
-                except configparser.Error:
-                    pass
-            except configparser.ParsingError as err:
-                raise PycadfAuditApiConfigError(
-                    'Error parsing audit map file: %s' % err)
-
     def _get_action(self, req):
         """Take a given Request, parse url path to calculate action type.
 
         Depending on req.method:
-        if POST: path ends with action, read the body and get action from map;
+        if POST: path ends with 'action', read the body and use as action;
+                 path ends with known custom_action, take action from config;
                  request ends with known path, assume is create action;
                  request ends with unknown path, assume is update action.
         if GET: request ends with known path, assume is list action;
@@ -129,24 +140,28 @@ class OpenStackAuditApi(object):
         if HEAD, assume read action.
 
         """
-        path = urlparse.urlparse(req.url).path
-        path = path[:-1] if path.endswith('/') else path
-
+        path = req.path[:-1] if req.path.endswith('/') else req.path
+        url_ending = path[path.rfind('/') + 1:]
         method = req.method
-        if method == 'POST':
-            if path[path.rfind('/') + 1:] == 'action':
+
+        if url_ending + '/' + method.lower() in self._MAP.custom_actions:
+            action = self._MAP.custom_actions[url_ending + '/' +
+                                              method.lower()]
+        elif url_ending in self._MAP.custom_actions:
+            action = self._MAP.custom_actions[url_ending]
+        elif method == 'POST':
+            if url_ending == 'action':
                 if req.json:
                     body_action = list(req.json.keys())[0]
-                    action = self._body_actions.get(body_action,
-                                                    taxonomy.ACTION_CREATE)
+                    action = taxonomy.ACTION_UPDATE + '/' + body_action
                 else:
                     action = taxonomy.ACTION_CREATE
-            elif path[path.rfind('/') + 1:] not in self._api_paths:
+            elif url_ending not in self._MAP.path_kw:
                 action = taxonomy.ACTION_UPDATE
             else:
                 action = taxonomy.ACTION_CREATE
         elif method == 'GET':
-            if path[path.rfind('/') + 1:] in self._api_paths:
+            if url_ending in self._MAP.path_kw:
                 action = taxonomy.ACTION_LIST
             else:
                 action = taxonomy.ACTION_READ
@@ -163,7 +178,7 @@ class OpenStackAuditApi(object):
 
     def _get_service_info(self, endp):
         service = self.Service(
-            type=self._service_endpoints.get(
+            type=self._MAP.service_endpoints.get(
                 endp['type'],
                 taxonomy.UNKNOWN),
             name=endp['name'],
@@ -180,7 +195,21 @@ class OpenStackAuditApi(object):
 
         return service
 
+    def _build_typeURI(self, req, service_type):
+        type_uri = ''
+        prev_key = None
+        for key in re.split('/', req.path_qs):
+            if key in self._MAP.path_kw:
+                type_uri += '/' + key
+            elif prev_key in self._MAP.path_kw:
+                type_uri += '/' + self._MAP.path_kw[prev_key]
+            prev_key = key
+        return service_type + type_uri
+
     def create_event(self, req, correlation_id):
+        if not self._MAP:
+            self._MAP = _configure_audit_map()
+
         action = self._get_action(req)
         initiator_host = host.Host(address=req.client_addr,
                                    agent=req.user_agent)
@@ -202,8 +231,8 @@ class OpenStackAuditApi(object):
                     or req_url.netloc == public_urlparse.netloc):
                 service_info = self._get_service_info(endp)
                 break
-            elif (self._default_target_endpoint_type
-                  and endp['type'] == self._default_target_endpoint_type):
+            elif (self._MAP.default_target_endpoint_type
+                  and endp['type'] == self._MAP.default_target_endpoint_type):
                 default_endpoint = endp
         else:
             if default_endpoint:
@@ -218,7 +247,10 @@ class OpenStackAuditApi(object):
                 token=req.environ['HTTP_X_AUTH_TOKEN'],
                 identity_status=req.environ['HTTP_X_IDENTITY_STATUS']),
             project_id=identifier.norm_ns(req.environ['HTTP_X_PROJECT_ID']))
-        target = resource.Resource(typeURI=service_info.type,
+        target_typeURI = (self._build_typeURI(req, service_info.type)
+                          if service_info.type != taxonomy.UNKNOWN
+                          else service_info.type)
+        target = resource.Resource(typeURI=target_typeURI,
                                    id=service_info.id,
                                    name=service_info.name)
         if service_info.admin_endp:
