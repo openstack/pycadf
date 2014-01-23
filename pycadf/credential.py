@@ -17,6 +17,7 @@
 import six
 
 from pycadf import cadftype
+from pycadf import utils
 
 TYPE_URI_CRED = cadftype.CADF_VERSION_1_0_0 + 'credential'
 
@@ -39,7 +40,7 @@ class Credential(cadftype.CADFAbstractType):
     def __init__(self, token, type=None):
 
         # Credential.token
-        setattr(self, CRED_KEYNAME_TOKEN, token)
+        setattr(self, CRED_KEYNAME_TOKEN, utils.mask_value(token))
 
         # Credential.type
         if type is not None:

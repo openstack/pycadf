@@ -15,8 +15,6 @@
 # under the License.
 import time
 
-import testtools
-
 from pycadf import attachment
 from pycadf import credential
 from pycadf import endpoint
@@ -30,10 +28,11 @@ from pycadf import reason
 from pycadf import reporterstep
 from pycadf import resource
 from pycadf import tag
+from pycadf.tests import base
 from pycadf import timestamp
 
 
-class TestCADFSpec(testtools.TestCase):
+class TestCADFSpec(base.TestCase):
     def test_endpoint(self):
         endp = endpoint.Endpoint(url='http://192.168.0.1',
                                  name='endpoint name',
