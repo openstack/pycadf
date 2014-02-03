@@ -85,7 +85,8 @@ class TestAuditApi(base.TestCase):
                          '192.168.0.1')
         self.assertEqual(payload['initiator']['typeURI'],
                          'service/security/account/user')
-        self.assertEqual(payload['initiator']['credential']['token'], 'token')
+        self.assertNotEqual(payload['initiator']['credential']['token'],
+                            'token')
         self.assertEqual(payload['initiator']['credential']['identity_status'],
                          'Confirmed')
         self.assertNotIn('reason', payload)
