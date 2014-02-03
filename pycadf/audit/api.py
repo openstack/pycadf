@@ -198,7 +198,7 @@ class OpenStackAuditApi(object):
     def _build_typeURI(self, req, service_type):
         type_uri = ''
         prev_key = None
-        for key in re.split('/', req.path_qs):
+        for key in re.split('/', req.path):
             if key in self._MAP.path_kw:
                 type_uri += '/' + key
             elif prev_key in self._MAP.path_kw:
@@ -266,7 +266,7 @@ class OpenStackAuditApi(object):
             initiator=initiator,
             target=target,
             observer=resource.Resource(id='target'))
-        event.requestPath = req.path
+        event.requestPath = req.path_qs
         event.add_tag(tag.generate_name_value_tag('correlation_id',
                                                   correlation_id))
         return event
