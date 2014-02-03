@@ -91,6 +91,7 @@ class TestAuditApi(base.TestCase):
         self.assertNotIn('reason', payload)
         self.assertNotIn('reporterchain', payload)
         self.assertEqual(payload['observer']['id'], 'target')
+        self.assertEqual(req.path, payload['requestPath'])
 
     def test_get_read(self):
         req = self.api_request('GET',

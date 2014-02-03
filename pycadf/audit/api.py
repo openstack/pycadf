@@ -266,6 +266,7 @@ class OpenStackAuditApi(object):
             initiator=initiator,
             target=target,
             observer=resource.Resource(id='target'))
+        event.requestPath = req.path
         event.add_tag(tag.generate_name_value_tag('correlation_id',
                                                   correlation_id))
         return event
