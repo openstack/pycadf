@@ -124,6 +124,10 @@ class OpenStackAuditApi(object):
                 map_file = cfg.CONF.find_file(CONF.audit.api_audit_map)
         self._MAP = _configure_audit_map(map_file)
 
+    @staticmethod
+    def _clean_path(value):
+        return value[:-5] if value.endswith('.json') else value
+
     def _get_action(self, req):
         """Take a given Request, parse url path to calculate action type.
 
@@ -140,7 +144,7 @@ class OpenStackAuditApi(object):
 
         """
         path = req.path[:-1] if req.path.endswith('/') else req.path
-        url_ending = path[path.rfind('/') + 1:]
+        url_ending = self._clean_path(path[path.rfind('/') + 1:])
         method = req.method
 
         if url_ending + '/' + method.lower() in self._MAP.custom_actions:
@@ -167,7 +171,7 @@ class OpenStackAuditApi(object):
                 action = taxonomy.ACTION_LIST
             else:
                 action = taxonomy.ACTION_READ
-        elif method == 'PUT':
+        elif method == 'PUT' or method == 'PATCH':
             action = taxonomy.ACTION_UPDATE
         elif method == 'DELETE':
             action = taxonomy.ACTION_DELETE
@@ -201,6 +205,7 @@ class OpenStackAuditApi(object):
         type_uri = ''
         prev_key = None
         for key in re.split('/', req.path):
+            key = self._clean_path(key)
             if key in self._MAP.path_kw:
                 type_uri += '/' + key
             elif prev_key in self._MAP.path_kw:

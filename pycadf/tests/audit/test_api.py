@@ -45,7 +45,7 @@ class TestAuditApi(base.TestCase):
     def setUp(self):
         super(TestAuditApi, self).setUp()
         self.audit_api = api.OpenStackAuditApi(
-            'etc/pycadf/api_audit_map.conf')
+            'etc/pycadf/nova_api_audit_map.conf')
 
     def api_request(self, method, url):
         self.ENV_HEADERS['REQUEST_METHOD'] = method
@@ -58,7 +58,7 @@ class TestAuditApi(base.TestCase):
     def test_get_list_with_cfg(self):
         cfg.CONF.set_override(
             'api_audit_map',
-            self.path_get('etc/pycadf/api_audit_map.conf'),
+            self.path_get('etc/pycadf/nova_api_audit_map.conf'),
             group='audit')
         self.audit_api = api.OpenStackAuditApi()
         req = self.api_request('GET',

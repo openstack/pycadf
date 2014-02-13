@@ -58,13 +58,13 @@ class AuditMiddlewareTest(base.TestCase):
 
     def setUp(self):
         super(AuditMiddlewareTest, self).setUp()
-        self.map_file = 'etc/pycadf/api_audit_map.conf'
+        self.map_file = 'etc/pycadf/nova_api_audit_map.conf'
 
     def test_api_request(self):
-        middleware = audit.AuditMiddleware(FakeApp(),
-                                           audit_map_file=
-                                           'etc/pycadf/api_audit_map.conf',
-                                           service_name='pycadf')
+        middleware = audit.AuditMiddleware(
+            FakeApp(),
+            audit_map_file='etc/pycadf/nova_api_audit_map.conf',
+            service_name='pycadf')
         self.ENV_HEADERS['REQUEST_METHOD'] = 'GET'
         req = webob.Request.blank('/foo/bar',
                                   environ=self.ENV_HEADERS)
@@ -95,10 +95,10 @@ class AuditMiddlewareTest(base.TestCase):
             self.assertEqual(request['CADF_EVENT']['outcome'], 'success')
 
     def test_api_request_failure(self):
-        middleware = audit.AuditMiddleware(FakeFailingApp(),
-                                           audit_map_file=
-                                           'etc/pycadf/api_audit_map.conf',
-                                           service_name='pycadf')
+        middleware = audit.AuditMiddleware(
+            FakeFailingApp(),
+            audit_map_file='etc/pycadf/nova_api_audit_map.conf',
+            service_name='pycadf')
         self.ENV_HEADERS['REQUEST_METHOD'] = 'GET'
         req = webob.Request.blank('/foo/bar',
                                   environ=self.ENV_HEADERS)
@@ -137,10 +137,10 @@ class AuditMiddlewareTest(base.TestCase):
             raise Exception('error')
         self.stubs.Set(cadf_api.OpenStackAuditApi, 'append_audit_event',
                        func_error)
-        middleware = audit.AuditMiddleware(FakeApp(),
-                                           audit_map_file=
-                                           'etc/pycadf/api_audit_map.conf',
-                                           service_name='pycadf')
+        middleware = audit.AuditMiddleware(
+            FakeApp(),
+            audit_map_file='etc/pycadf/nova_api_audit_map.conf',
+            service_name='pycadf')
         req = webob.Request.blank('/foo/bar',
                                   environ={'REQUEST_METHOD': 'GET'})
         middleware.process_request(req)
@@ -150,10 +150,10 @@ class AuditMiddlewareTest(base.TestCase):
             raise Exception('error')
         self.stubs.Set(cadf_api.OpenStackAuditApi, 'mod_audit_event',
                        func_error)
-        middleware = audit.AuditMiddleware(FakeApp(),
-                                           audit_map_file=
-                                           'etc/pycadf/api_audit_map.conf',
-                                           service_name='pycadf')
+        middleware = audit.AuditMiddleware(
+            FakeApp(),
+            audit_map_file='etc/pycadf/nova_api_audit_map.conf',
+            service_name='pycadf')
         req = webob.Request.blank('/foo/bar',
                                   environ={'REQUEST_METHOD': 'GET'})
         middleware.process_response(req, webob.response.Response())
