@@ -18,9 +18,9 @@
 import ast
 import collections
 import os
-from oslo.config import cfg
 import re
 
+from oslo.config import cfg
 from six.moves import configparser
 from six.moves.urllib import parse as urlparse
 
@@ -37,15 +37,13 @@ from pycadf import resource
 from pycadf import tag
 from pycadf import timestamp
 
+#NOTE(gordc): remove cfg once we move over to this middleware version
 CONF = cfg.CONF
-opts = [
-    cfg.StrOpt('api_audit_map',
-               default='api_audit_map.conf',
-               help='File containing mapping for api paths and '
-                    'service endpoints'),
-]
+opts = [cfg.StrOpt('api_audit_map',
+                   default='api_audit_map.conf',
+                   help='File containing mapping for api paths and '
+                   'service endpoints')]
 CONF.register_opts(opts, group='audit')
-
 
 AuditMap = collections.namedtuple('AuditMap',
                                   ['path_kw',
@@ -54,17 +52,13 @@ AuditMap = collections.namedtuple('AuditMap',
                                    'default_target_endpoint_type'])
 
 
-def _configure_audit_map():
+def _configure_audit_map(cfg_file):
     """Configure to recognize and map known api paths."""
 
     path_kw = {}
     custom_actions = {}
     service_endpoints = {}
     default_target_endpoint_type = None
-
-    cfg_file = CONF.audit.api_audit_map
-    if not os.path.exists(CONF.audit.api_audit_map):
-        cfg_file = cfg.CONF.find_file(CONF.audit.api_audit_map)
 
     if cfg_file:
         try:
@@ -119,11 +113,16 @@ class PycadfAuditApiConfigError(Exception):
 
 class OpenStackAuditApi(object):
 
-    _MAP = None
-
     Service = collections.namedtuple('Service',
                                      ['id', 'name', 'type', 'admin_endp',
                                      'public_endp', 'private_endp'])
+
+    def __init__(self, map_file=None):
+        if map_file is None:
+            map_file = CONF.audit.api_audit_map
+            if not os.path.exists(CONF.audit.api_audit_map):
+                map_file = cfg.CONF.find_file(CONF.audit.api_audit_map)
+        self._MAP = _configure_audit_map(map_file)
 
     def _get_action(self, req):
         """Take a given Request, parse url path to calculate action type.
@@ -207,9 +206,6 @@ class OpenStackAuditApi(object):
         return service_type + type_uri
 
     def create_event(self, req, correlation_id):
-        if not self._MAP:
-            self._MAP = _configure_audit_map()
-
         action = self._get_action(req)
         initiator_host = host.Host(address=req.client_addr,
                                    agent=req.user_agent)

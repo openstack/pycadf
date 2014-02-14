@@ -18,8 +18,11 @@
 """
 import fixtures
 import os.path
-from oslo.config import cfg
 import testtools
+
+from oslo.config import cfg
+
+from pycadf.openstack.common.fixture import moxstubout
 
 
 class TestCase(testtools.TestCase):
@@ -27,6 +30,9 @@ class TestCase(testtools.TestCase):
     def setUp(self):
         super(TestCase, self).setUp()
         self.tempdir = self.useFixture(fixtures.TempDir())
+        moxfixture = self.useFixture(moxstubout.MoxStubout())
+        self.mox = moxfixture.mox
+        self.stubs = moxfixture.stubs
         cfg.CONF([], project='pycadf')
 
     def path_get(self, project_file=None):

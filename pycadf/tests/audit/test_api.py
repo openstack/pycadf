@@ -14,8 +14,9 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-from oslo.config import cfg
 import uuid
+
+from oslo.config import cfg
 import webob
 
 from pycadf.audit import api
@@ -43,14 +44,8 @@ class TestAuditApi(base.TestCase):
 
     def setUp(self):
         super(TestAuditApi, self).setUp()
-        # set nova CONF.host value
-        # Set a default location for the api_audit_map config file
-        cfg.CONF.set_override(
-            'api_audit_map',
-            self.path_get('etc/pycadf/api_audit_map.conf'),
-            group='audit'
-        )
-        self.audit_api = api.OpenStackAuditApi()
+        self.audit_api = api.OpenStackAuditApi(
+            'etc/pycadf/api_audit_map.conf')
 
     def api_request(self, method, url):
         self.ENV_HEADERS['REQUEST_METHOD'] = method
@@ -59,6 +54,18 @@ class TestAuditApi(base.TestCase):
         self.audit_api.append_audit_event(req)
         self.assertIn('CADF_EVENT_CORRELATION_ID', req.environ)
         return req
+
+    def test_get_list_with_cfg(self):
+        cfg.CONF.set_override(
+            'api_audit_map',
+            self.path_get('etc/pycadf/api_audit_map.conf'),
+            group='audit')
+        self.audit_api = api.OpenStackAuditApi()
+        req = self.api_request('GET',
+                               'http://admin_host:8774/v2/'
+                               + str(uuid.uuid4()) + '/servers/')
+        payload = req.environ['CADF_EVENT']
+        self.assertEqual(payload['action'], 'read/list')
 
     def test_get_list(self):
         req = self.api_request('GET', 'http://admin_host:8774/v2/'
@@ -125,8 +132,7 @@ class TestAuditApi(base.TestCase):
             f.write("servers = server\n\n")
             f.write("[service_endpoints]\n")
             f.write("compute = service/compute")
-        cfg.CONF.set_override('api_audit_map', tmpfile, group='audit')
-        self.audit_api = api.OpenStackAuditApi()
+        self.audit_api = api.OpenStackAuditApi(tmpfile)
 
         req = self.api_request('GET',
                                'http://unknown:8774/v2/'
@@ -283,5 +289,4 @@ class TestAuditApiConf(base.TestCase):
             f.write("api_paths = servers\n\n")
             f.write("[service_endpoints]\n")
             f.write("compute = service/compute")
-        cfg.CONF.set_override('api_audit_map', tmpfile, group='audit')
-        self.audit_api = api.OpenStackAuditApi()
+        self.audit_api = api.OpenStackAuditApi(tmpfile)
