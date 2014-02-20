@@ -90,6 +90,7 @@ OUTCOME_TAXONOMY = frozenset([
 def is_valid_outcome(value):
     return value in OUTCOME_TAXONOMY
 
+SERVICE_SECURITY = 'service/security'
 ACCOUNT_USER = 'service/security/account/user'
 CADF_AUDIT_FILTER = 'service/security/audit/filter'
 
@@ -122,7 +123,7 @@ RESOURCE_TAXONOMY = frozenset([
     'service/composition',
     'service/compute',
     'service/database',
-    'service/security',
+    SERVICE_SECURITY,
     'service/security/account',
     ACCOUNT_USER,
     CADF_AUDIT_FILTER,
