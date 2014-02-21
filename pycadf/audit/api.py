@@ -150,10 +150,13 @@ class OpenStackAuditApi(object):
             action = self._MAP.custom_actions[url_ending]
         elif method == 'POST':
             if url_ending == 'action':
-                if req.json:
-                    body_action = list(req.json.keys())[0]
-                    action = taxonomy.ACTION_UPDATE + '/' + body_action
-                else:
+                try:
+                    if req.json:
+                        body_action = list(req.json.keys())[0]
+                        action = taxonomy.ACTION_UPDATE + '/' + body_action
+                    else:
+                        action = taxonomy.ACTION_CREATE
+                except ValueError:
                     action = taxonomy.ACTION_CREATE
             elif url_ending not in self._MAP.path_kw:
                 action = taxonomy.ACTION_UPDATE

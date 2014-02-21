@@ -208,6 +208,18 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['action'], 'update/createImage')
         self.assertEqual(payload['outcome'], 'pending')
 
+    def test_post_empty_body_action(self):
+        self.ENV_HEADERS['REQUEST_METHOD'] = 'POST'
+        req = webob.Request.blank('http://admin_host:8774/v2/'
+                                  + str(uuid.uuid4()) + '/servers/action',
+                                  environ=self.ENV_HEADERS)
+        self.audit_api.append_audit_event(req)
+        payload = req.environ['CADF_EVENT']
+        self.assertEqual(payload['target']['typeURI'],
+                         'service/compute/servers/action')
+        self.assertEqual(payload['action'], 'create')
+        self.assertEqual(payload['outcome'], 'pending')
+
     def test_custom_action(self):
         req = self.api_request('GET', 'http://admin_host:8774/v2/'
                                + str(uuid.uuid4()) + '/os-hosts/'
