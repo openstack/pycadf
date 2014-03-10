@@ -45,7 +45,13 @@ class Measurement(cadftype.CADFAbstractType):
 
     def __init__(self, result=None, metric=None, metricId=None,
                  calculatedBy=None):
+        """Create Measurement data type
 
+        :param result: value of measurement
+        :param metric: Metric data type of current measurement
+        :param metricId: id of Metric data type of current measurement
+        :param calculatedBy: Resource that calculated measurement
+        """
         # Measurement.result
         if result is not None:
             setattr(self, MEASUREMENT_KEYNAME_RESULT, result)
@@ -64,6 +70,8 @@ class Measurement(cadftype.CADFAbstractType):
 
     # self validate this cadf:Measurement type against schema
     def is_valid(self):
+        """Validation to ensure Measurement required attributes are set.
+        """
         return (self._isset(MEASUREMENT_KEYNAME_RESULT) and
                 (self._isset(MEASUREMENT_KEYNAME_METRIC) ^
                  self._isset(MEASUREMENT_KEYNAME_METRICID)))

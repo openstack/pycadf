@@ -38,6 +38,11 @@ class Credential(cadftype.CADFAbstractType):
         lambda x: isinstance(x, six.string_types))
 
     def __init__(self, token, type=None):
+        """Create Credential data type
+
+        :param token: identity or security token
+        :param type: type of credential (ie. identity token)
+        """
 
         # Credential.token
         setattr(self, CRED_KEYNAME_TOKEN, utils.mask_value(token))
@@ -48,5 +53,7 @@ class Credential(cadftype.CADFAbstractType):
 
     # TODO(mrutkows): validate this cadf:Credential type against schema
     def is_valid(self):
+        """Validation to ensure Credential required attributes are set.
+        """
         # TODO(mrutkows): validate specific attribute type/format
         return self._isset(CRED_KEYNAME_TOKEN)

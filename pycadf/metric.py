@@ -49,6 +49,12 @@ class Metric(cadftype.CADFAbstractType):
                                                              six.string_types))
 
     def __init__(self, metricId=None, unit=None, name=None):
+        """Create metric data type
+
+        :param metricId: id of metric. uuid generated if not provided
+        :param unit: unit of metric
+        :param name: name of metric
+        """
         # Metric.id
         setattr(self, METRIC_KEYNAME_METRICID,
                 metricId or identifier.generate_uuid())
@@ -70,6 +76,8 @@ class Metric(cadftype.CADFAbstractType):
 
     # self validate cadf:Metric type against schema
     def is_valid(self):
+        """Validation to ensure Metric required attributes are set.
+        """
         # Existence test, id, and unit attributes must both exist
         return (
             self._isset(METRIC_KEYNAME_METRICID) and

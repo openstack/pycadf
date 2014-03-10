@@ -32,6 +32,10 @@ class EventFactory(object):
        and reflect some policy decision.
     """
     def new_event(self, eventType=cadftype.EVENTTYPE_ACTIVITY, **kwargs):
+        """Create new event
+
+        :param eventType: eventType of event. Defaults to 'activitiy'
+        """
 
         # for now, construct a base ('activity') event as the default
         event_val = event.Event(**kwargs)

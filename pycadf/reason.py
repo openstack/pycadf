@@ -50,6 +50,13 @@ class Reason(cadftype.CADFAbstractType):
 
     def __init__(self, reasonType=None, reasonCode=None, policyType=None,
                  policyId=None):
+        """Create Reason data type
+
+        :param reasonType: domain URI which describes reasonCode
+        :param reasonCode: detailed result code
+        :param policyType: domain URI which describes policyId
+        :param policyId: id of policy applied that describes outcome
+        """
 
         # Reason.reasonType
         if reasonType is not None:
@@ -69,6 +76,8 @@ class Reason(cadftype.CADFAbstractType):
 
     # TODO(mrutkows): validate this cadf:Reason type against schema
     def is_valid(self):
+        """Validation to ensure Reason required attributes are set.
+        """
         # MUST have at least one valid pairing of reason+code or policy+id
         return ((self._isset(REASON_KEYNAME_REASONTYPE) and
                  self._isset(REASON_KEYNAME_REASONCODE)) or

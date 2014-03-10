@@ -78,6 +78,17 @@ class Geolocation(cadftype.CADFAbstractType):
     def __init__(self, id=None, latitude=None, longitude=None,
                  elevation=None, accuracy=None, city=None, state=None,
                  regionICANN=None):
+        """Create Geolocation data type
+
+        :param id: id of geolocation
+        :param latitude: latitude of geolocation
+        :param longitude: longitude of geolocation
+        :param elevation: elevation of geolocation in meters
+        :param accuracy: accuracy of geolocation in meters
+        :param city: city of geolocation
+        :param state: state/province of geolocation
+        :param regionICANN: region of geolocation (ie. country)
+        """
 
         # Geolocation.id
         if id is not None:

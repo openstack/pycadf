@@ -24,6 +24,10 @@ TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z"
 
 
 def get_utc_now(timezone=None):
+    """Return the current UTC time.
+
+    :param timezone: an optional timezone param to offset time to.
+    """
     utc_datetime = pytz.utc.localize(datetime.datetime.utcnow())
     if timezone is not None:
         try:
@@ -36,6 +40,8 @@ def get_utc_now(timezone=None):
 # TODO(mrutkows): validate any cadf:Timestamp (type) record against
 # CADF schema
 def is_valid(value):
+    """Validation to ensure timestamp is a string.
+    """
     if not isinstance(value, six.string_types):
         raise ValueError('Timestamp should be a String')
 

@@ -45,6 +45,13 @@ class Host(cadftype.CADFAbstractType):
 
     def __init__(self, id=None, address=None, agent=None,
                  platform=None):
+        """Create Host data type
+
+        :param id: id of Host
+        :param address: optional Address of Host
+        :param agent: agent (name) of Host
+        :param platform: platform of Host
+        """
 
         # Host.id
         if id is not None:
@@ -61,4 +68,6 @@ class Host(cadftype.CADFAbstractType):
 
     # TODO(mrutkows): validate this cadf:Host type against schema
     def is_valid(self):
+        """Validation to ensure Host required attributes are set.
+        """
         return True

@@ -39,6 +39,12 @@ class Endpoint(cadftype.CADFAbstractType):
         ENDPOINT_KEYNAME_PORT, lambda x: isinstance(x, six.string_types))
 
     def __init__(self, url, name=None, port=None):
+        """Create Endpoint data type
+
+        :param url: address of endpoint
+        :param name: name of endpoint
+        :param port: port of endpoint
+        """
 
         # ENDPOINT.url
         setattr(self, ENDPOINT_KEYNAME_URL, url)
@@ -51,4 +57,6 @@ class Endpoint(cadftype.CADFAbstractType):
 
     # TODO(mrutkows): validate this cadf:ENDPOINT type against schema
     def is_valid(self):
+        """Validation to ensure Endpoint required attributes are set.
+        """
         return self._isset(ENDPOINT_KEYNAME_URL)

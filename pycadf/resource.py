@@ -88,6 +88,17 @@ class Resource(cadftype.CADFAbstractType):
     def __init__(self, id=None, typeURI=cadftaxonomy.UNKNOWN, name=None,
                  ref=None, domain=None, credential=None, host=None,
                  geolocation=None, geolocationId=None):
+        """Resource data type
+
+        :param id: id of resource
+        :param typeURI: typeURI of resource, defaults to 'unknown' if not set
+        :param name: name of resource
+        :param domain: domain to qualify name of resource
+        :param credential: optional security Credential data type
+        :param host: optional Host data type information relating to resource
+        :param geolocation: optional CADF Geolocation of resource
+        :param geolocationId: optional id of CADF Geolocation for resource
+        """
 
         # Resource.id
         setattr(self, RESOURCE_KEYNAME_ID, id or identifier.generate_uuid())
@@ -127,6 +138,10 @@ class Resource(cadftype.CADFAbstractType):
 
     # Resource.address
     def add_address(self, addr):
+        """Add CADF endpoints to Resource
+
+        :param addr: CADF Endpoint to add to Resource
+        """
         if (addr is not None and isinstance(addr, endpoint.Endpoint)):
             if addr.is_valid():
                 # Create the list of Endpoints if needed
@@ -142,6 +157,10 @@ class Resource(cadftype.CADFAbstractType):
 
     # Resource.attachments
     def add_attachment(self, attach_val):
+        """Add CADF attachment to Resource
+
+        :param attach_val: CADF Attachment to add to Resource
+        """
         if (attach_val is not None
                 and isinstance(attach_val, attachment.Attachment)):
             if attach_val.is_valid():
@@ -158,6 +177,8 @@ class Resource(cadftype.CADFAbstractType):
 
     # self validate this cadf:Resource type against schema
     def is_valid(self):
+        """Validation to ensure Resource required attributes are set
+        """
         return (self._isset(RESOURCE_KEYNAME_ID) and
                 (self._isset(RESOURCE_KEYNAME_TYPEURI) or
                  ((getattr(self, RESOURCE_KEYNAME_ID) == "target" or

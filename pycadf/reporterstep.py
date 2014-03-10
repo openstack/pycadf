@@ -50,6 +50,13 @@ class Reporterstep(cadftype.CADFAbstractType):
 
     def __init__(self, role=cadftype.REPORTER_ROLE_MODIFIER,
                  reporterTime=None, reporter=None, reporterId=None):
+        """Create ReporterStep data type
+
+        :param role: optional role of Reporterstep. Defaults to 'modifier'
+        :param reporterTime: utc time of Reporterstep.
+        :param reporter: CADF Resource of reporter
+        :param reporterId: id of CADF resource for reporter
+        """
         # Reporterstep.role
         setattr(self, REPORTERSTEP_KEYNAME_ROLE, role)
 
@@ -67,6 +74,8 @@ class Reporterstep(cadftype.CADFAbstractType):
 
     # self validate this cadf:Reporterstep type against schema
     def is_valid(self):
+        """Validation to ensure Reporterstep required attributes are set.
+        """
         return (
             self._isset(REPORTERSTEP_KEYNAME_ROLE) and
             (self._isset(REPORTERSTEP_KEYNAME_REPORTER) ^

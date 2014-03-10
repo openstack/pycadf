@@ -112,7 +112,22 @@ class Event(cadftype.CADFAbstractType):
                  action=cadftaxonomy.UNKNOWN, outcome=cadftaxonomy.UNKNOWN,
                  initiator=None, initiatorId=None, target=None, targetId=None,
                  severity=None, reason=None, observer=None, observerId=None):
+        """Create an Event
 
+        :param eventType: eventType of Event. Defaults to 'activity' type
+        :param id: id of event. will generate uuid if None
+        :param eventTime: time of event. will take current utc if None
+        :param action: event's action (see Action taxonomy)
+        :param outcome: Event's outcome (see Outcome taxonomy)
+        :param initiator: Event's Initiator Resource
+        :param initiatorId: Event's Initiator Resource id
+        :param target: Event's Target Resource
+        :param targetId: Event's Target Resource id
+        :param severity: domain-relative severity of Event
+        :param reason: domain-specific Reason type
+        :param observer: Event's Observer Resource
+        :param observerId: Event's Observer Resource id
+        """
         # Establish typeURI for the CADF Event data type
         # TODO(mrutkows): support extended typeURIs for Event subtypes
         setattr(self, EVENT_KEYNAME_TYPEURI, TYPE_URI_EVENT)
@@ -164,6 +179,10 @@ class Event(cadftype.CADFAbstractType):
 
     # Event.reporterchain
     def add_reporterstep(self, step):
+        """Add a Reporterstep
+
+        :param step: Reporterstep to be added to reporterchain
+        """
         if step is not None and isinstance(step, reporterstep.Reporterstep):
             if step.is_valid():
                 # Create the list of Reportersteps if needed
@@ -181,6 +200,10 @@ class Event(cadftype.CADFAbstractType):
 
     # Event.measurements
     def add_measurement(self, measure_val):
+        """Add a measurement value
+
+        :param measure_val: Measurement data type to be added to Event
+        """
         if (measure_val is not None
                 and isinstance(measure_val, measurement.Measurement)):
 
@@ -200,6 +223,10 @@ class Event(cadftype.CADFAbstractType):
 
     # Event.tags
     def add_tag(self, tag_val):
+        """Add Tag to Event
+
+        :param tag_val: Tag to add to event
+        """
         if tag.is_valid(tag_val):
             if not hasattr(self, EVENT_KEYNAME_TAGS):
                 setattr(self, EVENT_KEYNAME_TAGS, list())
@@ -209,6 +236,10 @@ class Event(cadftype.CADFAbstractType):
 
     # Event.attachments
     def add_attachment(self, attachment_val):
+        """Add Attachment to Event
+
+        :param attachment_val: Attachment to add to Event
+        """
         if (attachment_val is not None
                 and isinstance(attachment_val, attachment.Attachment)):
 
@@ -227,6 +258,8 @@ class Event(cadftype.CADFAbstractType):
 
     # self validate cadf:Event record against schema
     def is_valid(self):
+        """Validation to ensure Event required attributes are set.
+        """
         # TODO(mrutkows): Eventually, make sure all attributes are
         # from either the CADF spec. (or profiles thereof)
         # TODO(mrutkows): validate all child attributes that are CADF types

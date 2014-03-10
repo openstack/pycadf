@@ -43,6 +43,12 @@ class Attachment(cadftype.CADFAbstractType):
                                                              six.string_types))
 
     def __init__(self, typeURI=None, content=None, name=None):
+        """Create Attachment data type
+
+        :param typeURI: uri that identifies type of data in content
+        :param content: container that contains any type of data
+        :param contentType: name used to identify content.
+        """
         # Attachment.typeURI
         if typeURI is not None:
             setattr(self, ATTACHMENT_KEYNAME_TYPEURI, typeURI)
@@ -57,7 +63,8 @@ class Attachment(cadftype.CADFAbstractType):
 
     # self validate cadf:Attachment type against schema
     def is_valid(self):
-        # Existence test, All attributes must exist for valid Attachment type
+        """Validation to ensure Attachment required attributes are set.
+        """
         return (
             self._isset(ATTACHMENT_KEYNAME_TYPEURI) and
             self._isset(ATTACHMENT_KEYNAME_NAME) and

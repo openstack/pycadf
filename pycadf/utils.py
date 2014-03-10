@@ -20,7 +20,7 @@ def mask_value(value, s_percent=0.125):
     """Obfuscate a given string to show only a percentage of leading
     and trailing characters.
 
-    :param s_percent: The percentage of characters to replace
+    :param s_percent: The percentage (in decimal) of characters to replace
     """
     if isinstance(value, six.string_types):
         visible = (32 if int(round(len(value) * s_percent)) > 32
