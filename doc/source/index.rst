@@ -35,18 +35,30 @@ contribute to the project.
 
 .. _CADF (Cloud Audit Data Federation Working Group): http://www.dmtf.org/standards/cadf
 
-Table of contents
-=================
+Getting Started
+===============
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 1
 
-   api/index
-   specification/index
-   event_concept
-   middleware
+    event_concept
+    middleware
 
-.. update index
+Developer Documentation
+=======================
+
+.. toctree::
+    :maxdepth: 1
+
+    contributing
+    specification/index
+
+Code Documentation
+==================
+.. toctree::
+   :maxdepth: 1
+
+   api/modules
 
 Indices and tables
 ==================
@@ -54,8 +66,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-To Do
-=====
-
-.. todolist::
