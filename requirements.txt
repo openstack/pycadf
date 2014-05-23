@@ -3,6 +3,7 @@ iso8601>=0.1.9
 netaddr>=0.7.6
 oslo.config>=1.2.0
 oslo.messaging>=1.3.0
+posix_ipc
 pytz>=2010h
 six>=1.6.0
 WebOb>=1.2.3
