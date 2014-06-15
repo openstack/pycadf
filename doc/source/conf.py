@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # pyCADF documentation build configuration file, created by
 # sphinx-quickstart on Sun Mar 16 22:32:24 2014.

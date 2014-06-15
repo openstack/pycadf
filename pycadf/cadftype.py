@@ -1,6 +1,5 @@
-# -*- encoding: utf-8 -*-
 #
-# Copyright © 2013 IBM Corporation
+# Copyright (c) 2013 IBM Corporation
 #
 # Author: Matt Rutkowski <mrutkows@us.ibm.com>
 #
