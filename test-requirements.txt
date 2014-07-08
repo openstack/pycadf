@@ -12,6 +12,5 @@ testscenarios>=0.4
 testtools>=0.9.34
 
 # this is required for the docs build jobs
-docutils==0.9.1
 oslosphinx
 sphinx>=1.1.2,!=1.2.0,<1.3
