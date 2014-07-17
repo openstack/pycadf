@@ -15,11 +15,11 @@
 
 """Test base classes.
 """
-import fixtures
 import os.path
-import testtools
 
+import fixtures
 from oslo.config import cfg
+import testtools
 
 from pycadf.openstack.common.fixture import moxstubout
 

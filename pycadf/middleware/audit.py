@@ -21,7 +21,6 @@ in the pipeline so that it can utilise the information Keystone provides.
 
 """
 from pycadf.audit import api as cadf_api
-
 from pycadf.middleware import notifier
 
 

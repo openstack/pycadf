@@ -15,10 +15,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import six
 import uuid
 
 from oslo.config import cfg
+import six
 
 CONF = cfg.CONF
 opts = [
