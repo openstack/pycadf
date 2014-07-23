@@ -19,7 +19,7 @@
  Contributing
 =============
 
-Contributions to the pyCADF library is welcomed.
+Contributions to the pyCADF library are welcomed.
 
 Important links:
 
