@@ -16,8 +16,8 @@
 """
 Attach open standard audit information to request.environ
 
-AuditMiddleware filter should be place after Keystone's auth_token middleware
-in the pipeline so that it can utilise the information Keystone provides.
+AuditMiddleware filter should be placed after Keystone's auth_token middleware
+in the pipeline so that it can utilize the information Keystone provides.
 
 """
 from pycadf.audit import api as cadf_api
