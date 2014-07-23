@@ -36,7 +36,7 @@ from pycadf import resource
 from pycadf import tag
 from pycadf import timestamp
 
-#NOTE(gordc): remove cfg once we move over to this middleware version
+# NOTE(gordc): remove cfg once we move over to this middleware version
 CONF = cfg.CONF
 opts = [cfg.StrOpt('api_audit_map',
                    default='api_audit_map.conf',
@@ -114,7 +114,7 @@ class OpenStackAuditApi(object):
 
     Service = collections.namedtuple('Service',
                                      ['id', 'name', 'type', 'admin_endp',
-                                     'public_endp', 'private_endp'])
+                                      'public_endp', 'private_endp'])
 
     def __init__(self, map_file=None):
         if map_file is None:

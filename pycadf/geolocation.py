@@ -32,7 +32,7 @@ GEO_KEYNAME_ACCURACY = "accuracy"
 GEO_KEYNAME_CITY = "city"
 GEO_KEYNAME_STATE = "state"
 GEO_KEYNAME_REGIONICANN = "regionICANN"
-#GEO_KEYNAME_ANNOTATIONS = "annotations"
+# GEO_KEYNAME_ANNOTATIONS = "annotations"
 
 GEO_KEYNAMES = [GEO_KEYNAME_ID,
                 GEO_KEYNAME_LATITUDE,
@@ -42,7 +42,7 @@ GEO_KEYNAMES = [GEO_KEYNAME_ID,
                 GEO_KEYNAME_CITY,
                 GEO_KEYNAME_STATE,
                 GEO_KEYNAME_REGIONICANN
-                #GEO_KEYNAME_ANNOTATIONS
+                # GEO_KEYNAME_ANNOTATIONS
                 ]
 
 
