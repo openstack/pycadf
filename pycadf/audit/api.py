@@ -180,12 +180,16 @@ class OpenStackAuditApi(object):
         return action
 
     def _get_service_info(self, endp):
+        # NOTE(stevemar): The catalog returned by X-Service-Catalog
+        # does not include IDs for endpoints, use the service name
+        # as a backup.
+        endpoint_id = endp['endpoints'][0].get('id', endp['name'])
         service = self.Service(
             type=self._MAP.service_endpoints.get(
                 endp['type'],
                 taxonomy.UNKNOWN),
             name=endp['name'],
-            id=identifier.norm_ns(endp['endpoints'][0]['id']),
+            id=identifier.norm_ns(endpoint_id),
             admin_endp=endpoint.Endpoint(
                 name='admin',
                 url=endp['endpoints'][0]['adminURL']),
