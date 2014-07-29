@@ -1,11 +1,16 @@
-========
- PyCADF
-========
+======
+PyCADF
+======
 
-see the ReleaseNotes document and the project home for more info.
+This library provides an auditing data model based on the `Cloud Auditing Data
+Federation <http://www.dmtf.org/standards/cadf>`_ specification, primarily for
+use by OpenStack.
 
-  http://launchpad.net/pycadf
+Developer documentation, the source of which is in ``doc/source/``, is
+published at:
 
-Specification details can be found here: http://www.dmtf.org/standards/cadf
+    http://docs.openstack.org/developer/pycadf
 
-Developer details can be found here: http://docs.openstack.org/developer/pycadf
+Bugs and feature requests are tracked on Launchpad at:
+
+    https://bugs.launchpad.net/pycadf
