@@ -51,6 +51,7 @@ Developer Documentation
     :maxdepth: 1
 
     contributing
+    debugging
     specification/index
 
 Code Documentation
