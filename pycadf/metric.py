@@ -27,12 +27,12 @@ TYPE_URI_METRIC = cadftype.CADF_VERSION_1_0_0 + 'metric'
 METRIC_KEYNAME_METRICID = "metricId"
 METRIC_KEYNAME_UNIT = "unit"
 METRIC_KEYNAME_NAME = "name"
-#METRIC_KEYNAME_ANNOTATIONS = "annotations"
+# METRIC_KEYNAME_ANNOTATIONS = "annotations"
 
 METRIC_KEYNAMES = [METRIC_KEYNAME_METRICID,
                    METRIC_KEYNAME_UNIT,
                    METRIC_KEYNAME_NAME
-                   #METRIC_KEYNAME_ANNOTATIONS
+                   # METRIC_KEYNAME_ANNOTATIONS
                    ]
 
 
