@@ -14,3 +14,5 @@ published at:
 Bugs and feature requests are tracked on Launchpad at:
 
     https://bugs.launchpad.net/pycadf
+
+For information on contributing, see ``CONTRIBUTING.rst``.
