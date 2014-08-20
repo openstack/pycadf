@@ -4,7 +4,8 @@ PyCADF
 
 This library provides an auditing data model based on the `Cloud Auditing Data
 Federation <http://www.dmtf.org/standards/cadf>`_ specification, primarily for
-use by OpenStack.
+use by OpenStack. The goal is to establish strict expectations about what
+auditors can expect from audit notifications.
 
 Developer documentation, the source of which is in ``doc/source/``, is
 published at:
