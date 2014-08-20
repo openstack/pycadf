@@ -59,6 +59,21 @@ class TestCADFSpec(base.TestCase):
         for key in credential.CRED_KEYNAMES:
             self.assertIn(key, dict_cred)
 
+    def test_federated_credential(self):
+        cred = credential.FederatedCredential(
+            token=identifier.generate_uuid(),
+            type='http://docs.oasis-open.org/security/saml/v2.0',
+            identity_provider=identifier.generate_uuid(),
+            user=identifier.generate_uuid(),
+            groups=[
+                identifier.generate_uuid(),
+                identifier.generate_uuid(),
+                identifier.generate_uuid()])
+        self.assertEqual(cred.is_valid(), True)
+        dict_cred = cred.as_dict()
+        for key in credential.FED_CRED_KEYNAMES:
+            self.assertIn(key, dict_cred)
+
     def test_geolocation(self):
         geo = geolocation.Geolocation(id=identifier.generate_uuid(),
                                       latitude='43.6481 N',
