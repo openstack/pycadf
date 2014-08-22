@@ -12,5 +12,5 @@ testscenarios>=0.4
 testtools>=0.9.34
 
 # this is required for the docs build jobs
-oslosphinx
+oslosphinx>=2.2.0.0a2
 sphinx>=1.1.2,!=1.2.0,<1.3
