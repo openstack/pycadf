@@ -1,6 +1,6 @@
 Babel>=1.3
 iso8601>=0.1.9
-netaddr>=0.7.6
+netaddr>=0.7.12
 oslo.config>=1.4.0.0a3
 oslo.messaging>=1.4.0.0a3
 posix_ipc
