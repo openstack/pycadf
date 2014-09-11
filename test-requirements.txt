@@ -6,6 +6,7 @@ discover
 fixtures>=0.3.14
 mock>=1.0
 mox>=0.5.3
+oslotest>=1.1.0.0a2
 python-subunit>=0.0.18
 testrepository>=0.0.18
 testscenarios>=0.4
