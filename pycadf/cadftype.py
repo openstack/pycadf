@@ -14,9 +14,8 @@
 
 import abc
 
+from oslo.serialization import jsonutils
 import six
-
-from pycadf.openstack.common import jsonutils
 
 CADF_SCHEMA_1_0_0 = 'cadf:'
 CADF_VERSION_1_0_0 = 'http://schemas.dmtf.org/cloud/audit/1.0/'

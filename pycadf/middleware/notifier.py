@@ -24,8 +24,8 @@ import six
 import webob.dec
 
 from pycadf.middleware import base
+from pycadf.openstack.common._i18n import _  # noqa
 from pycadf.openstack.common import context
-from pycadf.openstack.common.gettextutils import _  # noqa
 
 LOG = None
 
