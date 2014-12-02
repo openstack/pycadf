@@ -19,6 +19,9 @@ AuditMiddleware filter should be placed after Keystone's auth_token middleware
 in the pipeline so that it can utilize the information Keystone provides.
 
 """
+import logging
+
+from pycadf._i18n import _LW
 from pycadf.audit import api as cadf_api
 from pycadf.middleware import notifier
 
@@ -27,6 +30,10 @@ class AuditMiddleware(notifier.RequestNotifier):
 
     def __init__(self, app, **conf):
         super(AuditMiddleware, self).__init__(app, **conf)
+        LOG = logging.getLogger(conf.get('log_name', __name__))
+        LOG.warning(_LW('pyCADF middleware is deprecated as of version 0.7.0,'
+                        ' in favour of keystonemiddleware.audit.'
+                        'AuditMiddleware'))
         map_file = conf.get('audit_map_file', None)
         self.cadf_audit = cadf_api.OpenStackAuditApi(map_file)
 
