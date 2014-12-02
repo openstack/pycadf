@@ -23,8 +23,8 @@ import oslo.messaging
 import six
 import webob.dec
 
+from pycadf._i18n import _
 from pycadf.middleware import base
-from pycadf.openstack.common._i18n import _  # noqa
 from pycadf.openstack.common import context
 
 LOG = None
