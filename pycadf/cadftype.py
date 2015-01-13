@@ -70,7 +70,8 @@ class ValidatorDescriptor(object):
             raise ValueError('%s must not be None.' % self.name)
 
 
-class CADFAbstractType(six.with_metaclass(abc.ABCMeta, object)):
+@six.add_metaclass(abc.ABCMeta)
+class CADFAbstractType(object):
     """The abstract base class for all CADF (complex) data types (classes)."""
 
     @abc.abstractmethod
