@@ -90,6 +90,18 @@ SERVICE_SECURITY = 'service/security'
 ACCOUNT_USER = 'service/security/account/user'
 CADF_AUDIT_FILTER = 'service/security/audit/filter'
 
+SECURITY_ACCOUNT = 'data/security/account'
+SECURITY_CREDENTIAL = 'data/security/credential'
+SECURITY_GROUP = 'data/security/group'
+SECURITY_IDENTITY = 'data/security/identity'
+SECURITY_KEY = 'data/security/key'
+SECURITY_LICENCE = 'data/security/license'
+SECURITY_POLICY = 'data/security/policy'
+SECURITY_PROFILE = 'data/security/profile'
+SECURITY_ROLE = 'data/security/role'
+SECURITY_SERVICE = 'data/security/service'
+SECURITY_ACCOUNT_USER = 'data/security/account/user'
+
 # TODO(mrutkows): Make global using WSGI mechanism
 RESOURCE_TAXONOMY = frozenset([
     'storage',
@@ -146,17 +158,17 @@ RESOURCE_TAXONOMY = frozenset([
     'data/directory',
     'data/database',
     'data/security',
-    'data/security/account',
-    'data/security/credential',
-    'data/security/group',
-    'data/security/identity',
-    'data/security/key',
-    'data/security/license',
-    'data/security/policy',
-    'data/security/profile',
-    'data/security/role',
-    'data/security/service',
-    'data/security/account/user',
+    SECURITY_ACCOUNT,
+    SECURITY_CREDENTIAL,
+    SECURITY_GROUP,
+    SECURITY_IDENTITY,
+    SECURITY_KEY,
+    SECURITY_LICENCE,
+    SECURITY_POLICY,
+    SECURITY_PROFILE,
+    SECURITY_ROLE,
+    SECURITY_SERVICE,
+    SECURITY_ACCOUNT_USER,
     'data/security/account/user/privilege',
     'data/database/alias',
     'data/database/catalog',
