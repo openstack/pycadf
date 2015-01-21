@@ -92,12 +92,16 @@ CADF_AUDIT_FILTER = 'service/security/audit/filter'
 
 SECURITY_ACCOUNT = 'data/security/account'
 SECURITY_CREDENTIAL = 'data/security/credential'
+SECURITY_DOMAIN = 'data/security/domain'
+SECURITY_ENDPOINT = 'data/security/endpoint'
 SECURITY_GROUP = 'data/security/group'
 SECURITY_IDENTITY = 'data/security/identity'
 SECURITY_KEY = 'data/security/key'
 SECURITY_LICENCE = 'data/security/license'
 SECURITY_POLICY = 'data/security/policy'
 SECURITY_PROFILE = 'data/security/profile'
+SECURITY_PROJECT = 'data/security/project'
+SECURITY_REGION = 'data/security/region'
 SECURITY_ROLE = 'data/security/role'
 SECURITY_SERVICE = 'data/security/service'
 SECURITY_ACCOUNT_USER = 'data/security/account/user'
@@ -160,12 +164,16 @@ RESOURCE_TAXONOMY = frozenset([
     'data/security',
     SECURITY_ACCOUNT,
     SECURITY_CREDENTIAL,
+    SECURITY_DOMAIN,
+    SECURITY_ENDPOINT,
     SECURITY_GROUP,
     SECURITY_IDENTITY,
     SECURITY_KEY,
     SECURITY_LICENCE,
     SECURITY_POLICY,
     SECURITY_PROFILE,
+    SECURITY_PROJECT,
+    SECURITY_REGION,
     SECURITY_ROLE,
     SECURITY_SERVICE,
     SECURITY_ACCOUNT_USER,
