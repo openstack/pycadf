@@ -104,6 +104,7 @@ SECURITY_PROJECT = 'data/security/project'
 SECURITY_REGION = 'data/security/region'
 SECURITY_ROLE = 'data/security/role'
 SECURITY_SERVICE = 'data/security/service'
+SECURITY_TRUST = 'data/security/trust'
 SECURITY_ACCOUNT_USER = 'data/security/account/user'
 
 # TODO(mrutkows): Make global using WSGI mechanism
@@ -176,6 +177,7 @@ RESOURCE_TAXONOMY = frozenset([
     SECURITY_REGION,
     SECURITY_ROLE,
     SECURITY_SERVICE,
+    SECURITY_TRUST,
     SECURITY_ACCOUNT_USER,
     'data/security/account/user/privilege',
     'data/database/alias',
