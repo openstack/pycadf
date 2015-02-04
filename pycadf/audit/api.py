@@ -17,7 +17,7 @@ import collections
 import os
 import re
 
-from oslo.config import cfg
+from oslo_config import cfg
 from six.moves import configparser
 from six.moves.urllib import parse as urlparse
 

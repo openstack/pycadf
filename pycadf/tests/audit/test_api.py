@@ -14,7 +14,7 @@
 
 import uuid
 
-from oslo.config import cfg
+from oslo_config import cfg
 import webob
 
 from pycadf.audit import api

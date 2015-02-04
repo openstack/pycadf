@@ -14,7 +14,7 @@
 
 import abc
 
-from oslo.serialization import jsonutils
+from oslo_serialization import jsonutils
 import six
 
 CADF_SCHEMA_1_0_0 = 'cadf:'
