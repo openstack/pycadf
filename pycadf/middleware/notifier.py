@@ -19,13 +19,13 @@ import sys
 import traceback as tb
 
 from oslo_config import cfg
+from oslo_context import context
 import oslo_messaging
 import six
 import webob.dec
 
 from pycadf._i18n import _
 from pycadf.middleware import base
-from pycadf.openstack.common import context
 
 LOG = None
 
