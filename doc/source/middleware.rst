@@ -72,7 +72,7 @@ example using Nova's WSGI pipeline::
    keystone = faultwrap sizelimit authtoken keystonecontext ratelimit audit osapi_compute_app_v2
    keystone_nolimit = faultwrap sizelimit authtoken keystonecontext audit osapi_compute_app_v2
 
-.. _oslo.messaging: http://www.dmtf.org/standards/cadf
+.. _oslo.messaging: https://github.com/openstack/oslo.messaging
 .. _old notification system: https://github.com/openstack/oslo-incubator
 .. _middleware code base: https://github.com/openstack/oslo-incubator/tree/master/openstack/common/middleware
 
