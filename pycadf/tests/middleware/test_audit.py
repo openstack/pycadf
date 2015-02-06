@@ -35,7 +35,7 @@ class FakeFailingApp(object):
         raise Exception("It happens!")
 
 
-@mock.patch('oslo.messaging.get_transport', mock.MagicMock())
+@mock.patch('oslo_messaging.get_transport', mock.MagicMock())
 class AuditMiddlewareTest(base.TestCase):
     ENV_HEADERS = {'HTTP_X_SERVICE_CATALOG':
                    '''[{"endpoints_links": [],
@@ -67,7 +67,7 @@ class AuditMiddlewareTest(base.TestCase):
         self.ENV_HEADERS['REQUEST_METHOD'] = 'GET'
         req = webob.Request.blank('/foo/bar',
                                   environ=self.ENV_HEADERS)
-        with mock.patch('oslo.messaging.Notifier.info') as notify:
+        with mock.patch('oslo_messaging.Notifier.info') as notify:
             middleware(req)
             # Check first notification with only 'request'
             call_args = notify.call_args_list[0][0]
@@ -101,7 +101,7 @@ class AuditMiddlewareTest(base.TestCase):
         self.ENV_HEADERS['REQUEST_METHOD'] = 'GET'
         req = webob.Request.blank('/foo/bar',
                                   environ=self.ENV_HEADERS)
-        with mock.patch('oslo.messaging.Notifier.info') as notify:
+        with mock.patch('oslo_messaging.Notifier.info') as notify:
             try:
                 middleware(req)
                 self.fail("Application exception has not been re-raised")
