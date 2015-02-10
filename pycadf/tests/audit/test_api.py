@@ -40,6 +40,23 @@ class TestAuditApi(base.TestCase):
                    'HTTP_X_PROJECT_ID': 'tenant_id',
                    'HTTP_X_IDENTITY_STATUS': 'Confirmed'}
 
+    ENV_HEADERS_NO_ID = {'HTTP_X_SERVICE_CATALOG':
+                         '''[{"endpoints_links": [],
+                              "endpoints": [{"adminURL":
+                                             "http://admin_host:8774",
+                                             "region": "RegionOne",
+                                             "publicURL":
+                                             "http://public_host:8775",
+                                             "internalURL":
+                                             "http://internal_host:8776"}],
+                               "type": "compute",
+                               "name": "nova"}]''',
+                         'HTTP_X_USER_ID': 'user_id',
+                         'HTTP_X_USER_NAME': 'user_name',
+                         'HTTP_X_AUTH_TOKEN': 'token',
+                         'HTTP_X_PROJECT_ID': 'tenant_id',
+                         'HTTP_X_IDENTITY_STATUS': 'Confirmed'}
+
     def setUp(self):
         super(TestAuditApi, self).setUp()
         self.audit_api = api.OpenStackAuditApi(
@@ -48,6 +65,14 @@ class TestAuditApi(base.TestCase):
     def api_request(self, method, url):
         self.ENV_HEADERS['REQUEST_METHOD'] = method
         req = webob.Request.blank(url, environ=self.ENV_HEADERS,
+                                  remote_addr='192.168.0.1')
+        self.audit_api.append_audit_event(req)
+        self.assertIn('CADF_EVENT_CORRELATION_ID', req.environ)
+        return req
+
+    def api_request_missing_id(self, method, url):
+        self.ENV_HEADERS_NO_ID['REQUEST_METHOD'] = method
+        req = webob.Request.blank(url, environ=self.ENV_HEADERS_NO_ID,
                                   remote_addr='192.168.0.1')
         self.audit_api.append_audit_event(req)
         self.assertIn('CADF_EVENT_CORRELATION_ID', req.environ)
@@ -120,6 +145,15 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['target']['name'], 'unknown')
         self.assertEqual(payload['target']['id'], 'unknown')
         self.assertEqual(payload['target']['typeURI'], 'unknown')
+
+    def test_templated_catalog(self):
+        url = 'http://admin_host:8774/v2/' + str(uuid.uuid4()) + '/servers'
+        req = self.api_request_missing_id('GET', url)
+        payload = req.environ['CADF_EVENT']
+        self.assertEqual(payload['target']['id'], 'openstack:nova')
+        self.assertEqual(payload['target']['name'], 'nova')
+        self.assertEqual(payload['target']['typeURI'],
+                         'service/compute/servers')
 
     def test_get_unknown_endpoint_default_set(self):
         tmpfile = self.temp_config_file_path()
