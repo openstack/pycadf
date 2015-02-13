@@ -14,6 +14,7 @@
 
 import ast
 import collections
+import logging
 import os
 import re
 
@@ -21,6 +22,7 @@ from oslo_config import cfg
 from six.moves import configparser
 from six.moves.urllib import parse as urlparse
 
+from pycadf._i18n import _LW
 from pycadf import cadftaxonomy as taxonomy
 from pycadf import cadftype
 from pycadf import credential
@@ -47,6 +49,8 @@ AuditMap = collections.namedtuple('AuditMap',
                                    'custom_actions',
                                    'service_endpoints',
                                    'default_target_endpoint_type'])
+
+LOG = logging.getLogger(__name__)
 
 
 def _configure_audit_map(cfg_file):
@@ -115,6 +119,9 @@ class OpenStackAuditApi(object):
                                       'public_endp', 'private_endp'])
 
     def __init__(self, map_file=None):
+        LOG.warning(_LW('pyCADF audit API is deprecated as of version 0.8.0,'
+                        ' in favour of keystonemiddleware.audit.'
+                        'OpenStackAuditApi'))
         if map_file is None:
             map_file = CONF.audit.api_audit_map
             if not os.path.exists(CONF.audit.api_audit_map):
