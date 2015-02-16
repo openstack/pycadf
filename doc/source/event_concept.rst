@@ -33,7 +33,7 @@ perspective of a single RESOURCE called the OBSERVER that is responsible for
 observing the Actual Event and creating the (initial) CADF Event Record.
 
 .. figure:: ./images/observer_cadf.png
-   :figwidth: 100%
+   :width: 100%
    :align: center
    :alt: Figure 1: Observer perspective of an Event
 
@@ -62,7 +62,7 @@ activities including "logon" attempts against any servers within the
 provider's infrastructure.
 
 .. figure:: ./images/audit_event.png
-   :figwidth: 100%
+   :width: 100%
    :align: center
    :alt: Figure 2: Conceptually mapping values of an audit event
 
@@ -128,7 +128,7 @@ status of each server's CPU utilisation along with metric data to their
 operations management software by using the CADF Event Record format.
 
 .. figure:: ./images/monitor_event.png
-   :figwidth: 100%
+   :width: 100%
    :align: center
    :alt: Figure 3: Conceptually mapping values of an monitor event
 

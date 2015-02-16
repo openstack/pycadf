@@ -42,6 +42,7 @@ Getting Started
     :maxdepth: 1
 
     event_concept
+    specification/index
     middleware
 
 Developer Documentation
@@ -52,7 +53,6 @@ Developer Documentation
 
     contributing
     debugging
-    specification/index
 
 Code Documentation
 ==================
