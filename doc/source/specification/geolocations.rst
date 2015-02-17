@@ -19,7 +19,7 @@
  Geolocations
 =============
 
-Geolocation information, which reveals a resource’s physical location, is
+Geolocation information, which reveals a resource's physical location, is
 obtained by using tracking technologies such as global positioning system
 (GPS) devices, or IP geolocation by using databases that map IP addresses to
 geographic locations. Geolocation information is widely used in
@@ -59,7 +59,7 @@ Usage Requirements
 
 ::
 
-   Example: ‘latitude’, ‘longitude’ and ‘region’ are all supplied as
+   Example: 'latitude', 'longitude' and 'region' are all supplied as
    properties describing the same geolocation, the 'latitude' and
    'longitude' properties' coordinate values should resolve to the
    same geographic location as described by the 'region'
@@ -72,17 +72,17 @@ Usage Requirements
 Serialisation
 =============
 
-json::
+.. code-block:: javascript
 
-   {
-    "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
-    ...,
-    "target": {
-               ...,
-               "geolocation": {
-                               "latitude": "+372207.90",
-                               "longitude": "-1220210.20",
-                               "elevation": "10"
-               }
+    {
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+        ...,
+        "target": {
+            ...,
+            "geolocation": {
+                "latitude": "+372207.90",
+                "longitude": "-1220210.20",
+                "elevation": "10"
+            }
+        }
     }
-   }

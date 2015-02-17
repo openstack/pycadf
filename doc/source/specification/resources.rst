@@ -43,22 +43,20 @@ attachments   cadf:Attachment[] No        An optional array of extended or domai
 Serialisation
 =============
 
-json::
+.. code-block:: javascript
 
-   {
-    "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
-    ...,
-    "target": {
-               "id": "myscheme://mydomain/resource/id/0001",
-               "typeURI": "service/compute",
-               "name": "server_0001",
-               ...,
-               "geolocation": {
-                               "city": "Austin",
-                               "state": "TX",
-                               "regionICANN": "US"
-               }
+    {
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+        ...,
+        "target": {
+            "id": "myscheme://mydomain/resource/id/0001",
+            "typeURI": "service/compute",
+            "name": "server_0001",
+            ...,
+            "geolocation": {
+                "city": "Austin",
+                "state": "TX",
+                "regionICANN": "US"
+            }
+        }
     }
-   }
-
-

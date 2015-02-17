@@ -34,16 +34,16 @@ policyId   xs:string No       An optional identifier that indicates which policy
 Serialisation
 =============
 
-json::
+.. code-block:: javascript
 
-   {
-    "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
-    ...,
-    "reason": {
-               "reasonType": "http://www.iana.org/assignments/http-status-codes/http-status-codes.xml",
-               "reasonCode": "408",
-               "policyType": "http://schemas.xmlsoap.org/ws/2002/12/policy",
-               "policyId": "http://10.0.3.4/firewall-ruleset/rule0012"
-    },
-    ...
-   }
+    {
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+        ...,
+        "reason": {
+            "reasonType": "http://www.iana.org/assignments/http-status-codes/http-status-codes.xml",
+            "reasonCode": "408",
+            "policyType": "http://schemas.xmlsoap.org/ws/2002/12/policy",
+            "policyId": "http://10.0.3.4/firewall-ruleset/rule0012"
+        },
+        ...
+    }

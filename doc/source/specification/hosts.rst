@@ -43,12 +43,11 @@ platform xs:string       No       The optional platform of the host RESOURCE
 Serialisation
 =============
 
-json::
+.. code-block:: javascript
 
-   {
-    "id": "myuuid:1234-5678-90abc-defg-0000",
-    "address": "10.0.2.15",
-    "agent": "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:18.0)",
-    "platform": "Linux version 3.5.0-23-generic (gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu5) ) #35~precise1-Ubuntu SMP Fri Jan 25 17:15:33 UTC 2013"
-   }
-
+    {
+        "id": "myuuid:1234-5678-90abc-defg-0000",
+        "address": "10.0.2.15",
+        "agent": "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:18.0)",
+        "platform": "Linux version 3.5.0-23-generic (gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu5) ) #35~precise1-Ubuntu SMP Fri Jan 25 17:15:33 UTC 2013"
+    }
