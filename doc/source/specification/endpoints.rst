@@ -33,21 +33,21 @@ port     xs:string No       An optional property to provide the port value separ
 Serialisation
 =============
 
-json::
+.. code-block:: javascript
 
-   {
-    "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
-    ...,
-    "target": {
-       "id": "myscheme://mydomain/resource/id/0001",
-       "name": "server_0001",
-       "addresses": [{
-           "name": "public",
-           "url": "http://mydomain/mypath/server-0001/"
-        },
-       ...
-       ],
-       ...
+       {
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+        ...,
+        "target": {
+            "id": "myscheme://mydomain/resource/id/0001",
+            "name": "server_0001",
+            "addresses": [
+                {
+                    "name": "public",
+                    "url": "http://mydomain/mypath/server-0001/"
+                },
+                ...
+            ],
+            ...
+        }
     }
-   }
-

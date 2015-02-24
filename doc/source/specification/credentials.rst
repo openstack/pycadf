@@ -21,7 +21,7 @@
 
 This type provides a means to describe various credentials along with any
 information about the authority that is responsible for maintaining them.
-This is intended to be associated with a CADF Resource’s identity and reflects
+This is intended to be associated with a CADF Resource's identity and reflects
 any authorizations or identity assertions the resource may use to gain access
 to other resources.
 
@@ -37,20 +37,19 @@ assertions cadf:Map  No       Optional list of additional assertions or attribut
 Serialisation
 =============
 
-json::
+.. code-block:: javascript
 
-   {
-    "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
-    "action": "authenticate",
-    ...,
-    "initiator": {
-       "id": "joe.user@tenant1.com",
-       "typeURI": "data/security/account/user",
-       ...,
-       "credential": {
-          "type": "https://mycloud.com/v2/token",
-          "token": "myuuid:1ef0-abdf-xxxx-xxxx"
-       }
+    {
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+        "action": "authenticate",
+        ...,
+        "initiator": {
+            "id": "joe.user@example.com",
+            "typeURI": "data/security/account/user",
+            ...,
+            "credential": {
+                "type": "https://mycloud.com/v2/token",
+                "token": "myuuid:1ef0-abdf-xxxx-xxxx"
+            }
+        }
     }
-   }
-

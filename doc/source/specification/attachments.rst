@@ -20,9 +20,9 @@
 ============
 
 An attachment is a container for data or "content" that may follow any
-structure – from an atomic type to a complex hierarchy. However, it is
-desirable for processing and interoperability that the type – or
-structure – of the content be identified by a simple value. To this end the
+structure - from an atomic type to a complex hierarchy. However, it is
+desirable for processing and interoperability that the type - or
+structure - of the content be identified by a simple value. To this end the
 attachment also contains a "content type", i.e., a URI that identifies the
 kind of content.
 
@@ -40,19 +40,19 @@ contentType xs:string Yes      An optional name that can be used to provide an i
 Serialisation
 =============
 
-json::
+.. code-block:: javascript
 
-   {
-    ...,
-    "attachments": [
     {
-     "content": "xs:any",
-     "contentType": "xs:anyURI"
-    },
-    {
-     "content": "xs:any",
-     "contentType": "xs:anyURI"
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+        ...,
+        "attachments": [
+            {
+                "content": "xs:any",
+                "contentType": "xs:anyURI"
+            },
+            {
+                "content": "xs:any",
+                "contentType": "xs:anyURI"
+            }
+        ]
     }
-    ]
-   }
-

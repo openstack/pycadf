@@ -72,7 +72,7 @@ Event Attribute   Value                      Reason
 eventType         activity                   OBSERVER is required to report any user security activity
 observer.typeURI  service/security/identity  Value from the CADF Resource Taxonomy most closely describes an "Identity Manager Service"
 initiator.typeURI data/security/account/user Value from the CADF Resource Taxonomy most closely describes a "user"
-action            authenticate/logon	     Value from the CADF Action Taxonomy most closely describes a user "logon" action.
+action            authenticate/logon         Value from the CADF Action Taxonomy most closely describes a user "logon" action.
 target.typeURI    service/compute/node       Value from the CADF Resource Taxonomy most closely describes a target "server"
 outcome           success                    Any valid CADF Outcome Taxonomy value that describes result of action
 measurement       N/A                        A MEASUREMENT component is not required for "activity" type events.
@@ -80,44 +80,78 @@ REASON            N/A                        A REASON component is not required 
 ================= ========================== ==========================================================================================
 
 Event serialisation (including some optional attributes for additional
-details)::
+details):
 
-   {
-    "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
-    "eventTime": "2014-02-27T19:29:30.855665+0000",
-    "target": {
-       "typeURI": "service/compute/node",
-       # optional Endpoints to describe compute node
-      "addresses": [{"url": "http://9.26.26.250:8774/v2/e7e2bcc9c0df4f3eabcd412ae62503f6", "name": "admin"},
-                     {"url": "http://9.26.26.250:8774/v2/e7e2bcc9c0df4f3eabcd412ae62503f6", "name": "private"},
-                     {"url": "http://9.26.26.250:8774/v2/e7e2bcc9c0df4f3eabcd412ae62503f6", "name": "public"}],
-       "id": "openstack:06747855d62547d4bfd707f75b8a1c54",
-       "name": "nova"},
-    "observer": {"id": "target"}, # shortform to show Observer Resource is the same as Target
-    # tags use to query events on
-    "tags": ["correlation_id?value=openstack:56cdde6f-6b4e-48a4-94e6-defb40522fb2"],
-    "eventType": "activity",
-    "initiator": {
-       "typeURI": "data/security/account/user",
-       "name": "admin",
-       # optional Credential to describe resource
-       "credential": {"token": "MIIQzgYJKoZIhvcNAQcCoIIQvzCCELsC xxxxxxxx zqvD9OPWZm7VQpYNK2EvrZi-mTvb5A==",
-                      "identity_status": "Confirmed"},
-       # optional Host to describe resource
-      "host": {"agent": "python-novaclient", "address": "9.26.26.250"},
-      "project_id": "openstack:e7e2bcc9c0df4f3eabcd412ae62503f6",
-      "id": "openstack:68a3f50705a54f799ce94380fc02ed8a"},
-    # optional Reason for activity event
-    "reason": {"reasonCode": "200", "reasonType": "HTTP"},
-    # list of Resources which edited event
-    "reporterchain": [{"reporterTime": "2014-02-27T19:29:31.043902+0000",
-                       "role": "modifier",
-                       "reporter": {"id": "target"}}],
-    "action": "authenticate/logon",
-    "outcome": "success",
-    "id": "openstack:0a196053-95de-48f8-9890-4527b25b5007",
-    # Event model is extensible so additional attributes may be added to describe model
-    "requestPath": "/v2/e7e2bcc9c0df4f3eabcd412ae62503f6/os-certificates"}
+.. code-block:: javascript
+
+    {
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+        "eventTime": "2014-02-27T19:29:30.855665+0000",
+        "target": {
+            "typeURI": "service/compute/node",
+            # optional Endpoints to describe compute node,
+            "addresses": [
+                {
+                    "url": "http://9.26.26.250:8774/v2/e7e2bcc9c0df4f3eabcd412ae62503f6",
+                    "name": "admin"
+                },
+                {
+                    "url": "http://9.26.26.250:8774/v2/e7e2bcc9c0df4f3eabcd412ae62503f6",
+                    "name": "private"
+                },
+                {
+                    "url": "http://9.26.26.250:8774/v2/e7e2bcc9c0df4f3eabcd412ae62503f6",
+                    "name": "public"
+                }
+            ],
+            "id": "openstack:06747855d62547d4bfd707f75b8a1c54",
+            "name": "nova"
+        },
+        "observer": {
+            "id": "target" # shortform to show Observer Resource is the same as Target,
+        },
+        # tags use to query events on,
+        "tags": [
+            "correlation_id?value=openstack:56cdde6f-6b4e-48a4-94e6-defb40522fb2"
+        ],
+        "eventType": "activity",
+        "initiator": {
+            "typeURI": "data/security/account/user",
+            "name": "admin",
+            # optional Credential to describe resource,
+            "credential": {
+                "token": "MIIQzgYJKoZIhvcNAQcCoIIQvzCCELsC xxxxxxxx zqvD9OPWZm7VQpYNK2EvrZi-mTvb5A==",
+                "identity_status": "Confirmed"
+            },
+            # optional Host to describe resource,
+            "host": {
+                "agent": "python-novaclient",
+                "address": "9.26.26.250"
+            },
+            "project_id": "openstack:e7e2bcc9c0df4f3eabcd412ae62503f6",
+            "id": "openstack:68a3f50705a54f799ce94380fc02ed8a"
+        },
+        # optional Reason for activity event,
+        "reason": {
+            "reasonCode": "200",
+            "reasonType": "HTTP"
+        },
+            # list of Resources which edited event,
+            "reporterchain": [
+            {
+                "reporterTime": "2014-02-27T19:29:31.043902+0000",
+                "role": "modifier",
+                "reporter": {
+                    "id": "target"
+                }
+            }
+        ],
+        "action": "authenticate/logon",
+        "outcome": "success",
+        "id": "openstack:0a196053-95de-48f8-9890-4527b25b5007",
+        # Event model is extensible so additional attributes may be added to describe model,
+        "requestPath": "/v2/e7e2bcc9c0df4f3eabcd412ae62503f6/os-certificates"
+    }
 
 2. Periodic monitoring resource status
 
@@ -145,30 +179,40 @@ measurement       80%                    MEASUREMENT component is required and t
 reason            N/A                    REASON component is not required for "monitor" type events.
 ================= ====================== ==========================================================================================
 
-Event serialisation::
+Event serialisation:
 
-   {
-    "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
-    "eventTime": "2014-02-27T19:29:30.855665+0000",
-    "target": {
-       "typeURI": "service/compute/cpu",
-       "id": "openstack:06747855d62547d4bfd707f75b8a1c54",
-       "name": "instance"},
-    "observer": {"id": "initiator"},
-    "eventType": "monitor",
-    "initiator": {
-       "typeURI": "service/oss/monitoring",
-       "name": "ceilometer-pollster",
-       "id": "openstack:68a3f50705a54f799ce94380fc02ed8a"},
-    "measurement": [{
-       "result": "80",
-       "metric": {"metricId": "openstack:<metric_id>",
-                  "unit": "%",
-                  "name": "CPU utilisation metric"}
-    }]
-    "action": "monitor",
-    "outcome": "success",
-    "id": "openstack:0a196053-95de-48f8-9890-4527b25b5007"}
+.. code-block:: javascript
+
+    {
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+        "eventTime": "2014-02-27T19:29:30.855665+0000",
+        "target": {
+            "typeURI": "service/compute/cpu",
+            "id": "openstack:06747855d62547d4bfd707f75b8a1c54",
+            "name": "instance"
+        },
+        "observer": {
+            "id": "initiator"
+        },
+        "eventType": "monitor",
+        "initiator": {
+            "typeURI": "service/oss/monitoring",
+            "name": "ceilometer-pollster",
+            "id": "openstack:68a3f50705a54f799ce94380fc02ed8a"
+        },
+        "measurement": [
+            {
+                "result": "80",
+                "metric": {
+                    "metricId": "openstack:<metric_id>",
+                    "unit": "%",
+                    "name": "CPU utilisation metric"
+                }
+            }
+        ]"action": "monitor",
+        "outcome": "success",
+        "id": "openstack:0a196053-95de-48f8-9890-4527b25b5007"
+    }
 
 .. note::
 

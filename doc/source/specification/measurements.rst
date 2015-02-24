@@ -51,27 +51,29 @@ annotations cadf:map        No       User-defined metric information.
 Serialisation
 =============
 
-json::
+.. code-block:: javascript
 
-   {
-    "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/log",
-    ...,
-    "metrics": [
     {
-     "metricId": "myuuid://metric.org/1234",
-     "unit": "GB",
-     "name": "Storage Capacity in Gigabytes"
-    }],
-    ...,
-    "events": [
-    {
-     "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
-     ...,
-     "measurements": [
-     {
-      "result": "10",
-      "metricId": "myuuid://metric.org/1234"
-     }],
-     ...
-     }]
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/log",
+        ...,
+        "metrics": [
+            {
+                "metricId": "myuuid://metric.org/1234",
+                "unit": "GB",
+                "name": "Storage Capacity in Gigabytes"
+            }
+        ],
+        ...,
+        "events": [
+            {
+                "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+                ...,
+                "measurements": [
+                    {
+                        "result": "10",
+                        "metricId": "myuuid://metric.org/1234"
+                    }
+                ]
+            }
+        ]
     }

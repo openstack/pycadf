@@ -20,7 +20,7 @@
 =======
 
 The CADF Event Model applies semantics to the activities, resources,
-information, and changes within a cloud provider’s infrastructure and models
+information, and changes within a cloud provider's infrastructure and models
 these using the concept of an event.
 
 ============= =================== ========= =============================================================================================================================================================
@@ -50,47 +50,65 @@ reporterchain cadf:Reporterstep[] No        Array of Reporterstep typed data tha
 Serialisation
 =============
 
-json::
+.. code-block:: javascript
 
-   {
-    'typeURI': 'http://schemas.dmtf.org/cloud/audit/1.0/event',
-    'id': 'openstack:a80dc5ee-be83-48ad-ad5e-6577f2217637‘,
-    'eventType': 'activity',
-    'action': 'read',
-    'outcome': 'success',
-    'reason': {'reasonCode': '200', 'reasonType': 'HTTP'},
-    'eventTime': '2014-01-17T23:23:38.109989+0000',
-    'initiator': {
-          'id': 'openstack:95f12d248a234a969f456cd2c794f29a'
-          'typeURI': 'service/security/account/user',
-          'name': ‘admin',
-          'project_id': 'openstack:e55b158759854ea6a7852aa76632c6c1',
-          'credential': {
-                   'token': ‘MIIQBgYJKoZIhvcNAQcCoIIP9z xxxxxx KoZIhvcIP9z=‘,
-                   'identity_status': 'Confirmed'},
-          'host': {
-                   'agent': 'python-novaclient',
-                   'address': '9.26.27.109'},
-    },
-    'target': {
-         'id': 'openstack:0f126160203748a5b4923f2eb6e3b7db',
-         'typeURI': ‘service/compute/servers',
-         'name': 'nova‘
-         'addresses': [
-              {'url': 'http://9.26.27.109:8774/v2/e55b158759854ea6a7852aa76632c6c1',
-               'name': 'admin'},
-              {'url': 'http://9.26.27.109:8774/v2/e55b158759854ea6a7852aa76632c6c1',
-               'name': 'private'},
-              {'url': 'http://9.26.27.109:8774/v2/e55b158759854ea6a7852aa76632c6c1',
-               'name': 'public'}
-          ],
-    },
-    'observer': { 'id': 'target'},
-    'reporterchain': [
-         {'reporterTime': '2014-01-17T23:23:38.154152+0000',
-          'role': 'modifier',
-          'reporter': {'id': 'target'}}
-     ],
-    'requestPath': '/v2/56600971-90f3-4370-807f-ab79339381a9/servers',
-    'tags': ['correlation_id?value=openstack:bcac04dc-e0be-4110-862c-347088a7836a']
-   }
+       {
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+        "id": "openstack:a80dc5ee-be83-48ad-ad5e-6577f2217637",
+        "eventType": "activity",
+        "action": "read",
+        "outcome": "success",
+        "reason": {
+            "reasonCode": "200",
+            "reasonType": "HTTP"
+        },
+        "eventTime": "2014-01-17T23:23:38.109989+0000",
+        "initiator": {
+            "id": "openstack:95f12d248a234a969f456cd2c794f29a""typeURI": "service/security/account/user",
+            "name": "admin",
+            "project_id": "openstack:e55b158759854ea6a7852aa76632c6c1",
+            "credential": {
+                "token": "MIIQBgYJKoZIhvcNAQcCoIIP9z xxxxxx KoZIhvcIP9z=",
+                "identity_status": "Confirmed"
+            },
+            "host": {
+                "agent": "python-novaclient",
+                "address": "9.26.27.109"
+            }
+        },
+        "target": {
+            "id": "openstack:0f126160203748a5b4923f2eb6e3b7db",
+            "typeURI": "service/compute/servers",
+            "name": "nova",
+            "addresses": [
+                {
+                    "url": "http://9.26.27.109:8774/v2/e55b158759854ea6a7852aa76632c6c1",
+                    "name": "admin"
+                },
+                {
+                    "url": "http://9.26.27.109:8774/v2/e55b158759854ea6a7852aa76632c6c1",
+                    "name": "private"
+                },
+                {
+                    "url": "http://9.26.27.109:8774/v2/e55b158759854ea6a7852aa76632c6c1",
+                    "name": "public"
+                }
+            ]
+        },
+        "observer": {
+            "id": "target"
+        },
+        "reporterchain": [
+            {
+                "reporterTime": "2014-01-17T23:23:38.154152+0000",
+                "role": "modifier",
+                "reporter": {
+                    "id": "target"
+                }
+            }
+        ],
+        "requestPath": "/v2/56600971-90f3-4370-807f-ab79339381a9/servers",
+        "tags": [
+            "correlation_id?value=openstack:bcac04dc-e0be-4110-862c-347088a7836a"
+        ]
+    }

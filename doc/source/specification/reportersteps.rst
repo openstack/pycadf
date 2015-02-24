@@ -41,20 +41,19 @@ attachments  cadf:Attachment[] No        An optional array of additional data co
 Serialisation
 =============
 
-json::
+.. code-block:: javascript
 
-   {
-    "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
-    ...,
-    "reporterchain": [
     {
-     "role": "modifier",
-     "reporterTime": "2012-03-22T13:00:00-04:00",
-     "reporter": {
-                  "id": "myscheme://mydomain/resource/monitor/id/0002"
-     }
-    },
-    ...
-    ]
-   }
-
+        "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
+        ...,
+        "reporterchain": [
+            {
+                "role": "modifier",
+                "reporterTime": "2012-03-22T13:00:00-04:00",
+                "reporter": {
+                    "id": "myscheme://mydomain/resource/monitor/id/0002"
+                }
+            },
+            ...
+        ]
+    }
