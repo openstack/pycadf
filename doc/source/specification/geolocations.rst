@@ -57,13 +57,12 @@ Usage Requirements
    That is, all properties SHALL consistently represent the same geographic
    location and SHALL NOT provide conflicting value data.
 
-::
+.. note::
 
-   Example: 'latitude', 'longitude' and 'region' are all supplied as
-   properties describing the same geolocation, the 'latitude' and
-   'longitude' properties' coordinate values should resolve to the
-   same geographic location as described by the 'region'
-   property's value.
+   `latitude`, `longitude` and `region` are all supplied as properties
+   describing the same geolocation, the `latitude` and `longitude` properties
+   coordinate values should resolve to the same geographic location as
+   described by the value of the `region` property.
 
 4. ICANN's implementation plan states "Upper and lower case characters are
    considered to be syntactically and semantically identical"; therefore,
