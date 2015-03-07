@@ -42,6 +42,7 @@ Getting Started
     event_concept
     specification/index
     middleware
+    audit_maps
 
 Contributing
 ============
