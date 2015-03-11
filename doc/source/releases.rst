@@ -2,8 +2,27 @@
 Release Notes
 =============
 
-0.7.0 (Date TBD)
-================
+0.8.0 (Feb 16 2015)
+===================
+
+* add helper module
+* Add a new CADF type for keystone trusts
+* Use oslo namespaces
+* Use oslo_context
+* Add deprecation message to Audit API
+* cleanup documentation
+* Bug 1347868_: Do not depend on endpoint id existing in the service catalog
+
+.. _1347868: https://bugs.launchpad.net/pycadf/+bug/1347868
+
+0.7.1 (Jan 28 2015)
+===================
+
+* Pull out some CADF taxonomy to be constants
+* Add new CADF taxonomy types
+
+0.7.0 (Jan 19 2015)
+===================
 
 * Work toward Python 3.4 support and testing
 * Use oslo_debug_helper and remove our own version
@@ -14,9 +33,12 @@ Release Notes
 * Use oslo tests fixture
 * Use oslo.serialization
 * Sync oslo libraries
+* upgrade hacking to 0.10.0
 * Bug 1336976_: PyCADF docs do not include the changelog
+* Bug 1398411_: deprecate audit middleware
 
 .. _1336976: https://bugs.launchpad.net/pycadf/+bug/1336976
+.. _1398411: https://bugs.launchpad.net/pycadf/+bug/1398411
 
 0.6.0 (Aug 23 2014)
 ===================
