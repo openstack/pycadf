@@ -19,7 +19,7 @@
 
 The `CADF (Cloud Audit Data Federation Working Group)`_ is working to develop
 open standards for audit data which can be federated from cloud providers,
-with the intent to elevate customer’s trust in cloud hosted applications.
+with the intent to elevate customer's trust in cloud hosted applications.
 
 Specifications and profiles produced by the CADF will help protect the
 investments of companies seeking to move their applications to cloud
@@ -28,10 +28,8 @@ regardless of their chosen cloud provider. The CADF develops specifications
 for audit event data and interface models and a compatible interaction model
 that will describe interactions between IT resources for cloud deployment models.
 
-pyCADF is the python implementation of the CADF specification
-
-This documentation offers information on how CADF works and how to
-contribute to the project.
+pyCADF is the python implementation of the CADF specification. This documentation
+offers information on how CADF works and how to contribute to the project.
 
 .. _CADF (Cloud Audit Data Federation Working Group): http://www.dmtf.org/standards/cadf
 
@@ -45,14 +43,22 @@ Getting Started
     specification/index
     middleware
 
-Developer Documentation
-=======================
+Contributing
+============
 
-.. toctree::
-    :maxdepth: 1
+pyCADF utilizes all of the usual OpenStack processes and requirements for
+contributions. The code is hosted `on OpenStack's Git server`_. `Bug reports`_
+and `blueprints`_ may be submitted to the :code:`pycadf` project on
+`Launchpad`_.  Code may be submitted to the :code:`openstack/pycadf` project
+using `Gerrit`_.
 
-    contributing
-    debugging
+.. _`on OpenStack's Git server`: https://git.openstack.org/cgit/openstack/pycadf/tree
+.. _Launchpad: https://launchpad.net/pycadf
+.. _Gerrit: http://docs.openstack.org/infra/manual/developers.html#development-workflow
+.. _Bug reports: https://bugs.launchpad.net/pycadf/+bugs
+.. _blueprints: https://blueprints.launchpad.net/pycadf
+.. _PyPi: https://pypi.python.org/pypi/pycadf
+.. _tarball: http://tarballs.openstack.org/pycadf
 
 Code Documentation
 ==================
