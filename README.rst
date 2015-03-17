@@ -7,13 +7,16 @@ Federation <http://www.dmtf.org/standards/cadf>`_ specification, primarily for
 use by OpenStack. The goal is to establish strict expectations about what
 auditors can expect from audit notifications.
 
-Developer documentation, the source of which is in ``doc/source/``, is
-published at:
+* `PyPi`_ - package installation
+* `Online Documentation`_
+* `Launchpad project`_ - release management
+* `Blueprints`_ - feature specifications
+* `Bugs`_ - issue tracking
+* `Source`_
 
-    http://docs.openstack.org/developer/pycadf
-
-Bugs and feature requests are tracked on Launchpad at:
-
-    https://bugs.launchpad.net/pycadf
-
-For information on contributing, see ``CONTRIBUTING.rst``.
+.. _PyPi: https://pypi.python.org/pypi/pycadf
+.. _Online Documentation: http://docs.openstack.org/developer/pycadf/
+.. _Launchpad project: https://launchpad.net/pycadf
+.. _Blueprints: https://blueprints.launchpad.net/pycadf
+.. _Bugs: https://bugs.launchpad.net/pycadf
+.. _Source: https://git.openstack.org/cgit/openstack/pycadf
