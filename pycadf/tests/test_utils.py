@@ -28,3 +28,11 @@ class TestUtils(base.TestCase):
         self.assertNotEqual(value[:visible + 1], obfuscate[:visible + 1])
         self.assertEqual(value[-visible:], obfuscate[-visible:])
         self.assertNotEqual(value[-visible - 1:], obfuscate[-visible - 1:])
+
+    def test_mask_value_nonstring(self):
+        value = 12
+
+        # If a non-string parameter is given to mask_value(), the non-string
+        # parameter is returned unmodified.
+        obfuscate = utils.mask_value(value)
+        self.assertEqual(value, obfuscate)
