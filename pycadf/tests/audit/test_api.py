@@ -323,6 +323,18 @@ class TestAuditApi(base.TestCase):
         self.assertEqual(payload['observer']['id'], 'target')
         self.assertNotIn('reporterchain', payload)
 
+    def test_missing_tag(self):
+        req = self.api_request('GET', 'http://admin_host:8774/v2/'
+                               + str(uuid.uuid4()) + '/os-migrations')
+        tmpfile = self.temp_config_file_path()
+        with open(tmpfile, "w") as f:
+            f.write("[DEFAULT]\n")
+            f.write("api_paths = servers\n\n")
+            f.write("[service_endpoints]\n")
+            f.write("compute = service/compute")
+        audit_api = api.OpenStackAuditApi(tmpfile)
+        self.assertRaises(ValueError, audit_api.create_event, req, None)
+
 
 class TestAuditApiConf(base.TestCase):
     def test_missing_default_option(self):
