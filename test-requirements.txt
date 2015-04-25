@@ -14,6 +14,7 @@ python-subunit>=0.0.18,<=1.0.0
 testrepository>=0.0.18,<=0.0.20
 testscenarios>=0.4,<=0.4
 testtools>=0.9.34,!=1.4.0,<=1.5.0
+oslo.messaging>=1.4.0,<1.5.0
 
 # this is required for the docs build jobs
 oslosphinx>=2.2.0,<2.5.0  # Apache-2.0
