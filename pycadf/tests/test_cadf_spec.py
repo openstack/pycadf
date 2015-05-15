@@ -13,8 +13,10 @@
 # the License.
 
 import time
+import uuid
 
 from pycadf import attachment
+from pycadf import cadftype
 from pycadf import credential
 from pycadf import endpoint
 from pycadf import event
@@ -296,3 +298,24 @@ class TestCADFSpec(base.TestCase):
                               target=resource.Resource(typeURI='storage'),
                               observer=resource.Resource(id='target'),
                               outcome='success'))
+
+    def _create_none_validator_descriptor(self):
+        class Owner(object):
+            x = cadftype.ValidatorDescriptor(uuid.uuid4().hex)
+
+        owner = Owner()
+        owner.x = None
+
+    def test_invalid_value_descriptor(self):
+        """Test setting a ValidatorDescriptor to None results in ValueError"""
+
+        self.assertRaises(ValueError, self._create_none_validator_descriptor)
+
+    def test_cadfabstracttype_attribute_error(self):
+        """Test an invalid CADFAbstractType attribute is set returns False"""
+
+        h = host.Host(id=identifier.generate_uuid(),
+                      address='192.168.0.1',
+                      agent='client',
+                      platform='AIX')
+        self.assertEqual(h._isset(uuid.uuid4().hex), False)
