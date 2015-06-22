@@ -49,4 +49,6 @@ def is_valid(value):
     """
     if not isinstance(value, six.string_types):
         raise TypeError
+    elif not value:
+        return False
     return True

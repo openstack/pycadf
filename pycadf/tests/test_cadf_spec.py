@@ -34,6 +34,11 @@ from pycadf import timestamp
 
 
 class TestCADFSpec(base.TestCase):
+
+    def test_identifier_empty(self):
+        self.assertFalse(identifier.is_valid(''))
+        self.assertTrue(identifier.is_valid(identifier.generate_uuid()))
+
     def test_endpoint(self):
         endp = endpoint.Endpoint(url='http://192.168.0.1',
                                  name='endpoint name',
