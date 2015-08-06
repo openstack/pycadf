@@ -87,6 +87,7 @@ def is_valid_outcome(value):
     return value in OUTCOME_TAXONOMY
 
 SERVICE_SECURITY = 'service/security'
+SERVICE_KEYMGR = 'service/security/keymanager'
 ACCOUNT_USER = 'service/security/account/user'
 CADF_AUDIT_FILTER = 'service/security/audit/filter'
 
@@ -106,6 +107,11 @@ SECURITY_ROLE = 'data/security/role'
 SECURITY_SERVICE = 'data/security/service'
 SECURITY_TRUST = 'data/security/trust'
 SECURITY_ACCOUNT_USER = 'data/security/account/user'
+KEYMGR_SECRET = 'data/security/keymanager/secret'
+KEYMGR_CONTAINER = 'data/security/keymanager/container'
+KEYMGR_ORDER = 'data/security/keymanager/order'
+KEYMGR_OTHERS = 'data/security/keymanager'
+
 
 # TODO(mrutkows): Make global using WSGI mechanism
 RESOURCE_TAXONOMY = frozenset([
@@ -137,6 +143,7 @@ RESOURCE_TAXONOMY = frozenset([
     'service/compute',
     'service/database',
     SERVICE_SECURITY,
+    SERVICE_KEYMGR,
     'service/security/account',
     ACCOUNT_USER,
     CADF_AUDIT_FILTER,
@@ -192,6 +199,10 @@ RESOURCE_TAXONOMY = frozenset([
     'data/database/table',
     'data/database/trigger',
     'data/database/view',
+    KEYMGR_CONTAINER,
+    KEYMGR_ORDER,
+    KEYMGR_SECRET,
+    KEYMGR_OTHERS,
     UNKNOWN
 ])
 
