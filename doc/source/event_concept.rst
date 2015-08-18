@@ -209,7 +209,8 @@ Event serialisation:
                     "name": "CPU utilisation metric"
                 }
             }
-        ]"action": "monitor",
+        ],
+        "action": "monitor",
         "outcome": "success",
         "id": "openstack:0a196053-95de-48f8-9890-4527b25b5007"
     }
