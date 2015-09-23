@@ -136,8 +136,8 @@ details):
             "reasonCode": "200",
             "reasonType": "HTTP"
         },
-            # list of Resources which edited event,
-            "reporterchain": [
+        # list of Resources which edited event,
+        "reporterchain": [
             {
                 "reporterTime": "2014-02-27T19:29:31.043902+0000",
                 "role": "modifier",
