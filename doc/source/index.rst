@@ -66,8 +66,15 @@ Code Documentation
 .. toctree::
    :maxdepth: 1
 
-   releases
    api/modules
+
+Release Notes
+=============
+
+.. toctree::
+   :maxdepth: 1
+
+   history
 
 Indices and tables
 ==================
