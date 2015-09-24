@@ -64,7 +64,8 @@ Serialisation
         },
         "eventTime": "2014-01-17T23:23:38.109989+0000",
         "initiator": {
-            "id": "openstack:95f12d248a234a969f456cd2c794f29a""typeURI": "service/security/account/user",
+            "id": "openstack:95f12d248a234a969f456cd2c794f29a",
+            "typeURI": "service/security/account/user",
             "name": "admin",
             "project_id": "openstack:e55b158759854ea6a7852aa76632c6c1",
             "credential": {
