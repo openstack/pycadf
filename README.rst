@@ -2,6 +2,14 @@
 PyCADF
 ======
 
+.. image:: https://img.shields.io/pypi/v/pycadf.svg
+    :target: https://pypi.python.org/pypi/pycadf/
+    :alt: Latest Version
+
+.. image:: https://img.shields.io/pypi/dm/pycadf.svg
+    :target: https://pypi.python.org/pypi/pycadf/
+    :alt: Downloads
+
 This library provides an auditing data model based on the `Cloud Auditing Data
 Federation <http://www.dmtf.org/standards/cadf>`_ specification, primarily for
 use by OpenStack. The goal is to establish strict expectations about what
