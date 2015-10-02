@@ -35,8 +35,7 @@ if CONF.audit.namespace:
 
 
 def generate_uuid():
-    """Generate a CADF identifier
-    """
+    """Generate a CADF identifier."""
     if AUDIT_NS:
         return str(uuid.uuid5(AUDIT_NS, str(uuid.uuid4())))
     return str(uuid.uuid4())
@@ -44,14 +43,13 @@ def generate_uuid():
 
 @removals.remove
 def norm_ns(str_id):
-    """Apply a namespace to the identifier """
+    """Apply a namespace to the identifier."""
     prefix = CONF.audit.namespace + ':' if CONF.audit.namespace else ''
     return prefix + str_id
 
 
 def is_valid(value):
-    """Validation to ensure Identifier is correct.
-    """
+    """Validation to ensure Identifier is correct."""
     if value in ['target', 'initiator', 'observer']:
         return True
     try:
