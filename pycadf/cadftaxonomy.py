@@ -23,6 +23,9 @@ ACTION_CREATE = 'create'
 ACTION_READ = 'read'
 ACTION_UPDATE = 'update'
 ACTION_DELETE = 'delete'
+# Other CADF actions
+ACTION_AUTHENTICATE = 'authenticate'
+ACTION_EVALUATE = 'evaluate'
 # OpenStack specific, Profile or change CADF spec. to add this action
 ACTION_LIST = 'read/list'
 
@@ -45,12 +48,12 @@ ACTION_TAXONOMY = frozenset([
     'disable',
     'send',
     'receive',
-    'authenticate',
+    ACTION_AUTHENTICATE,
     'authenticate/login',
     'revoke',
     'renew',
     'restore',
-    'evaluate',
+    ACTION_EVALUATE,
     'allow',
     'deny',
     'notify',
