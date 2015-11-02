@@ -104,7 +104,7 @@ details):
                     "name": "public"
                 }
             ],
-            "id": "openstack:06747855d62547d4bfd707f75b8a1c54",
+            "id": "06747855d62547d4bfd707f75b8a1c54",
             "name": "nova"
         },
         "observer": {
@@ -112,7 +112,7 @@ details):
         },
         # tags use to query events on,
         "tags": [
-            "correlation_id?value=openstack:56cdde6f-6b4e-48a4-94e6-defb40522fb2"
+            "correlation_id?value=56cdde6f-6b4e-48a4-94e6-defb40522fb2"
         ],
         "eventType": "activity",
         "initiator": {
@@ -128,8 +128,8 @@ details):
                 "agent": "python-novaclient",
                 "address": "9.26.26.250"
             },
-            "project_id": "openstack:e7e2bcc9c0df4f3eabcd412ae62503f6",
-            "id": "openstack:68a3f50705a54f799ce94380fc02ed8a"
+            "project_id": "e7e2bcc9c0df4f3eabcd412ae62503f6",
+            "id": "68a3f50705a54f799ce94380fc02ed8a"
         },
         # optional Reason for activity event,
         "reason": {
@@ -148,7 +148,7 @@ details):
         ],
         "action": "authenticate/logon",
         "outcome": "success",
-        "id": "openstack:0a196053-95de-48f8-9890-4527b25b5007",
+        "id": "0a196053-95de-48f8-9890-4527b25b5007",
         # Event model is extensible so additional attributes may be added to describe model,
         "requestPath": "/v2/e7e2bcc9c0df4f3eabcd412ae62503f6/os-certificates"
     }
@@ -188,7 +188,7 @@ Event serialisation:
         "eventTime": "2014-02-27T19:29:30.855665+0000",
         "target": {
             "typeURI": "service/compute/cpu",
-            "id": "openstack:06747855d62547d4bfd707f75b8a1c54",
+            "id": "06747855d62547d4bfd707f75b8a1c54",
             "name": "instance"
         },
         "observer": {
@@ -198,13 +198,13 @@ Event serialisation:
         "initiator": {
             "typeURI": "service/oss/monitoring",
             "name": "ceilometer-pollster",
-            "id": "openstack:68a3f50705a54f799ce94380fc02ed8a"
+            "id": "68a3f50705a54f799ce94380fc02ed8a"
         },
         "measurement": [
             {
                 "result": "80",
                 "metric": {
-                    "metricId": "openstack:<metric_id>",
+                    "metricId": "<metric_id>",
                     "unit": "%",
                     "name": "CPU utilisation metric"
                 }
@@ -212,7 +212,7 @@ Event serialisation:
         ],
         "action": "monitor",
         "outcome": "success",
-        "id": "openstack:0a196053-95de-48f8-9890-4527b25b5007"
+        "id": "0a196053-95de-48f8-9890-4527b25b5007"
     }
 
 .. note::
