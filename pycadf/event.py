@@ -40,6 +40,7 @@ EVENT_KEYNAME_TARGETID = "targetId"
 EVENT_KEYNAME_OUTCOME = "outcome"
 EVENT_KEYNAME_REASON = "reason"
 EVENT_KEYNAME_SEVERITY = "severity"
+EVENT_KEYNAME_NAME = "name"
 EVENT_KEYNAME_MEASUREMENTS = "measurements"
 EVENT_KEYNAME_TAGS = "tags"
 EVENT_KEYNAME_ATTACHMENTS = "attachments"
@@ -59,6 +60,7 @@ EVENT_KEYNAMES = [EVENT_KEYNAME_TYPEURI,
                   EVENT_KEYNAME_OUTCOME,
                   EVENT_KEYNAME_REASON,
                   EVENT_KEYNAME_SEVERITY,
+                  EVENT_KEYNAME_NAME,
                   EVENT_KEYNAME_MEASUREMENTS,
                   EVENT_KEYNAME_TAGS,
                   EVENT_KEYNAME_ATTACHMENTS,
@@ -94,6 +96,9 @@ class Event(cadftype.CADFAbstractType):
     reason = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_REASON,
         lambda x: isinstance(x, reason.Reason) and x.is_valid())
+    name = cadftype.ValidatorDescriptor(EVENT_KEYNAME_NAME,
+                                        lambda x: isinstance(
+                                            x, six.string_types))
     severity = cadftype.ValidatorDescriptor(EVENT_KEYNAME_SEVERITY,
                                             lambda x: isinstance(
                                                 x, six.string_types))
@@ -107,7 +112,8 @@ class Event(cadftype.CADFAbstractType):
                  id=None, eventTime=None,
                  action=cadftaxonomy.UNKNOWN, outcome=cadftaxonomy.UNKNOWN,
                  initiator=None, initiatorId=None, target=None, targetId=None,
-                 severity=None, reason=None, observer=None, observerId=None):
+                 severity=None, reason=None, observer=None, observerId=None,
+                 name=None):
         """Create an Event
 
         :param eventType: eventType of Event. Defaults to 'activity' type
@@ -123,6 +129,7 @@ class Event(cadftype.CADFAbstractType):
         :param reason: domain-specific Reason type
         :param observer: Event's Observer Resource
         :param observerId: Event's Observer Resource id
+        :param name: descriptive name for the event
         """
         # Establish typeURI for the CADF Event data type
         # TODO(mrutkows): support extended typeURIs for Event subtypes
@@ -164,6 +171,10 @@ class Event(cadftype.CADFAbstractType):
         # Event.targetId (Dependent)
         if targetId is not None:
             setattr(self, EVENT_KEYNAME_TARGETID, targetId)
+
+        # Event.name (Optional)
+        if name is not None:
+            setattr(self, EVENT_KEYNAME_NAME, name)
 
         # Event.severity (Optional)
         if severity is not None:

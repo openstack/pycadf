@@ -219,7 +219,8 @@ class TestCADFSpec(base.TestCase):
                          outcome='success',
                          reason=reason.Reason(reasonType='HTTP',
                                               reasonCode='200'),
-                         severity='high')
+                         severity='high',
+                         name='descriptive name')
         ev.add_measurement(
             measurement.Measurement(result='100',
                                     metricId=identifier.generate_uuid())),
