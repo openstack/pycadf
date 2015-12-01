@@ -11,11 +11,11 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations under
 # the License.
-
+import hashlib
 import uuid
 
+from debtcollector import removals
 from oslo_config import cfg
-import six
 
 CONF = cfg.CONF
 opts = [
@@ -26,29 +26,35 @@ opts = [
 CONF.register_opts(opts, group='audit')
 
 
-# TODO(mrutkows): make the namespace prefix configurable and have it resolve to
-# a full openstack namespace/domain value via some declaration (e.g.
-# "openstack:" == "http:\\www.openstack.org\")...
+AUDIT_NS = None
+if CONF.audit.namespace:
+    md5_hash = hashlib.md5(CONF.audit.namespace.encode('utf-8'))
+    AUDIT_NS = uuid.UUID(md5_hash.hexdigest())
+
+
 def generate_uuid():
     """Generate a CADF identifier
     """
-    return norm_ns(str(uuid.uuid4()))
+    if AUDIT_NS:
+        return str(uuid.uuid5(AUDIT_NS, str(uuid.uuid4())))
+    return str(uuid.uuid4())
 
 
+@removals.remove
 def norm_ns(str_id):
-    """Apply a namespace to the identifier
-    """
+    """Apply a namespace to the identifier """
     prefix = CONF.audit.namespace + ':' if CONF.audit.namespace else ''
     return prefix + str_id
 
 
-# TODO(mrutkows): validate any cadf:Identifier (type) record against
-# CADF schema.  This would include schema validation as an optional parm.
 def is_valid(value):
     """Validation to ensure Identifier is correct.
     """
-    if not isinstance(value, six.string_types):
-        raise TypeError
-    elif not value:
+    if value in ['target', 'initiator', 'observer']:
+        return True
+    try:
+        uuid.UUID(value)
+    except ValueError:
         return False
-    return True
+    else:
+        return True

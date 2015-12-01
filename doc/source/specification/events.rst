@@ -54,7 +54,7 @@ Serialisation
 
        {
         "typeURI": "http://schemas.dmtf.org/cloud/audit/1.0/event",
-        "id": "openstack:a80dc5ee-be83-48ad-ad5e-6577f2217637",
+        "id": "a80dc5ee-be83-48ad-ad5e-6577f2217637",
         "eventType": "activity",
         "action": "read",
         "outcome": "success",
@@ -64,10 +64,10 @@ Serialisation
         },
         "eventTime": "2014-01-17T23:23:38.109989+0000",
         "initiator": {
-            "id": "openstack:95f12d248a234a969f456cd2c794f29a",
+            "id": "95f12d248a234a969f456cd2c794f29a",
             "typeURI": "service/security/account/user",
             "name": "admin",
-            "project_id": "openstack:e55b158759854ea6a7852aa76632c6c1",
+            "project_id": "e55b158759854ea6a7852aa76632c6c1",
             "credential": {
                 "token": "MIIQBgYJKoZIhvcNAQcCoIIP9z xxxxxx KoZIhvcIP9z=",
                 "identity_status": "Confirmed"
@@ -78,7 +78,7 @@ Serialisation
             }
         },
         "target": {
-            "id": "openstack:0f126160203748a5b4923f2eb6e3b7db",
+            "id": "0f126160203748a5b4923f2eb6e3b7db",
             "typeURI": "service/compute/servers",
             "name": "nova",
             "addresses": [
@@ -110,6 +110,6 @@ Serialisation
         ],
         "requestPath": "/v2/56600971-90f3-4370-807f-ab79339381a9/servers",
         "tags": [
-            "correlation_id?value=openstack:bcac04dc-e0be-4110-862c-347088a7836a"
+            "correlation_id?value=bcac04dc-e0be-4110-862c-347088a7836a"
         ]
     }
