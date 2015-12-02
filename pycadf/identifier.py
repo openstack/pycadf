@@ -13,9 +13,11 @@
 # the License.
 import hashlib
 import uuid
+import warnings
 
 from debtcollector import removals
 from oslo_config import cfg
+import six
 
 CONF = cfg.CONF
 opts = [
@@ -54,7 +56,9 @@ def is_valid(value):
         return True
     try:
         uuid.UUID(value)
-    except ValueError:
-        return False
-    else:
-        return True
+    except (ValueError, TypeError):
+        if not isinstance(value, six.string_types) or not value:
+            return False
+        warnings.warn('Invalid uuid. To ensure interoperability, identifiers'
+                      'should be a valid uuid.')
+    return True

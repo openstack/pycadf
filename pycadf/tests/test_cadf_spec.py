@@ -15,6 +15,8 @@
 import time
 import uuid
 
+import mock
+
 from pycadf import attachment
 from pycadf import cadftype
 from pycadf import credential
@@ -35,9 +37,16 @@ from pycadf import timestamp
 
 class TestCADFSpec(base.TestCase):
 
-    def test_identifier_empty(self):
+    @mock.patch('pycadf.identifier.warnings.warn')
+    def test_identifier(self, warning_mock):
+        # empty string
         self.assertFalse(identifier.is_valid(''))
+        # generated uuid
         self.assertTrue(identifier.is_valid(identifier.generate_uuid()))
+        self.assertFalse(warning_mock.called)
+        # any string
+        self.assertTrue(identifier.is_valid('blah'))
+        self.assertTrue(warning_mock.called)
 
     def test_endpoint(self):
         endp = endpoint.Endpoint(url='http://192.168.0.1',
