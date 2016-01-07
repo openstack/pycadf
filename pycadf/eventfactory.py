@@ -42,7 +42,7 @@ class EventFactory(object):
         event_val.eventType = eventType
 
         # TODO(mrutkows): CADF is only being used for basic
-        # 'activity' auditing (on APIs), An IF-ELIF will
+        # 'activity' auditing (on APIs). An IF-ELIF will
         # become more meaningful as we add support for other
         # event types.
         # elif eventType == cadftype.EVENTTYPE_MONITOR:
