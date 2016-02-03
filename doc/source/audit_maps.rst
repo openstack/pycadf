@@ -28,6 +28,7 @@ services. Currently, pyCADF supplies the following audit mapping files:
 * `nova_api_audit_map.conf`_
 * `trove_api_audit_map.conf`_
 * `heat_api_audit_map.conf`_
+* `ironic_api_audit_map.conf`_
 
 These files are hosted under the `etc/pycadf`_ directory of pyCADF. For more
 information on how to use these mapping files, refer to the `Audit middleware`_
@@ -42,3 +43,4 @@ section of the `keystonemiddleware`_ project.
 .. _`nova_api_audit_map.conf`: https://github.com/openstack/pycadf/blob/master/etc/pycadf/nova_api_audit_map.conf
 .. _`trove_api_audit_map.conf`: https://github.com/openstack/pycadf/blob/master/etc/pycadf/trove_api_audit_map.conf
 .. _`heat_api_audit_map.conf`: https://github.com/openstack/pycadf/blob/master/etc/pycadf/heat_api_audit_map.conf
+.. _`ironic_api_audit_map.conf`: https://github.com/openstack/pycadf/blob/master/etc/pycadf/ironic_api_audit_map.conf
