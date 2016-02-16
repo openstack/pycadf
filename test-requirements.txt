@@ -3,7 +3,7 @@
 # process, which may cause wedges in the gate later.
 # Hacking already pins down pep8, pyflakes and flake8
 hacking<0.11,>=0.10.0
-flake8_docstrings==0.2.1.post1  # MIT
+flake8-docstrings==0.2.1.post1 # MIT
 
 coverage>=3.6 # Apache-2.0
 discover # BSD
