@@ -52,7 +52,7 @@ class TestCADFSpec(base.TestCase):
         endp = endpoint.Endpoint(url='http://192.168.0.1',
                                  name='endpoint name',
                                  port='8080')
-        self.assertEqual(endp.is_valid(), True)
+        self.assertEqual(True, endp.is_valid())
         dict_endp = endp.as_dict()
         for key in endpoint.ENDPOINT_KEYNAMES:
             self.assertIn(key, dict_endp)
@@ -62,7 +62,7 @@ class TestCADFSpec(base.TestCase):
                       address='192.168.0.1',
                       agent='client',
                       platform='AIX')
-        self.assertEqual(h.is_valid(), True)
+        self.assertEqual(True, h.is_valid())
         dict_host = h.as_dict()
         for key in host.HOST_KEYNAMES:
             self.assertIn(key, dict_host)
@@ -70,7 +70,7 @@ class TestCADFSpec(base.TestCase):
     def test_credential(self):
         cred = credential.Credential(type='auth token',
                                      token=identifier.generate_uuid())
-        self.assertEqual(cred.is_valid(), True)
+        self.assertEqual(True, cred.is_valid())
         dict_cred = cred.as_dict()
         for key in credential.CRED_KEYNAMES:
             self.assertIn(key, dict_cred)
@@ -85,7 +85,7 @@ class TestCADFSpec(base.TestCase):
                 identifier.generate_uuid(),
                 identifier.generate_uuid(),
                 identifier.generate_uuid()])
-        self.assertEqual(cred.is_valid(), True)
+        self.assertEqual(True, cred.is_valid())
         dict_cred = cred.as_dict()
         for key in credential.FED_CRED_KEYNAMES:
             self.assertIn(key, dict_cred)
@@ -99,7 +99,7 @@ class TestCADFSpec(base.TestCase):
                                       city='toronto',
                                       state='ontario',
                                       regionICANN='ca')
-        self.assertEqual(geo.is_valid(), True)
+        self.assertEqual(True, geo.is_valid())
 
         dict_geo = geo.as_dict()
         for key in geolocation.GEO_KEYNAMES:
@@ -109,7 +109,7 @@ class TestCADFSpec(base.TestCase):
         metric_val = metric.Metric(metricId=identifier.generate_uuid(),
                                    unit='b',
                                    name='bytes')
-        self.assertEqual(metric_val.is_valid(), True)
+        self.assertEqual(True, metric_val.is_valid())
 
         dict_metric_val = metric_val.as_dict()
         for key in metric.METRIC_KEYNAMES:
@@ -121,7 +121,7 @@ class TestCADFSpec(base.TestCase):
             metric=metric.Metric(),
             metricId=identifier.generate_uuid(),
             calculatedBy=resource.Resource(typeURI='storage'))
-        self.assertEqual(measure_val.is_valid(), False)
+        self.assertEqual(False, measure_val.is_valid())
 
         dict_measure_val = measure_val.as_dict()
         for key in measurement.MEASUREMENT_KEYNAMES:
@@ -131,20 +131,20 @@ class TestCADFSpec(base.TestCase):
             result='100',
             metric=metric.Metric(),
             calculatedBy=resource.Resource(typeURI='storage'))
-        self.assertEqual(measure_val.is_valid(), True)
+        self.assertEqual(True, measure_val.is_valid())
 
         measure_val = measurement.Measurement(
             result='100',
             metricId=identifier.generate_uuid(),
             calculatedBy=resource.Resource(typeURI='storage'))
-        self.assertEqual(measure_val.is_valid(), True)
+        self.assertEqual(True, measure_val.is_valid())
 
     def test_reason(self):
         reason_val = reason.Reason(reasonType='HTTP',
                                    reasonCode='200',
                                    policyType='poltype',
                                    policyId=identifier.generate_uuid())
-        self.assertEqual(reason_val.is_valid(), True)
+        self.assertEqual(True, reason_val.is_valid())
 
         dict_reason_val = reason_val.as_dict()
         for key in reason.REASON_KEYNAMES:
@@ -156,7 +156,7 @@ class TestCADFSpec(base.TestCase):
             reporter=resource.Resource(typeURI='storage'),
             reporterId=identifier.generate_uuid(),
             reporterTime=timestamp.get_utc_now())
-        self.assertEqual(step.is_valid(), False)
+        self.assertEqual(False, step.is_valid())
 
         dict_step = step.as_dict()
         for key in reporterstep.REPORTERSTEP_KEYNAMES:
@@ -166,19 +166,19 @@ class TestCADFSpec(base.TestCase):
             role='modifier',
             reporter=resource.Resource(typeURI='storage'),
             reporterTime=timestamp.get_utc_now())
-        self.assertEqual(step.is_valid(), True)
+        self.assertEqual(True, step.is_valid())
 
         step = reporterstep.Reporterstep(
             role='modifier',
             reporterId=identifier.generate_uuid(),
             reporterTime=timestamp.get_utc_now())
-        self.assertEqual(step.is_valid(), True)
+        self.assertEqual(True, step.is_valid())
 
     def test_attachment(self):
         attach = attachment.Attachment(typeURI='attachURI',
                                        content='content',
                                        name='attachment_name')
-        self.assertEqual(attach.is_valid(), True)
+        self.assertEqual(True, attach.is_valid())
 
         dict_attach = attach.as_dict()
         for key in attachment.ATTACHMENT_KEYNAMES:
@@ -200,19 +200,19 @@ class TestCADFSpec(base.TestCase):
                                                  name='attachment_name'))
         res.add_address(endpoint.Endpoint(url='http://192.168.0.1'))
 
-        self.assertEqual(res.is_valid(), True)
+        self.assertEqual(True, res.is_valid())
         dict_res = res.as_dict()
         for key in resource.RESOURCE_KEYNAMES:
             self.assertIn(key, dict_res)
 
     def test_resource_shortform(self):
         res = resource.Resource(id='target')
-        self.assertEqual(res.is_valid(), True)
+        self.assertEqual(True, res.is_valid())
 
         res.add_attachment(attachment.Attachment(typeURI='attachURI',
                                                  content='content',
                                                  name='attachment_name'))
-        self.assertEqual(res.is_valid(), False)
+        self.assertEqual(False, res.is_valid())
 
     def test_event(self):
         ev = event.Event(eventType='activity',
@@ -243,7 +243,7 @@ class TestCADFSpec(base.TestCase):
             reporter=resource.Resource(typeURI='service/security')))
         ev.add_reporterstep(reporterstep.Reporterstep(
             reporterId=identifier.generate_uuid()))
-        self.assertEqual(ev.is_valid(), False)
+        self.assertEqual(False, ev.is_valid())
 
         dict_ev = ev.as_dict()
         for key in event.EVENT_KEYNAMES:
@@ -257,7 +257,7 @@ class TestCADFSpec(base.TestCase):
                          target=resource.Resource(typeURI='storage'),
                          observer=resource.Resource(id='target'),
                          outcome='success')
-        self.assertEqual(ev.is_valid(), True)
+        self.assertEqual(True, ev.is_valid())
 
         ev = event.Event(eventType='activity',
                          id=identifier.generate_uuid(),
@@ -267,7 +267,7 @@ class TestCADFSpec(base.TestCase):
                          targetId=identifier.generate_uuid(),
                          observerId=identifier.generate_uuid(),
                          outcome='success')
-        self.assertEqual(ev.is_valid(), True)
+        self.assertEqual(True, ev.is_valid())
 
         ev = event.Event(eventType='activity',
                          id=identifier.generate_uuid(),
@@ -277,7 +277,7 @@ class TestCADFSpec(base.TestCase):
                          targetId=identifier.generate_uuid(),
                          observer=resource.Resource(id='target'),
                          outcome='success')
-        self.assertEqual(ev.is_valid(), True)
+        self.assertEqual(True, ev.is_valid())
 
     def test_event_unique(self):
         ev = event.Event(eventType='activity',
@@ -333,4 +333,4 @@ class TestCADFSpec(base.TestCase):
                       address='192.168.0.1',
                       agent='client',
                       platform='AIX')
-        self.assertEqual(h._isset(uuid.uuid4().hex), False)
+        self.assertEqual(False, h._isset(uuid.uuid4().hex))
