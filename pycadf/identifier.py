@@ -57,6 +57,6 @@ def is_valid(value):
     except (ValueError, TypeError):
         if not isinstance(value, six.string_types) or not value:
             return False
-        warnings.warn('Invalid uuid. To ensure interoperability, identifiers'
+        warnings.warn('Invalid uuid. To ensure interoperability, identifiers '
                       'should be a valid uuid.')
     return True
