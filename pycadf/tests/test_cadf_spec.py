@@ -38,15 +38,71 @@ from pycadf import timestamp
 class TestCADFSpec(base.TestCase):
 
     @mock.patch('pycadf.identifier.warnings.warn')
-    def test_identifier(self, warning_mock):
-        # empty string
-        self.assertFalse(identifier.is_valid(''))
+    def test_identifier_generated_uuid(self, warning_mock):
         # generated uuid
         self.assertTrue(identifier.is_valid(identifier.generate_uuid()))
         self.assertFalse(warning_mock.called)
+
+    @mock.patch('pycadf.identifier.warnings.warn')
+    def test_identifier_empty_string_is_invalid(self, warning_mock):
+        # empty string
+        self.assertFalse(identifier.is_valid(''))
+        self.assertFalse(warning_mock.called)
+
+    @mock.patch('pycadf.identifier.warnings.warn')
+    def test_identifier_any_string_is_invalid(self, warning_mock):
         # any string
         self.assertTrue(identifier.is_valid('blah'))
         self.assertTrue(warning_mock.called)
+
+    @mock.patch('pycadf.identifier.warnings.warn')
+    def test_identifier_joined_uuids_are_valid(self, warning_mock):
+        # multiple uuids joined together
+        long_128_uuids = [
+            ('3adce28e67e44544a5a9d5f1ab54f578a86d310aac3a465e9d'
+             'd2693a78b45c0e42dce28e67e44544a5a9d5f1ab54f578a86d'
+             '310aac3a465e9dd2693a78b45c0e'),
+            ('{3adce28e67e44544a5a9d5f1ab54f578a86d310aac3a465e9d'
+             'd2693a78b45c0e42dce28e67e44544a5a9d5f1ab54f578a86d'
+             '310aac3a465e9dd2693a78b45c0e}'),
+            ('{12345678-1234-5678-1234-567812345678'
+             '12345678-1234-5678-1234-567812345678'
+             '12345678-1234-5678-1234-567812345678'
+             '12345678-1234-5678-1234-567812345678}'),
+            ('urn:uuid:3adce28e67e44544a5a9d5f1ab54f578a86d310aac3a465e9d'
+             'd2693a78b45c0e42dce28e67e44544a5a9d5f1ab54f578a86d'
+             '310aac3a465e9dd2693a78b45c0e')]
+
+        for value in long_128_uuids:
+            self.assertTrue(identifier.is_valid(value))
+            self.assertFalse(warning_mock.called)
+
+    @mock.patch('pycadf.identifier.warnings.warn')
+    def test_identifier_long_nonjoined_uuid_is_invalid(self, warning_mock):
+        # long uuid not of size % 32
+        char_42_id = '3adce28e67e44544a5a9d5f1ab54f578a86d310aac'
+        self.assertTrue(identifier.is_valid(char_42_id))
+        self.assertTrue(warning_mock.called)
+
+    @mock.patch('pycadf.identifier.warnings.warn')
+    def test_identifier_specific_exceptions_are_valid(self, warning_mock):
+        # uuid exceptions
+        for value in identifier.VALID_EXCEPTIONS:
+            self.assertTrue(identifier.is_valid(value))
+            self.assertFalse(warning_mock.called)
+
+    @mock.patch('pycadf.identifier.warnings.warn')
+    def test_identifier_valid_id_extra_chars_is_valid(self, warning_mock):
+        # valid uuid with additional characters according to:
+        # https://docs.python.org/2/library/uuid.html
+        valid_ids = [
+            '{1234567890abcdef1234567890abcdef}',
+            '{12345678-1234-5678-1234-567812345678}',
+            'urn:uuid:12345678-1234-5678-1234-567812345678']
+
+        for value in valid_ids:
+            self.assertTrue(identifier.is_valid(value))
+            self.assertFalse(warning_mock.called)
 
     def test_endpoint(self):
         endp = endpoint.Endpoint(url='http://192.168.0.1',
