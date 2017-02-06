@@ -55,11 +55,11 @@ using `Gerrit`_.
 
 .. _`on OpenStack's Git server`: https://git.openstack.org/cgit/openstack/pycadf/tree
 .. _Launchpad: https://launchpad.net/pycadf
-.. _Gerrit: http://docs.openstack.org/infra/manual/developers.html#development-workflow
+.. _Gerrit: https://docs.openstack.org/infra/manual/developers.html#development-workflow
 .. _Bug reports: https://bugs.launchpad.net/pycadf/+bugs
 .. _blueprints: https://blueprints.launchpad.net/pycadf
 .. _PyPi: https://pypi.python.org/pypi/pycadf
-.. _tarball: http://tarballs.openstack.org/pycadf
+.. _tarball: https://tarballs.openstack.org/pycadf
 
 Code Documentation
 ==================

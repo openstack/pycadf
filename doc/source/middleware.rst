@@ -23,4 +23,4 @@ pyCADF's version of the audit middleware has been deprecated as of pyCADF
 0.8.0. For continued support, the middleware is now maintained under the
 Identity (Keystone) umbrella. Related documentation can be found here_.
 
-.. _here: http://docs.openstack.org/developer/keystonemiddleware/audit.html
+.. _here: https://docs.openstack.org/developer/keystonemiddleware/audit.html

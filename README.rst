@@ -2,8 +2,8 @@
 Team and repository tags
 ========================
 
-.. image:: http://governance.openstack.org/badges/pycadf.svg
-    :target: http://governance.openstack.org/reference/tags/index.html
+.. image:: https://governance.openstack.org/badges/pycadf.svg
+    :target: https://governance.openstack.org/reference/tags/index.html
 
 .. Change things from this point on
 
@@ -32,7 +32,7 @@ auditors can expect from audit notifications.
 * `Source`_
 
 .. _PyPi: https://pypi.python.org/pypi/pycadf
-.. _Online Documentation: http://docs.openstack.org/developer/pycadf/
+.. _Online Documentation: https://docs.openstack.org/developer/pycadf/
 .. _Launchpad project: https://launchpad.net/pycadf
 .. _Blueprints: https://blueprints.launchpad.net/pycadf
 .. _Bugs: https://bugs.launchpad.net/pycadf
