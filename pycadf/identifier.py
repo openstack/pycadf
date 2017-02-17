@@ -12,6 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 import hashlib
+import re
 import uuid
 import warnings
 
@@ -33,6 +34,8 @@ if CONF.audit.namespace:
     md5_hash = hashlib.md5(CONF.audit.namespace.encode('utf-8'))
     AUDIT_NS = uuid.UUID(md5_hash.hexdigest())
 
+VALID_EXCEPTIONS = ['default', 'initiator', 'observer', 'target']
+
 
 def generate_uuid():
     """Generate a CADF identifier."""
@@ -48,15 +51,31 @@ def norm_ns(str_id):
     return prefix + str_id
 
 
+def _check_valid_uuid(value):
+    """Checks a value for one or multiple valid uuids joined together."""
+
+    if not value:
+        raise ValueError
+
+    value = re.sub('[{}-]|urn:uuid:', '', value)
+    for val in [value[i:i + 32] for i in range(0, len(value), 32)]:
+        uuid.UUID(val)
+
+
 def is_valid(value):
-    """Validation to ensure Identifier is correct."""
-    if value in ['target', 'initiator', 'observer']:
+    """Validation to ensure Identifier is correct.
+
+    If the Identifier value is a string type but not a valid UUID string,
+    warn against interoperability issues and return True. This relaxes
+    the requirement of having strict UUID checking.
+    """
+    if value in VALID_EXCEPTIONS:
         return True
     try:
-        uuid.UUID(value)
+        _check_valid_uuid(value)
     except (ValueError, TypeError):
         if not isinstance(value, six.string_types) or not value:
             return False
-        warnings.warn('Invalid uuid. To ensure interoperability, identifiers '
-                      'should be a valid uuid.')
+        warnings.warn(('Invalid uuid: %s. To ensure interoperability, '
+                      'identifiers should be a valid uuid.' % (value)))
     return True
