@@ -34,8 +34,8 @@ These files are hosted under the `etc/pycadf`_ directory of pyCADF. For more
 information on how to use these mapping files, refer to the `Audit middleware`_
 section of the `keystonemiddleware`_ project.
 
-.. _Audit middleware: https://docs.openstack.org/developer/keystonemiddleware/audit.html
-.. _keystonemiddleware: https://docs.openstack.org/developer/keystonemiddleware
+.. _Audit middleware: https://docs.openstack.org/keystonemiddleware/latest/audit.html
+.. _keystonemiddleware: https://docs.openstack.org/keystonemiddleware/latest/
 .. _`etc/pycadf`: https://github.com/openstack/pycadf/tree/master/etc/pycadf
 .. _`cinder_api_audit_map.conf`: https://github.com/openstack/pycadf/blob/master/etc/pycadf/cinder_api_audit_map.conf
 .. _`glance_api_audit_map.conf`: https://github.com/openstack/pycadf/blob/master/etc/pycadf/glance_api_audit_map.conf
