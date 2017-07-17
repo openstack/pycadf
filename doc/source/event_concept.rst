@@ -89,7 +89,7 @@ details):
         "eventTime": "2014-02-27T19:29:30.855665+0000",
         "target": {
             "typeURI": "service/compute/node",
-            # optional Endpoints to describe compute node,
+            // optional Endpoints to describe compute node,
             "addresses": [
                 {
                     "url": "http://9.26.26.250:8774/v2/e7e2bcc9c0df4f3eabcd412ae62503f6",
@@ -108,9 +108,9 @@ details):
             "name": "nova"
         },
         "observer": {
-            "id": "target" # shortform to show Observer Resource is the same as Target,
+            "id": "target" // shortform to show Observer Resource is the same as Target,
         },
-        # tags use to query events on,
+        // tags use to query events on,
         "tags": [
             "correlation_id?value=56cdde6f-6b4e-48a4-94e6-defb40522fb2"
         ],
@@ -118,12 +118,12 @@ details):
         "initiator": {
             "typeURI": "data/security/account/user",
             "name": "admin",
-            # optional Credential to describe resource,
+            // optional Credential to describe resource,
             "credential": {
                 "token": "MIIQzgYJKoZIhvcNAQcCoIIQvzCCELsC xxxxxxxx zqvD9OPWZm7VQpYNK2EvrZi-mTvb5A==",
                 "identity_status": "Confirmed"
             },
-            # optional Host to describe resource,
+            // optional Host to describe resource,
             "host": {
                 "agent": "python-novaclient",
                 "address": "9.26.26.250"
@@ -131,12 +131,12 @@ details):
             "project_id": "e7e2bcc9c0df4f3eabcd412ae62503f6",
             "id": "68a3f50705a54f799ce94380fc02ed8a"
         },
-        # optional Reason for activity event,
+        // optional Reason for activity event,
         "reason": {
             "reasonCode": "200",
             "reasonType": "HTTP"
         },
-        # list of Resources which edited event,
+        // list of Resources which edited event,
         "reporterchain": [
             {
                 "reporterTime": "2014-02-27T19:29:31.043902+0000",
@@ -149,7 +149,7 @@ details):
         "action": "authenticate/logon",
         "outcome": "success",
         "id": "0a196053-95de-48f8-9890-4527b25b5007",
-        # Event model is extensible so additional attributes may be added to describe model,
+        // Event model is extensible so additional attributes may be added to describe model,
         "requestPath": "/v2/e7e2bcc9c0df4f3eabcd412ae62503f6/os-certificates"
     }
 
