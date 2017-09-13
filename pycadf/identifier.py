@@ -16,7 +16,6 @@ import re
 import uuid
 import warnings
 
-from debtcollector import removals
 from oslo_config import cfg
 import six
 
@@ -42,13 +41,6 @@ def generate_uuid():
     if AUDIT_NS:
         return str(uuid.uuid5(AUDIT_NS, str(uuid.uuid4())))
     return str(uuid.uuid4())
-
-
-@removals.remove
-def norm_ns(str_id):
-    """Apply a namespace to the identifier."""
-    prefix = CONF.audit.namespace + ':' if CONF.audit.namespace else ''
-    return prefix + str_id
 
 
 def _check_valid_uuid(value):
