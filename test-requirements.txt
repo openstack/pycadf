@@ -13,5 +13,5 @@ testrepository>=0.0.18 # Apache-2.0/BSD
 testtools>=1.4.0 # MIT
 
 # this is required for the docs build jobs
-openstackdocstheme>=1.11.0 # Apache-2.0
+openstackdocstheme>=1.17.0 # Apache-2.0
 sphinx>=1.6.2 # BSD
