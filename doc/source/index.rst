@@ -58,7 +58,7 @@ using `Gerrit`_.
 .. _Gerrit: https://docs.openstack.org/infra/manual/developers.html#development-workflow
 .. _Bug reports: https://bugs.launchpad.net/pycadf/+bugs
 .. _blueprints: https://blueprints.launchpad.net/pycadf
-.. _PyPi: https://pypi.python.org/pypi/pycadf
+.. _PyPi: https://pypi.org/project/pycadf
 .. _tarball: https://tarballs.openstack.org/pycadf
 
 Code Documentation
