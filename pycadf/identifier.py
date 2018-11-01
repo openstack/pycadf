@@ -30,8 +30,8 @@ CONF.register_opts(opts, group='audit')
 
 AUDIT_NS = None
 if CONF.audit.namespace:
-    md5_hash = hashlib.md5(CONF.audit.namespace.encode('utf-8'))
-    AUDIT_NS = uuid.UUID(md5_hash.hexdigest())
+    sha256_hash = hashlib.sha256(CONF.audit.namespace.encode('utf-8'))
+    AUDIT_NS = uuid.UUID(sha256_hash.hexdigest()[0:32])
 
 VALID_EXCEPTIONS = ['default', 'initiator', 'observer', 'target']
 
