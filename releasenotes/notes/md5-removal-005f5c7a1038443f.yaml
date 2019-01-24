@@ -1,0 +1,6 @@
+---
+security:
+  - |
+    MD5 is no longer used as a hashing mechanism internally. This is not
+    expected to have any external impact as it only changes how random
+    identifiers are generated.
