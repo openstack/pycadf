@@ -6,6 +6,5 @@
       - openstack-cover-jobs
       - openstack-lower-constraints-jobs
       - openstack-python-jobs
-      - openstack-python36-jobs
-      - openstack-python37-jobs
+      - openstack-python3-train-jobs
       - publish-openstack-docs-pti
