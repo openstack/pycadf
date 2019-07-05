@@ -10,10 +10,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
-
-# NOTE(gordc): path for Sphinx ext.apidoc
-sys.path.insert(0, os.path.abspath('..'))
+import os
 
 # This is required for ReadTheDocs.org, but isn't a bad idea anyway.
 os.environ['DJANGO_SETTINGS_MODULE'] = 'openstack_dashboard.settings'
@@ -37,7 +34,6 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'openstackdocstheme',
-    'ext.apidoc'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
