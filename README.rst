@@ -36,4 +36,4 @@ auditors can expect from audit notifications.
 .. _Launchpad project: https://launchpad.net/pycadf
 .. _Blueprints: https://blueprints.launchpad.net/pycadf
 .. _Bugs: https://bugs.launchpad.net/pycadf
-.. _Source: https://git.openstack.org/cgit/openstack/pycadf
+.. _Source: https://opendev.org/openstack/pycadf
