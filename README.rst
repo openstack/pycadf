@@ -1,15 +1,11 @@
-========================
-Team and repository tags
-========================
+======
+PyCADF
+======
 
 .. image:: https://governance.openstack.org/tc/badges/pycadf.svg
     :target: https://governance.openstack.org/tc/reference/tags/index.html
 
 .. Change things from this point on
-
-======
-PyCADF
-======
 
 .. image:: https://img.shields.io/pypi/v/pycadf.svg
     :target: https://pypi.org/project/pycadf/
