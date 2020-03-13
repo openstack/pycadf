@@ -13,9 +13,8 @@
 # the License.
 
 import time
+from unittest import mock
 import uuid
-
-import mock
 
 from pycadf import attachment
 from pycadf import cadftype
