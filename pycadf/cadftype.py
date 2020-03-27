@@ -35,6 +35,7 @@ VALID_EVENTTYPES = frozenset([
 def is_valid_eventType(value):
     return value in VALID_EVENTTYPES
 
+
 # valid cadf:Event record "Reporter" roles
 REPORTER_ROLE_OBSERVER = 'observer'
 REPORTER_ROLE_MODIFIER = 'modifier'

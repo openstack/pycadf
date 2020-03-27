@@ -89,6 +89,7 @@ OUTCOME_TAXONOMY = frozenset([
 def is_valid_outcome(value):
     return value in OUTCOME_TAXONOMY
 
+
 SERVICE_SECURITY = 'service/security'
 SERVICE_KEYMGR = 'service/security/keymanager'
 ACCOUNT_USER = 'service/security/account/user'
