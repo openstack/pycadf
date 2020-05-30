@@ -81,7 +81,7 @@ exclude_patterns = ['_build']
 #show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'native'
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
@@ -241,6 +241,6 @@ texinfo_documents = [
 #texinfo_no_detailmenu = False
 
 # -- Options for openstackdocstheme -------------------------------------------
-repository_name = 'openstack/pycadf'
-bug_project = 'pycadf'
-bug_tag = ''
+openstackdocs_repo_name = 'openstack/pycadf'
+openstackdocs_bug_project = 'pycadf'
+openstackdocs_bug_tag = ''
