@@ -37,7 +37,7 @@ addresses     cadf:Endpoint[]   No        The optional descriptive addresses (in
 host          cadf:Host         No        The optional information about the (network) host of the resource
 geolocation   cadf:Geolocation  Dependent This optional property describes the geographic location of the resource using Geolocation data type. Required if not geolocationId
 geolocationId cadf:Identifier   Dependent This optional property identifies a CADF Geolocation by reference. Required if not geolocation
-attachments   cadf:Attachment[] No        An optional array of extended or domain-specific information about the resource or its contex
+attachments   cadf:Attachment[] No        An optional array of extended or domain-specific information about the resource or its context
 ============= ================= ========= ===================================================================================================================================
 
 Serialisation
