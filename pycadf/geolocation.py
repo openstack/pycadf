@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import six
-
 from pycadf import cadftype
 from pycadf import identifier
 
@@ -50,26 +48,20 @@ class Geolocation(cadftype.CADFAbstractType):
     # TODO(mrutkows): we may want to do more validation to make
     # sure numeric range represented by string is valid
     latitude = cadftype.ValidatorDescriptor(GEO_KEYNAME_LATITUDE,
-                                            lambda x: isinstance(
-                                                x, six.string_types))
+                                            lambda x: isinstance(x, str))
     longitude = cadftype.ValidatorDescriptor(GEO_KEYNAME_LONGITUDE,
-                                             lambda x: isinstance(
-                                                 x, six.string_types))
+                                             lambda x: isinstance(x, str))
     elevation = cadftype.ValidatorDescriptor(GEO_KEYNAME_ELEVATION,
-                                             lambda x: isinstance(
-                                                 x, six.string_types))
+                                             lambda x: isinstance(x, str))
     accuracy = cadftype.ValidatorDescriptor(GEO_KEYNAME_ACCURACY,
-                                            lambda x: isinstance(
-                                                x, six.string_types))
+                                            lambda x: isinstance(x, str))
     city = cadftype.ValidatorDescriptor(GEO_KEYNAME_CITY,
-                                        lambda x: isinstance(
-                                            x, six.string_types))
+                                        lambda x: isinstance(x, str))
     state = cadftype.ValidatorDescriptor(GEO_KEYNAME_STATE,
-                                         lambda x: isinstance(
-                                             x, six.string_types))
+                                         lambda x: isinstance(x, str))
     regionICANN = cadftype.ValidatorDescriptor(
         GEO_KEYNAME_REGIONICANN,
-        lambda x: isinstance(x, six.string_types))
+        lambda x: isinstance(x, str))
 
     def __init__(self, id=None, latitude=None, longitude=None,
                  elevation=None, accuracy=None, city=None, state=None,

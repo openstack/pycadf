@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import six
-
 from pycadf import attachment
 from pycadf import cadftaxonomy
 from pycadf import cadftype
@@ -97,11 +95,9 @@ class Event(cadftype.CADFAbstractType):
         EVENT_KEYNAME_REASON,
         lambda x: isinstance(x, reason.Reason) and x.is_valid())
     name = cadftype.ValidatorDescriptor(EVENT_KEYNAME_NAME,
-                                        lambda x: isinstance(
-                                            x, six.string_types))
+                                        lambda x: isinstance(x, str))
     severity = cadftype.ValidatorDescriptor(EVENT_KEYNAME_SEVERITY,
-                                            lambda x: isinstance(
-                                                x, six.string_types))
+                                            lambda x: isinstance(x, str))
     observer = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_OBSERVER,
         (lambda x: isinstance(x, resource.Resource) and x.is_valid()))

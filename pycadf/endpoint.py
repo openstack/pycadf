@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import six
-
 from pycadf import cadftype
 
 TYPE_URI_ENDPOINT = cadftype.CADF_VERSION_1_0_0 + 'endpoint'
@@ -30,11 +28,11 @@ ENDPOINT_KEYNAMES = [ENDPOINT_KEYNAME_URL,
 class Endpoint(cadftype.CADFAbstractType):
 
     url = cadftype.ValidatorDescriptor(
-        ENDPOINT_KEYNAME_URL, lambda x: isinstance(x, six.string_types))
+        ENDPOINT_KEYNAME_URL, lambda x: isinstance(x, str))
     name = cadftype.ValidatorDescriptor(
-        ENDPOINT_KEYNAME_NAME, lambda x: isinstance(x, six.string_types))
+        ENDPOINT_KEYNAME_NAME, lambda x: isinstance(x, str))
     port = cadftype.ValidatorDescriptor(
-        ENDPOINT_KEYNAME_PORT, lambda x: isinstance(x, six.string_types))
+        ENDPOINT_KEYNAME_PORT, lambda x: isinstance(x, str))
 
     def __init__(self, url, name=None, port=None):
         """Create Endpoint data type

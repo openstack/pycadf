@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import six
-
 
 def mask_value(value, s_percent=0.125):
     """Obfuscate a given string to show only a percentage of leading
@@ -21,7 +19,7 @@ def mask_value(value, s_percent=0.125):
 
     :param s_percent: The percentage (in decimal) of characters to replace
     """
-    if isinstance(value, six.string_types):
+    if isinstance(value, str):
         visible = (32 if int(round(len(value) * s_percent)) > 32
                    else int(round(len(value) * s_percent)))
         return value[:visible] + " xxxxxxxx " + value[-visible:]

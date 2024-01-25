@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import six
-
 
 def generate_name_value_tag(name, value):
     """Generate a CADF tag in the format name?value=<value>
@@ -32,6 +30,6 @@ def generate_name_value_tag(name, value):
 def is_valid(value):
     """Validation check to ensure proper Tag format
     """
-    if not isinstance(value, six.string_types):
+    if not isinstance(value, str):
         raise TypeError
     return True

@@ -11,8 +11,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import six
-
 from pycadf import cadftaxonomy
 
 
@@ -33,8 +31,8 @@ def convert_req_action(method, details=None):
                'trace': 'capture'}
 
     action = None
-    if isinstance(method, six.string_types):
+    if isinstance(method, str):
         action = mapping.get(method.lower())
-        if action and isinstance(details, six.string_types):
+        if action and isinstance(details, str):
             action += '/%s' % details
     return action or cadftaxonomy.UNKNOWN

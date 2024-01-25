@@ -15,7 +15,6 @@
 import datetime
 
 import pytz
-import six
 
 TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z"
 
@@ -39,7 +38,7 @@ def get_utc_now(timezone=None):
 def is_valid(value):
     """Validation to ensure timestamp is a string.
     """
-    if not isinstance(value, six.string_types):
+    if not isinstance(value, str):
         raise ValueError('Timestamp should be a String')
 
     return True

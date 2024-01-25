@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import six
-
 from pycadf import cadftype
 
 
@@ -30,7 +28,7 @@ class Path(cadftype.CADFAbstractType):
     # TODO(mrutkows): validate any cadf:Path (type) record against CADF schema
     @staticmethod
     def is_valid(value):
-        if not isinstance(value, six.string_types):
+        if not isinstance(value, str):
             raise TypeError
 
         return True

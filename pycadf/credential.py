@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import six
-
 from pycadf import cadftype
 from pycadf import utils
 
@@ -36,12 +34,10 @@ FED_CRED_KEYNAMES = CRED_KEYNAMES + [FED_CRED_KEYNAME_IDENTITY_PROVIDER,
 
 
 class Credential(cadftype.CADFAbstractType):
-    type = cadftype.ValidatorDescriptor(
-        CRED_KEYNAME_TYPE,
-        lambda x: isinstance(x, six.string_types))
-    token = cadftype.ValidatorDescriptor(
-        CRED_KEYNAME_TOKEN,
-        lambda x: isinstance(x, six.string_types))
+    type = cadftype.ValidatorDescriptor(CRED_KEYNAME_TYPE,
+                                        lambda x: isinstance(x, str))
+    token = cadftype.ValidatorDescriptor(CRED_KEYNAME_TOKEN,
+                                         lambda x: isinstance(x, str))
 
     def __init__(self, token, type=None):
         """Create Credential data type
@@ -67,10 +63,10 @@ class Credential(cadftype.CADFAbstractType):
 class FederatedCredential(Credential):
     identity_provider = cadftype.ValidatorDescriptor(
         FED_CRED_KEYNAME_IDENTITY_PROVIDER,
-        lambda x: isinstance(x, six.string_types))
+        lambda x: isinstance(x, str))
     user = cadftype.ValidatorDescriptor(
         FED_CRED_KEYNAME_USER,
-        lambda x: isinstance(x, six.string_types))
+        lambda x: isinstance(x, str))
     groups = cadftype.ValidatorDescriptor(
         FED_CRED_KEYNAME_GROUPS,
         lambda x: isinstance(x, list))

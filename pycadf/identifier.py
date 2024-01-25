@@ -17,7 +17,6 @@ import uuid
 import warnings
 
 from oslo_config import cfg
-import six
 
 CONF = cfg.CONF
 opts = [
@@ -66,7 +65,7 @@ def is_valid(value):
     try:
         _check_valid_uuid(value)
     except (ValueError, TypeError):
-        if not isinstance(value, six.string_types) or not value:
+        if not isinstance(value, str) or not value:
             return False
         warnings.warn(('Invalid uuid: %s. To ensure interoperability, '
                       'identifiers should be a valid uuid.' % (value)))

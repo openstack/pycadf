@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import six
-
 from pycadf import cadftype
 from pycadf import identifier
 
@@ -38,11 +36,9 @@ class Metric(cadftype.CADFAbstractType):
     metricId = cadftype.ValidatorDescriptor(METRIC_KEYNAME_METRICID,
                                             lambda x: identifier.is_valid(x))
     unit = cadftype.ValidatorDescriptor(METRIC_KEYNAME_UNIT,
-                                        lambda x: isinstance(x,
-                                                             six.string_types))
+                                        lambda x: isinstance(x, str))
     name = cadftype.ValidatorDescriptor(METRIC_KEYNAME_NAME,
-                                        lambda x: isinstance(x,
-                                                             six.string_types))
+                                        lambda x: isinstance(x, str))
 
     def __init__(self, metricId=None, unit=None, name=None):
         """Create metric data type

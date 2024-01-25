@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import six
-
 from pycadf import cadftype
 
 TYPE_URI_REASON = cadftype.CADF_VERSION_1_0_0 + 'reason'
@@ -33,16 +31,16 @@ class Reason(cadftype.CADFAbstractType):
 
     reasonType = cadftype.ValidatorDescriptor(
         REASON_KEYNAME_REASONTYPE,
-        lambda x: isinstance(x, six.string_types))
+        lambda x: isinstance(x, str))
     reasonCode = cadftype.ValidatorDescriptor(
         REASON_KEYNAME_REASONCODE,
-        lambda x: isinstance(x, six.string_types))
+        lambda x: isinstance(x, str))
     policyType = cadftype.ValidatorDescriptor(
         REASON_KEYNAME_POLICYTYPE,
-        lambda x: isinstance(x, six.string_types))
+        lambda x: isinstance(x, str))
     policyId = cadftype.ValidatorDescriptor(
         REASON_KEYNAME_POLICYID,
-        lambda x: isinstance(x, six.string_types))
+        lambda x: isinstance(x, str))
 
     def __init__(self, reasonType=None, reasonCode=None, policyType=None,
                  policyId=None):
