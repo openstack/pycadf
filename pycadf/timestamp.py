@@ -24,7 +24,8 @@ def get_utc_now(timezone=None):
 
     :param timezone: an optional timezone param to offset time to.
     """
-    utc_datetime = pytz.utc.localize(datetime.datetime.utcnow())
+    utc_datetime = pytz.utc.localize(datetime.datetime.now(
+        datetime.timezone.utc).replace(tzinfo=None))
     if timezone is not None:
         try:
             utc_datetime = utc_datetime.astimezone(pytz.timezone(timezone))
