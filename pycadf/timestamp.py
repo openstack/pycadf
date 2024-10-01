@@ -13,8 +13,7 @@
 # the License.
 
 import datetime
-
-import pytz
+import zoneinfo
 
 TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z"
 
@@ -24,11 +23,11 @@ def get_utc_now(timezone=None):
 
     :param timezone: an optional timezone param to offset time to.
     """
-    utc_datetime = pytz.utc.localize(datetime.datetime.now(
-        datetime.timezone.utc).replace(tzinfo=None))
+    utc_datetime = datetime.datetime.now(datetime.timezone.utc)
     if timezone is not None:
         try:
-            utc_datetime = utc_datetime.astimezone(pytz.timezone(timezone))
+            tz = zoneinfo.Zoneinfo(timezone)
+            utc_datetime = utc_datetime.astimezone(tz=tz)
         except Exception:
             utc_datetime.strftime(TIME_FORMAT)
     return utc_datetime.strftime(TIME_FORMAT)
