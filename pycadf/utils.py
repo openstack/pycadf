@@ -20,7 +20,10 @@ def mask_value(value, s_percent=0.125):
     :param s_percent: The percentage (in decimal) of characters to replace
     """
     if isinstance(value, str):
-        visible = (32 if int(round(len(value) * s_percent)) > 32
-                   else int(round(len(value) * s_percent)))
+        visible = (
+            32
+            if int(round(len(value) * s_percent)) > 32
+            else int(round(len(value) * s_percent))
+        )
         return value[:visible] + " xxxxxxxx " + value[-visible:]
     return value

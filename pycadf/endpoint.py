@@ -20,19 +20,23 @@ ENDPOINT_KEYNAME_URL = "url"
 ENDPOINT_KEYNAME_NAME = "name"
 ENDPOINT_KEYNAME_PORT = "port"
 
-ENDPOINT_KEYNAMES = [ENDPOINT_KEYNAME_URL,
-                     ENDPOINT_KEYNAME_NAME,
-                     ENDPOINT_KEYNAME_PORT]
+ENDPOINT_KEYNAMES = [
+    ENDPOINT_KEYNAME_URL,
+    ENDPOINT_KEYNAME_NAME,
+    ENDPOINT_KEYNAME_PORT,
+]
 
 
 class Endpoint(cadftype.CADFAbstractType):
-
     url = cadftype.ValidatorDescriptor(
-        ENDPOINT_KEYNAME_URL, lambda x: isinstance(x, str))
+        ENDPOINT_KEYNAME_URL, lambda x: isinstance(x, str)
+    )
     name = cadftype.ValidatorDescriptor(
-        ENDPOINT_KEYNAME_NAME, lambda x: isinstance(x, str))
+        ENDPOINT_KEYNAME_NAME, lambda x: isinstance(x, str)
+    )
     port = cadftype.ValidatorDescriptor(
-        ENDPOINT_KEYNAME_PORT, lambda x: isinstance(x, str))
+        ENDPOINT_KEYNAME_PORT, lambda x: isinstance(x, str)
+    )
 
     def __init__(self, url, name=None, port=None):
         """Create Endpoint data type
@@ -53,6 +57,5 @@ class Endpoint(cadftype.CADFAbstractType):
 
     # TODO(mrutkows): validate this cadf:ENDPOINT type against schema
     def is_valid(self):
-        """Validation to ensure Endpoint required attributes are set.
-        """
+        """Validation to ensure Endpoint required attributes are set."""
         return self._isset(ENDPOINT_KEYNAME_URL)

@@ -20,9 +20,11 @@ from oslo_config import cfg
 
 CONF = cfg.CONF
 opts = [
-    cfg.StrOpt('namespace',
-               default='openstack',
-               help='namespace prefix for generated id'),
+    cfg.StrOpt(
+        'namespace',
+        default='openstack',
+        help='namespace prefix for generated id',
+    ),
 ]
 CONF.register_opts(opts, group='audit')
 
@@ -49,7 +51,7 @@ def _check_valid_uuid(value):
         raise ValueError
 
     value = re.sub('[{}-]|urn:uuid:', '', value)
-    for val in [value[i:i + 32] for i in range(0, len(value), 32)]:
+    for val in [value[i : i + 32] for i in range(0, len(value), 32)]:
         uuid.UUID(val)
 
 
@@ -67,6 +69,8 @@ def is_valid(value):
     except (ValueError, TypeError):
         if not isinstance(value, str) or not value:
             return False
-        warnings.warn('Invalid uuid: %s. To ensure interoperability, '
-                      'identifiers should be a valid uuid.' % (value))
+        warnings.warn(
+            f'Invalid uuid: {value}. To ensure interoperability, '
+            'identifiers should be a valid uuid.'
+        )
     return True

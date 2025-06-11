@@ -18,21 +18,24 @@ ATTACHMENT_KEYNAME_TYPEURI = "typeURI"
 ATTACHMENT_KEYNAME_CONTENT = "content"
 ATTACHMENT_KEYNAME_NAME = "name"
 
-ATTACHMENT_KEYNAMES = [ATTACHMENT_KEYNAME_TYPEURI,
-                       ATTACHMENT_KEYNAME_CONTENT,
-                       ATTACHMENT_KEYNAME_NAME]
+ATTACHMENT_KEYNAMES = [
+    ATTACHMENT_KEYNAME_TYPEURI,
+    ATTACHMENT_KEYNAME_CONTENT,
+    ATTACHMENT_KEYNAME_NAME,
+]
 
 
 class Attachment(cadftype.CADFAbstractType):
-
     # TODO(mrutkows): OpenStack / Ceilometer may want to define
     # the set of approved attachment types in order to
     # limit and validate them.
-    typeURI = cadftype.ValidatorDescriptor(ATTACHMENT_KEYNAME_TYPEURI,
-                                           lambda x: isinstance(x, str))
+    typeURI = cadftype.ValidatorDescriptor(
+        ATTACHMENT_KEYNAME_TYPEURI, lambda x: isinstance(x, str)
+    )
     content = cadftype.ValidatorDescriptor(ATTACHMENT_KEYNAME_CONTENT)
-    name = cadftype.ValidatorDescriptor(ATTACHMENT_KEYNAME_NAME,
-                                        lambda x: isinstance(x, str))
+    name = cadftype.ValidatorDescriptor(
+        ATTACHMENT_KEYNAME_NAME, lambda x: isinstance(x, str)
+    )
 
     def __init__(self, typeURI=None, content=None, name=None):
         """Create Attachment data type
@@ -55,10 +58,9 @@ class Attachment(cadftype.CADFAbstractType):
 
     # self validate cadf:Attachment type against schema
     def is_valid(self):
-        """Validation to ensure Attachment required attributes are set.
-        """
+        """Validation to ensure Attachment required attributes are set."""
         return (
-            self._isset(ATTACHMENT_KEYNAME_TYPEURI) and
-            self._isset(ATTACHMENT_KEYNAME_NAME) and
-            self._isset(ATTACHMENT_KEYNAME_CONTENT)
+            self._isset(ATTACHMENT_KEYNAME_TYPEURI)
+            and self._isset(ATTACHMENT_KEYNAME_NAME)
+            and self._isset(ATTACHMENT_KEYNAME_CONTENT)
         )

@@ -35,50 +35,68 @@ RESOURCE_KEYNAME_HOST = "host"
 RESOURCE_KEYNAME_ADDRS = "addresses"
 RESOURCE_KEYNAME_ATTACHMENTS = "attachments"
 
-RESOURCE_KEYNAMES = [RESOURCE_KEYNAME_TYPEURI,
-                     RESOURCE_KEYNAME_ID,
-                     RESOURCE_KEYNAME_NAME,
-                     RESOURCE_KEYNAME_DOMAIN,
-                     RESOURCE_KEYNAME_CRED,
-                     RESOURCE_KEYNAME_REF,
-                     RESOURCE_KEYNAME_GEO,
-                     RESOURCE_KEYNAME_GEOID,
-                     RESOURCE_KEYNAME_HOST,
-                     RESOURCE_KEYNAME_ADDRS,
-                     RESOURCE_KEYNAME_ATTACHMENTS]
+RESOURCE_KEYNAMES = [
+    RESOURCE_KEYNAME_TYPEURI,
+    RESOURCE_KEYNAME_ID,
+    RESOURCE_KEYNAME_NAME,
+    RESOURCE_KEYNAME_DOMAIN,
+    RESOURCE_KEYNAME_CRED,
+    RESOURCE_KEYNAME_REF,
+    RESOURCE_KEYNAME_GEO,
+    RESOURCE_KEYNAME_GEOID,
+    RESOURCE_KEYNAME_HOST,
+    RESOURCE_KEYNAME_ADDRS,
+    RESOURCE_KEYNAME_ATTACHMENTS,
+]
 
 
 class Resource(cadftype.CADFAbstractType):
-
     typeURI = cadftype.ValidatorDescriptor(
-        RESOURCE_KEYNAME_TYPEURI, lambda x: cadftaxonomy.is_valid_resource(x))
-    id = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_ID,
-                                      lambda x: identifier.is_valid(x))
-    name = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_NAME,
-                                        lambda x: isinstance(x, str))
-    domain = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_DOMAIN,
-                                          lambda x: isinstance(x, str))
+        RESOURCE_KEYNAME_TYPEURI, lambda x: cadftaxonomy.is_valid_resource(x)
+    )
+    id = cadftype.ValidatorDescriptor(
+        RESOURCE_KEYNAME_ID, lambda x: identifier.is_valid(x)
+    )
+    name = cadftype.ValidatorDescriptor(
+        RESOURCE_KEYNAME_NAME, lambda x: isinstance(x, str)
+    )
+    domain = cadftype.ValidatorDescriptor(
+        RESOURCE_KEYNAME_DOMAIN, lambda x: isinstance(x, str)
+    )
     credential = cadftype.ValidatorDescriptor(
-        RESOURCE_KEYNAME_CRED, (lambda x: isinstance(x, credential.Credential)
-                                and x.is_valid()))
+        RESOURCE_KEYNAME_CRED,
+        (lambda x: isinstance(x, credential.Credential) and x.is_valid()),
+    )
     host = cadftype.ValidatorDescriptor(
-        RESOURCE_KEYNAME_HOST, lambda x: isinstance(x, host.Host))
+        RESOURCE_KEYNAME_HOST, lambda x: isinstance(x, host.Host)
+    )
     # TODO(mrutkows): validate the "ref" attribute is indeed a URI (format),
     # If it is a URL, we do not need to validate it is accessible/working,
     # for audit purposes this could have been a valid URL at some point
     # in the past or a URL that is only valid within some domain (e.g. a
     # private cloud)
-    ref = cadftype.ValidatorDescriptor(RESOURCE_KEYNAME_REF,
-                                       lambda x: isinstance(x, str))
+    ref = cadftype.ValidatorDescriptor(
+        RESOURCE_KEYNAME_REF, lambda x: isinstance(x, str)
+    )
     geolocation = cadftype.ValidatorDescriptor(
-        RESOURCE_KEYNAME_GEO,
-        lambda x: isinstance(x, geolocation.Geolocation))
+        RESOURCE_KEYNAME_GEO, lambda x: isinstance(x, geolocation.Geolocation)
+    )
     geolocationId = cadftype.ValidatorDescriptor(
-        RESOURCE_KEYNAME_GEOID, lambda x: identifier.is_valid(x))
+        RESOURCE_KEYNAME_GEOID, lambda x: identifier.is_valid(x)
+    )
 
-    def __init__(self, id=None, typeURI=cadftaxonomy.UNKNOWN, name=None,
-                 ref=None, domain=None, credential=None, host=None,
-                 geolocation=None, geolocationId=None):
+    def __init__(
+        self,
+        id=None,
+        typeURI=cadftaxonomy.UNKNOWN,
+        name=None,
+        ref=None,
+        domain=None,
+        credential=None,
+        host=None,
+        geolocation=None,
+        geolocationId=None,
+    ):
         """Resource data type
 
         :param id: id of resource
@@ -95,8 +113,10 @@ class Resource(cadftype.CADFAbstractType):
         setattr(self, RESOURCE_KEYNAME_ID, id or identifier.generate_uuid())
 
         # Resource.typeURI
-        if (getattr(self, RESOURCE_KEYNAME_ID) != "target" and
-                getattr(self, RESOURCE_KEYNAME_ID) != "initiator"):
+        if (
+            getattr(self, RESOURCE_KEYNAME_ID) != "target"
+            and getattr(self, RESOURCE_KEYNAME_ID) != "initiator"
+        ):
             setattr(self, RESOURCE_KEYNAME_TYPEURI, typeURI)
 
         # Resource.name
@@ -133,7 +153,7 @@ class Resource(cadftype.CADFAbstractType):
 
         :param addr: CADF Endpoint to add to Resource
         """
-        if (addr is not None and isinstance(addr, endpoint.Endpoint)):
+        if addr is not None and isinstance(addr, endpoint.Endpoint):
             if addr.is_valid():
                 # Create the list of Endpoints if needed
                 if not hasattr(self, RESOURCE_KEYNAME_ADDRS):
@@ -152,8 +172,9 @@ class Resource(cadftype.CADFAbstractType):
 
         :param attach_val: CADF Attachment to add to Resource
         """
-        if (attach_val is not None
-                and isinstance(attach_val, attachment.Attachment)):
+        if attach_val is not None and isinstance(
+            attach_val, attachment.Attachment
+        ):
             if attach_val.is_valid():
                 # Create the list of Attachments if needed
                 if not hasattr(self, RESOURCE_KEYNAME_ATTACHMENTS):
@@ -168,11 +189,15 @@ class Resource(cadftype.CADFAbstractType):
 
     # self validate this cadf:Resource type against schema
     def is_valid(self):
-        """Validation to ensure Resource required attributes are set
-        """
-        return (self._isset(RESOURCE_KEYNAME_ID) and
-                (self._isset(RESOURCE_KEYNAME_TYPEURI) or
-                 ((getattr(self, RESOURCE_KEYNAME_ID) == "target" or
-                   getattr(self, RESOURCE_KEYNAME_ID) == "initiator") and
-                  len(vars(self).keys()) == 1)))
+        """Validation to ensure Resource required attributes are set"""
+        return self._isset(RESOURCE_KEYNAME_ID) and (
+            self._isset(RESOURCE_KEYNAME_TYPEURI)
+            or (
+                (
+                    getattr(self, RESOURCE_KEYNAME_ID) == "target"
+                    or getattr(self, RESOURCE_KEYNAME_ID) == "initiator"
+                )
+                and len(vars(self).keys()) == 1
+            )
+        )
         # TODO(mrutkows): validate the Resource's attribute types

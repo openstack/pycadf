@@ -22,25 +22,30 @@ MEASUREMENT_KEYNAME_METRIC = "metric"
 MEASUREMENT_KEYNAME_METRICID = "metricId"
 MEASUREMENT_KEYNAME_CALCBY = "calculatedBy"
 
-MEASUREMENT_KEYNAMES = [MEASUREMENT_KEYNAME_RESULT,
-                        MEASUREMENT_KEYNAME_METRICID,
-                        MEASUREMENT_KEYNAME_METRIC,
-                        MEASUREMENT_KEYNAME_CALCBY]
+MEASUREMENT_KEYNAMES = [
+    MEASUREMENT_KEYNAME_RESULT,
+    MEASUREMENT_KEYNAME_METRICID,
+    MEASUREMENT_KEYNAME_METRIC,
+    MEASUREMENT_KEYNAME_CALCBY,
+]
 
 
 class Measurement(cadftype.CADFAbstractType):
-
     result = cadftype.ValidatorDescriptor(MEASUREMENT_KEYNAME_RESULT)
     metric = cadftype.ValidatorDescriptor(
-        MEASUREMENT_KEYNAME_METRIC, lambda x: isinstance(x, metric.Metric))
-    metricId = cadftype.ValidatorDescriptor(MEASUREMENT_KEYNAME_METRICID,
-                                            lambda x: identifier.is_valid(x))
+        MEASUREMENT_KEYNAME_METRIC, lambda x: isinstance(x, metric.Metric)
+    )
+    metricId = cadftype.ValidatorDescriptor(
+        MEASUREMENT_KEYNAME_METRICID, lambda x: identifier.is_valid(x)
+    )
     calculatedBy = cadftype.ValidatorDescriptor(
         MEASUREMENT_KEYNAME_CALCBY,
-        (lambda x: isinstance(x, resource.Resource) and x.is_valid()))
+        (lambda x: isinstance(x, resource.Resource) and x.is_valid()),
+    )
 
-    def __init__(self, result=None, metric=None, metricId=None,
-                 calculatedBy=None):
+    def __init__(
+        self, result=None, metric=None, metricId=None, calculatedBy=None
+    ):
         """Create Measurement data type
 
         :param result: value of measurement
@@ -66,8 +71,8 @@ class Measurement(cadftype.CADFAbstractType):
 
     # self validate this cadf:Measurement type against schema
     def is_valid(self):
-        """Validation to ensure Measurement required attributes are set.
-        """
-        return (self._isset(MEASUREMENT_KEYNAME_RESULT) and
-                (self._isset(MEASUREMENT_KEYNAME_METRIC) ^
-                 self._isset(MEASUREMENT_KEYNAME_METRICID)))
+        """Validation to ensure Measurement required attributes are set."""
+        return self._isset(MEASUREMENT_KEYNAME_RESULT) and (
+            self._isset(MEASUREMENT_KEYNAME_METRIC)
+            ^ self._isset(MEASUREMENT_KEYNAME_METRICID)
+        )

@@ -18,26 +18,29 @@ from pycadf import utils
 TYPE_URI_CRED = cadftype.CADF_VERSION_1_0_0 + 'credential'
 
 CRED_KEYNAME_TYPE = "type"
-CRED_KEYNAME_TOKEN = "token"
+CRED_KEYNAME_TOKEN = "token"  # noqa: S105
 
-CRED_KEYNAMES = [CRED_KEYNAME_TYPE,
-                 CRED_KEYNAME_TOKEN]
+CRED_KEYNAMES = [CRED_KEYNAME_TYPE, CRED_KEYNAME_TOKEN]
 
 
 FED_CRED_KEYNAME_IDENTITY_PROVIDER = "identity_provider"
 FED_CRED_KEYNAME_USER = "user"
 FED_CRED_KEYNAME_GROUPS = "groups"
 
-FED_CRED_KEYNAMES = CRED_KEYNAMES + [FED_CRED_KEYNAME_IDENTITY_PROVIDER,
-                                     FED_CRED_KEYNAME_USER,
-                                     FED_CRED_KEYNAME_GROUPS]
+FED_CRED_KEYNAMES = CRED_KEYNAMES + [
+    FED_CRED_KEYNAME_IDENTITY_PROVIDER,
+    FED_CRED_KEYNAME_USER,
+    FED_CRED_KEYNAME_GROUPS,
+]
 
 
 class Credential(cadftype.CADFAbstractType):
-    type = cadftype.ValidatorDescriptor(CRED_KEYNAME_TYPE,
-                                        lambda x: isinstance(x, str))
-    token = cadftype.ValidatorDescriptor(CRED_KEYNAME_TOKEN,
-                                         lambda x: isinstance(x, str))
+    type = cadftype.ValidatorDescriptor(
+        CRED_KEYNAME_TYPE, lambda x: isinstance(x, str)
+    )
+    token = cadftype.ValidatorDescriptor(
+        CRED_KEYNAME_TOKEN, lambda x: isinstance(x, str)
+    )
 
     def __init__(self, token, type=None):
         """Create Credential data type
@@ -62,19 +65,17 @@ class Credential(cadftype.CADFAbstractType):
 
 class FederatedCredential(Credential):
     identity_provider = cadftype.ValidatorDescriptor(
-        FED_CRED_KEYNAME_IDENTITY_PROVIDER,
-        lambda x: isinstance(x, str))
+        FED_CRED_KEYNAME_IDENTITY_PROVIDER, lambda x: isinstance(x, str)
+    )
     user = cadftype.ValidatorDescriptor(
-        FED_CRED_KEYNAME_USER,
-        lambda x: isinstance(x, str))
+        FED_CRED_KEYNAME_USER, lambda x: isinstance(x, str)
+    )
     groups = cadftype.ValidatorDescriptor(
-        FED_CRED_KEYNAME_GROUPS,
-        lambda x: isinstance(x, list))
+        FED_CRED_KEYNAME_GROUPS, lambda x: isinstance(x, list)
+    )
 
     def __init__(self, token, type, identity_provider, user, groups):
-        super().__init__(
-            token=token,
-            type=type)
+        super().__init__(token=token, type=type)
 
         # FederatedCredential.identity_provider
         setattr(self, FED_CRED_KEYNAME_IDENTITY_PROVIDER, identity_provider)
@@ -92,4 +93,5 @@ class FederatedCredential(Credential):
             and self._isset(CRED_KEYNAME_TYPE)
             and self._isset(FED_CRED_KEYNAME_IDENTITY_PROVIDER)
             and self._isset(FED_CRED_KEYNAME_USER)
-            and self._isset(FED_CRED_KEYNAME_GROUPS))
+            and self._isset(FED_CRED_KEYNAME_GROUPS)
+        )

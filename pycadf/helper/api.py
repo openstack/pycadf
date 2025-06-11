@@ -21,18 +21,20 @@ def convert_req_action(method, details=None):
     :param details: Extra details to append to action.
     """
 
-    mapping = {'get': cadftaxonomy.ACTION_READ,
-               'head': cadftaxonomy.ACTION_READ,
-               'post': cadftaxonomy.ACTION_CREATE,
-               'put': cadftaxonomy.ACTION_UPDATE,
-               'delete': cadftaxonomy.ACTION_DELETE,
-               'patch': cadftaxonomy.ACTION_UPDATE,
-               'options': cadftaxonomy.ACTION_READ,
-               'trace': 'capture'}
+    mapping = {
+        'get': cadftaxonomy.ACTION_READ,
+        'head': cadftaxonomy.ACTION_READ,
+        'post': cadftaxonomy.ACTION_CREATE,
+        'put': cadftaxonomy.ACTION_UPDATE,
+        'delete': cadftaxonomy.ACTION_DELETE,
+        'patch': cadftaxonomy.ACTION_UPDATE,
+        'options': cadftaxonomy.ACTION_READ,
+        'trace': 'capture',
+    }
 
     action = None
     if isinstance(method, str):
         action = mapping.get(method.lower())
         if action and isinstance(details, str):
-            action += '/%s' % details
+            action += f'/{details}'
     return action or cadftaxonomy.UNKNOWN

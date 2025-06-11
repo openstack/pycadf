@@ -22,25 +22,29 @@ HOST_KEYNAME_ADDR = "address"
 HOST_KEYNAME_AGENT = "agent"
 HOST_KEYNAME_PLATFORM = "platform"
 
-HOST_KEYNAMES = [HOST_KEYNAME_ID,
-                 HOST_KEYNAME_ADDR,
-                 HOST_KEYNAME_AGENT,
-                 HOST_KEYNAME_PLATFORM]
+HOST_KEYNAMES = [
+    HOST_KEYNAME_ID,
+    HOST_KEYNAME_ADDR,
+    HOST_KEYNAME_AGENT,
+    HOST_KEYNAME_PLATFORM,
+]
 
 
 class Host(cadftype.CADFAbstractType):
-
     id = cadftype.ValidatorDescriptor(
-        HOST_KEYNAME_ID, lambda x: identifier.is_valid(x))
+        HOST_KEYNAME_ID, lambda x: identifier.is_valid(x)
+    )
     address = cadftype.ValidatorDescriptor(
-        HOST_KEYNAME_ADDR, lambda x: isinstance(x, str))
+        HOST_KEYNAME_ADDR, lambda x: isinstance(x, str)
+    )
     agent = cadftype.ValidatorDescriptor(
-        HOST_KEYNAME_AGENT, lambda x: isinstance(x, str))
+        HOST_KEYNAME_AGENT, lambda x: isinstance(x, str)
+    )
     platform = cadftype.ValidatorDescriptor(
-        HOST_KEYNAME_PLATFORM, lambda x: isinstance(x, str))
+        HOST_KEYNAME_PLATFORM, lambda x: isinstance(x, str)
+    )
 
-    def __init__(self, id=None, address=None, agent=None,
-                 platform=None):
+    def __init__(self, id=None, address=None, agent=None, platform=None):
         """Create Host data type
 
         :param id: id of Host
@@ -64,6 +68,5 @@ class Host(cadftype.CADFAbstractType):
 
     # TODO(mrutkows): validate this cadf:Host type against schema
     def is_valid(self):
-        """Validation to ensure Host required attributes are set.
-        """
+        """Validation to ensure Host required attributes are set."""
         return True

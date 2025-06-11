@@ -19,14 +19,18 @@ ERROR_UNKNOWN_EVENTTYPE = 'Unknown CADF EventType requested on factory method'
 
 
 class EventFactory:
-    """Factory class to create different required attributes for
-       the following CADF event types:
-       'activity': for tracking any interesting system activities for audit
-       'monitor': Events that carry Metrics and Measurements and support
-       standards such as NIST
-       'control': For audit events that are based upon (security) policies
-       and reflect some policy decision.
+    """CADF event factory
+
+    Factory class to create different required attributes for the following
+    CADF event types:
+
+    :activity: for tracking any interesting system activities for audit
+    :monitor: Events that carry Metrics and Measurements and support
+        standards such as NIST
+    :control: For audit events that are based upon (security) policies
+        and reflect some policy decision.
     """
+
     def new_event(self, eventType=cadftype.EVENTTYPE_ACTIVITY, **kwargs):
         """Create new event
 

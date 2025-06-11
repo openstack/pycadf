@@ -25,9 +25,9 @@ class TestUtils(base.TestCase):
         obfuscate = utils.mask_value(value, m_percent)
         visible = int(round(len(value) * m_percent))
         self.assertEqual(value[:visible], obfuscate[:visible])
-        self.assertNotEqual(value[:visible + 1], obfuscate[:visible + 1])
+        self.assertNotEqual(value[: visible + 1], obfuscate[: visible + 1])
         self.assertEqual(value[-visible:], obfuscate[-visible:])
-        self.assertNotEqual(value[-visible - 1:], obfuscate[-visible - 1:])
+        self.assertNotEqual(value[-visible - 1 :], obfuscate[-visible - 1 :])
 
     def test_mask_value_nonstring(self):
         value = 12

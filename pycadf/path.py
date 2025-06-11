@@ -16,7 +16,6 @@ from pycadf import cadftype
 
 
 class Path(cadftype.CADFAbstractType):
-
     def set_path_absolute(self):
         # TODO(mrutkows): validate absolute path format, else Type error
         raise NotImplementedError()

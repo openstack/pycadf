@@ -29,43 +29,58 @@ GEO_KEYNAME_STATE = "state"
 GEO_KEYNAME_REGIONICANN = "regionICANN"
 # GEO_KEYNAME_ANNOTATIONS = "annotations"
 
-GEO_KEYNAMES = [GEO_KEYNAME_ID,
-                GEO_KEYNAME_LATITUDE,
-                GEO_KEYNAME_LONGITUDE,
-                GEO_KEYNAME_ELEVATION,
-                GEO_KEYNAME_ACCURACY,
-                GEO_KEYNAME_CITY,
-                GEO_KEYNAME_STATE,
-                GEO_KEYNAME_REGIONICANN
-                # GEO_KEYNAME_ANNOTATIONS
-                ]
+GEO_KEYNAMES = [
+    GEO_KEYNAME_ID,
+    GEO_KEYNAME_LATITUDE,
+    GEO_KEYNAME_LONGITUDE,
+    GEO_KEYNAME_ELEVATION,
+    GEO_KEYNAME_ACCURACY,
+    GEO_KEYNAME_CITY,
+    GEO_KEYNAME_STATE,
+    GEO_KEYNAME_REGIONICANN,
+    # GEO_KEYNAME_ANNOTATIONS
+]
 
 
 class Geolocation(cadftype.CADFAbstractType):
-
-    id = cadftype.ValidatorDescriptor(GEO_KEYNAME_ID,
-                                      lambda x: identifier.is_valid(x))
+    id = cadftype.ValidatorDescriptor(
+        GEO_KEYNAME_ID, lambda x: identifier.is_valid(x)
+    )
     # TODO(mrutkows): we may want to do more validation to make
     # sure numeric range represented by string is valid
-    latitude = cadftype.ValidatorDescriptor(GEO_KEYNAME_LATITUDE,
-                                            lambda x: isinstance(x, str))
-    longitude = cadftype.ValidatorDescriptor(GEO_KEYNAME_LONGITUDE,
-                                             lambda x: isinstance(x, str))
-    elevation = cadftype.ValidatorDescriptor(GEO_KEYNAME_ELEVATION,
-                                             lambda x: isinstance(x, str))
-    accuracy = cadftype.ValidatorDescriptor(GEO_KEYNAME_ACCURACY,
-                                            lambda x: isinstance(x, str))
-    city = cadftype.ValidatorDescriptor(GEO_KEYNAME_CITY,
-                                        lambda x: isinstance(x, str))
-    state = cadftype.ValidatorDescriptor(GEO_KEYNAME_STATE,
-                                         lambda x: isinstance(x, str))
+    latitude = cadftype.ValidatorDescriptor(
+        GEO_KEYNAME_LATITUDE, lambda x: isinstance(x, str)
+    )
+    longitude = cadftype.ValidatorDescriptor(
+        GEO_KEYNAME_LONGITUDE, lambda x: isinstance(x, str)
+    )
+    elevation = cadftype.ValidatorDescriptor(
+        GEO_KEYNAME_ELEVATION, lambda x: isinstance(x, str)
+    )
+    accuracy = cadftype.ValidatorDescriptor(
+        GEO_KEYNAME_ACCURACY, lambda x: isinstance(x, str)
+    )
+    city = cadftype.ValidatorDescriptor(
+        GEO_KEYNAME_CITY, lambda x: isinstance(x, str)
+    )
+    state = cadftype.ValidatorDescriptor(
+        GEO_KEYNAME_STATE, lambda x: isinstance(x, str)
+    )
     regionICANN = cadftype.ValidatorDescriptor(
-        GEO_KEYNAME_REGIONICANN,
-        lambda x: isinstance(x, str))
+        GEO_KEYNAME_REGIONICANN, lambda x: isinstance(x, str)
+    )
 
-    def __init__(self, id=None, latitude=None, longitude=None,
-                 elevation=None, accuracy=None, city=None, state=None,
-                 regionICANN=None):
+    def __init__(
+        self,
+        id=None,
+        latitude=None,
+        longitude=None,
+        elevation=None,
+        accuracy=None,
+        city=None,
+        state=None,
+        regionICANN=None,
+    ):
         """Create Geolocation data type
 
         :param id: id of geolocation

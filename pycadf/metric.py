@@ -24,21 +24,24 @@ METRIC_KEYNAME_UNIT = "unit"
 METRIC_KEYNAME_NAME = "name"
 # METRIC_KEYNAME_ANNOTATIONS = "annotations"
 
-METRIC_KEYNAMES = [METRIC_KEYNAME_METRICID,
-                   METRIC_KEYNAME_UNIT,
-                   METRIC_KEYNAME_NAME
-                   # METRIC_KEYNAME_ANNOTATIONS
-                   ]
+METRIC_KEYNAMES = [
+    METRIC_KEYNAME_METRICID,
+    METRIC_KEYNAME_UNIT,
+    METRIC_KEYNAME_NAME,
+    # METRIC_KEYNAME_ANNOTATIONS
+]
 
 
 class Metric(cadftype.CADFAbstractType):
-
-    metricId = cadftype.ValidatorDescriptor(METRIC_KEYNAME_METRICID,
-                                            lambda x: identifier.is_valid(x))
-    unit = cadftype.ValidatorDescriptor(METRIC_KEYNAME_UNIT,
-                                        lambda x: isinstance(x, str))
-    name = cadftype.ValidatorDescriptor(METRIC_KEYNAME_NAME,
-                                        lambda x: isinstance(x, str))
+    metricId = cadftype.ValidatorDescriptor(
+        METRIC_KEYNAME_METRICID, lambda x: identifier.is_valid(x)
+    )
+    unit = cadftype.ValidatorDescriptor(
+        METRIC_KEYNAME_UNIT, lambda x: isinstance(x, str)
+    )
+    name = cadftype.ValidatorDescriptor(
+        METRIC_KEYNAME_NAME, lambda x: isinstance(x, str)
+    )
 
     def __init__(self, metricId=None, unit=None, name=None):
         """Create metric data type
@@ -48,8 +51,11 @@ class Metric(cadftype.CADFAbstractType):
         :param name: name of metric
         """
         # Metric.id
-        setattr(self, METRIC_KEYNAME_METRICID,
-                metricId or identifier.generate_uuid())
+        setattr(
+            self,
+            METRIC_KEYNAME_METRICID,
+            metricId or identifier.generate_uuid(),
+        )
 
         # Metric.unit
         if unit is not None:
@@ -68,10 +74,8 @@ class Metric(cadftype.CADFAbstractType):
 
     # self validate cadf:Metric type against schema
     def is_valid(self):
-        """Validation to ensure Metric required attributes are set.
-        """
+        """Validation to ensure Metric required attributes are set."""
         # Existence test, id, and unit attributes must both exist
-        return (
-            self._isset(METRIC_KEYNAME_METRICID) and
-            self._isset(METRIC_KEYNAME_UNIT)
+        return self._isset(METRIC_KEYNAME_METRICID) and self._isset(
+            METRIC_KEYNAME_UNIT
         )

@@ -46,70 +46,102 @@ EVENT_KEYNAME_OBSERVER = "observer"
 EVENT_KEYNAME_OBSERVERID = "observerId"
 EVENT_KEYNAME_REPORTERCHAIN = "reporterchain"
 
-EVENT_KEYNAMES = [EVENT_KEYNAME_TYPEURI,
-                  EVENT_KEYNAME_EVENTTYPE,
-                  EVENT_KEYNAME_ID,
-                  EVENT_KEYNAME_EVENTTIME,
-                  EVENT_KEYNAME_INITIATOR,
-                  EVENT_KEYNAME_INITIATORID,
-                  EVENT_KEYNAME_ACTION,
-                  EVENT_KEYNAME_TARGET,
-                  EVENT_KEYNAME_TARGETID,
-                  EVENT_KEYNAME_OUTCOME,
-                  EVENT_KEYNAME_REASON,
-                  EVENT_KEYNAME_SEVERITY,
-                  EVENT_KEYNAME_NAME,
-                  EVENT_KEYNAME_MEASUREMENTS,
-                  EVENT_KEYNAME_TAGS,
-                  EVENT_KEYNAME_ATTACHMENTS,
-                  EVENT_KEYNAME_OBSERVER,
-                  EVENT_KEYNAME_OBSERVERID,
-                  EVENT_KEYNAME_REPORTERCHAIN]
+EVENT_KEYNAMES = [
+    EVENT_KEYNAME_TYPEURI,
+    EVENT_KEYNAME_EVENTTYPE,
+    EVENT_KEYNAME_ID,
+    EVENT_KEYNAME_EVENTTIME,
+    EVENT_KEYNAME_INITIATOR,
+    EVENT_KEYNAME_INITIATORID,
+    EVENT_KEYNAME_ACTION,
+    EVENT_KEYNAME_TARGET,
+    EVENT_KEYNAME_TARGETID,
+    EVENT_KEYNAME_OUTCOME,
+    EVENT_KEYNAME_REASON,
+    EVENT_KEYNAME_SEVERITY,
+    EVENT_KEYNAME_NAME,
+    EVENT_KEYNAME_MEASUREMENTS,
+    EVENT_KEYNAME_TAGS,
+    EVENT_KEYNAME_ATTACHMENTS,
+    EVENT_KEYNAME_OBSERVER,
+    EVENT_KEYNAME_OBSERVERID,
+    EVENT_KEYNAME_REPORTERCHAIN,
+]
 
 
 class Event(cadftype.CADFAbstractType):
-
     eventType = cadftype.ValidatorDescriptor(
-        EVENT_KEYNAME_EVENTTYPE, lambda x: cadftype.is_valid_eventType(x))
-    id = cadftype.ValidatorDescriptor(EVENT_KEYNAME_ID,
-                                      lambda x: identifier.is_valid(x))
-    eventTime = cadftype.ValidatorDescriptor(EVENT_KEYNAME_EVENTTIME,
-                                             lambda x: timestamp.is_valid(x))
+        EVENT_KEYNAME_EVENTTYPE, lambda x: cadftype.is_valid_eventType(x)
+    )
+    id = cadftype.ValidatorDescriptor(
+        EVENT_KEYNAME_ID, lambda x: identifier.is_valid(x)
+    )
+    eventTime = cadftype.ValidatorDescriptor(
+        EVENT_KEYNAME_EVENTTIME, lambda x: timestamp.is_valid(x)
+    )
     initiator = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_INITIATOR,
-        (lambda x: isinstance(x, resource.Resource) and x.is_valid()
-         and x.id != 'initiator'))
+        (
+            lambda x: isinstance(x, resource.Resource)
+            and x.is_valid()
+            and x.id != 'initiator'
+        ),
+    )
     initiatorId = cadftype.ValidatorDescriptor(
-        EVENT_KEYNAME_INITIATORID, lambda x: identifier.is_valid(x))
+        EVENT_KEYNAME_INITIATORID, lambda x: identifier.is_valid(x)
+    )
     action = cadftype.ValidatorDescriptor(
-        EVENT_KEYNAME_ACTION, lambda x: cadftaxonomy.is_valid_action(x))
+        EVENT_KEYNAME_ACTION, lambda x: cadftaxonomy.is_valid_action(x)
+    )
     target = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_TARGET,
-        (lambda x: isinstance(x, resource.Resource) and x.is_valid()
-         and x.id != 'target'))
+        (
+            lambda x: isinstance(x, resource.Resource)
+            and x.is_valid()
+            and x.id != 'target'
+        ),
+    )
     targetId = cadftype.ValidatorDescriptor(
-        EVENT_KEYNAME_TARGETID, lambda x: identifier.is_valid(x))
+        EVENT_KEYNAME_TARGETID, lambda x: identifier.is_valid(x)
+    )
     outcome = cadftype.ValidatorDescriptor(
-        EVENT_KEYNAME_OUTCOME, lambda x: cadftaxonomy.is_valid_outcome(x))
+        EVENT_KEYNAME_OUTCOME, lambda x: cadftaxonomy.is_valid_outcome(x)
+    )
     reason = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_REASON,
-        lambda x: isinstance(x, reason.Reason) and x.is_valid())
-    name = cadftype.ValidatorDescriptor(EVENT_KEYNAME_NAME,
-                                        lambda x: isinstance(x, str))
-    severity = cadftype.ValidatorDescriptor(EVENT_KEYNAME_SEVERITY,
-                                            lambda x: isinstance(x, str))
+        lambda x: isinstance(x, reason.Reason) and x.is_valid(),
+    )
+    name = cadftype.ValidatorDescriptor(
+        EVENT_KEYNAME_NAME, lambda x: isinstance(x, str)
+    )
+    severity = cadftype.ValidatorDescriptor(
+        EVENT_KEYNAME_SEVERITY, lambda x: isinstance(x, str)
+    )
     observer = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_OBSERVER,
-        (lambda x: isinstance(x, resource.Resource) and x.is_valid()))
+        (lambda x: isinstance(x, resource.Resource) and x.is_valid()),
+    )
     observerId = cadftype.ValidatorDescriptor(
-        EVENT_KEYNAME_OBSERVERID, lambda x: identifier.is_valid(x))
+        EVENT_KEYNAME_OBSERVERID, lambda x: identifier.is_valid(x)
+    )
 
-    def __init__(self, eventType=cadftype.EVENTTYPE_ACTIVITY,
-                 id=None, eventTime=None,
-                 action=cadftaxonomy.UNKNOWN, outcome=cadftaxonomy.UNKNOWN,
-                 initiator=None, initiatorId=None, target=None, targetId=None,
-                 severity=None, reason=None, observer=None, observerId=None,
-                 name=None):
+    def __init__(
+        self,
+        eventType=cadftype.EVENTTYPE_ACTIVITY,
+        id=None,
+        eventTime=None,
+        action=cadftaxonomy.UNKNOWN,
+        outcome=cadftaxonomy.UNKNOWN,
+        initiator=None,
+        initiatorId=None,
+        target=None,
+        targetId=None,
+        severity=None,
+        reason=None,
+        observer=None,
+        observerId=None,
+        name=None,
+    ):
         """Create an Event
 
         :param eventType: eventType of Event. Defaults to 'activity' type
@@ -138,8 +170,9 @@ class Event(cadftype.CADFAbstractType):
         setattr(self, EVENT_KEYNAME_ID, id or identifier.generate_uuid())
 
         # Event.eventTime (Mandatory)
-        setattr(self, EVENT_KEYNAME_EVENTTIME,
-                eventTime or timestamp.get_utc_now())
+        setattr(
+            self, EVENT_KEYNAME_EVENTTIME, eventTime or timestamp.get_utc_now()
+        )
 
         # Event.action (Mandatory)
         setattr(self, EVENT_KEYNAME_ACTION, action)
@@ -192,14 +225,14 @@ class Event(cadftype.CADFAbstractType):
                 if not hasattr(self, EVENT_KEYNAME_REPORTERCHAIN):
                     setattr(self, EVENT_KEYNAME_REPORTERCHAIN, list())
 
-                reporterchain = getattr(self,
-                                        EVENT_KEYNAME_REPORTERCHAIN)
+                reporterchain = getattr(self, EVENT_KEYNAME_REPORTERCHAIN)
                 reporterchain.append(step)
             else:
                 raise ValueError('Invalid reporterstep')
         else:
-            raise ValueError('Invalid reporterstep. '
-                             'Value must be a Reporterstep')
+            raise ValueError(
+                'Invalid reporterstep. Value must be a Reporterstep'
+            )
 
     # Event.measurements
     def add_measurement(self, measure_val):
@@ -207,11 +240,10 @@ class Event(cadftype.CADFAbstractType):
 
         :param measure_val: Measurement data type to be added to Event
         """
-        if (measure_val is not None
-                and isinstance(measure_val, measurement.Measurement)):
-
+        if measure_val is not None and isinstance(
+            measure_val, measurement.Measurement
+        ):
             if measure_val.is_valid():
-
                 # Create the list of event.Measurements if needed
                 if not hasattr(self, EVENT_KEYNAME_MEASUREMENTS):
                     setattr(self, EVENT_KEYNAME_MEASUREMENTS, list())
@@ -221,8 +253,9 @@ class Event(cadftype.CADFAbstractType):
             else:
                 raise ValueError('Invalid measurement')
         else:
-            raise ValueError('Invalid measurement. '
-                             'Value must be a Measurement')
+            raise ValueError(
+                'Invalid measurement. Value must be a Measurement'
+            )
 
     # Event.tags
     def add_tag(self, tag_val):
@@ -243,9 +276,9 @@ class Event(cadftype.CADFAbstractType):
 
         :param attachment_val: Attachment to add to Event
         """
-        if (attachment_val is not None
-                and isinstance(attachment_val, attachment.Attachment)):
-
+        if attachment_val is not None and isinstance(
+            attachment_val, attachment.Attachment
+        ):
             if attachment_val.is_valid():
                 # Create the list of Attachments if needed
                 if not hasattr(self, EVENT_KEYNAME_ATTACHMENTS):
@@ -256,27 +289,31 @@ class Event(cadftype.CADFAbstractType):
             else:
                 raise ValueError('Invalid attachment')
         else:
-            raise ValueError('Invalid attachment. '
-                             'Value must be an Attachment')
+            raise ValueError('Invalid attachment. Value must be an Attachment')
 
     # self validate cadf:Event record against schema
     def is_valid(self):
-        """Validation to ensure Event required attributes are set.
-        """
+        """Validation to ensure Event required attributes are set."""
         # TODO(mrutkows): Eventually, make sure all attributes are
         # from either the CADF spec. (or profiles thereof)
         # TODO(mrutkows): validate all child attributes that are CADF types
         return (
-            self._isset(EVENT_KEYNAME_TYPEURI) and
-            self._isset(EVENT_KEYNAME_EVENTTYPE) and
-            self._isset(EVENT_KEYNAME_ID) and
-            self._isset(EVENT_KEYNAME_EVENTTIME) and
-            self._isset(EVENT_KEYNAME_ACTION) and
-            self._isset(EVENT_KEYNAME_OUTCOME) and
-            (self._isset(EVENT_KEYNAME_INITIATOR) ^
-             self._isset(EVENT_KEYNAME_INITIATORID)) and
-            (self._isset(EVENT_KEYNAME_TARGET) ^
-             self._isset(EVENT_KEYNAME_TARGETID)) and
-            (self._isset(EVENT_KEYNAME_OBSERVER) ^
-             self._isset(EVENT_KEYNAME_OBSERVERID))
+            self._isset(EVENT_KEYNAME_TYPEURI)
+            and self._isset(EVENT_KEYNAME_EVENTTYPE)
+            and self._isset(EVENT_KEYNAME_ID)
+            and self._isset(EVENT_KEYNAME_EVENTTIME)
+            and self._isset(EVENT_KEYNAME_ACTION)
+            and self._isset(EVENT_KEYNAME_OUTCOME)
+            and (
+                self._isset(EVENT_KEYNAME_INITIATOR)
+                ^ self._isset(EVENT_KEYNAME_INITIATORID)
+            )
+            and (
+                self._isset(EVENT_KEYNAME_TARGET)
+                ^ self._isset(EVENT_KEYNAME_TARGETID)
+            )
+            and (
+                self._isset(EVENT_KEYNAME_OBSERVER)
+                ^ self._isset(EVENT_KEYNAME_OBSERVERID)
+            )
         )
