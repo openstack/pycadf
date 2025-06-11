@@ -24,7 +24,7 @@ import testtools
 class TestCase(testtools.TestCase):
 
     def setUp(self):
-        super(TestCase, self).setUp()
+        super().setUp()
         self.tempdir = self.useFixture(fixtures.TempDir())
         cfg.CONF([], project='pycadf')
 
@@ -44,4 +44,4 @@ class TestCase(testtools.TestCase):
 
     def tearDown(self):
         cfg.CONF.reset()
-        super(TestCase, self).tearDown()
+        super().tearDown()

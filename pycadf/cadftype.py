@@ -51,7 +51,7 @@ def is_valid_reporter_role(value):
     return value in VALID_REPORTER_ROLES
 
 
-class ValidatorDescriptor(object):
+class ValidatorDescriptor:
     def __init__(self, name, func=None):
         self.name = name
         self.func = func
@@ -70,7 +70,7 @@ class ValidatorDescriptor(object):
             raise ValueError('%s must not be None.' % self.name)
 
 
-class CADFAbstractType(object, metaclass=abc.ABCMeta):
+class CADFAbstractType(metaclass=abc.ABCMeta):
     """The abstract base class for all CADF (complex) data types (classes)."""
 
     @abc.abstractmethod

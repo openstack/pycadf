@@ -370,7 +370,7 @@ class TestCADFSpec(base.TestCase):
                               outcome='success'))
 
     def _create_none_validator_descriptor(self):
-        class Owner(object):
+        class Owner:
             x = cadftype.ValidatorDescriptor(uuid.uuid4().hex)
 
         owner = Owner()

@@ -18,7 +18,7 @@ from pycadf import event
 ERROR_UNKNOWN_EVENTTYPE = 'Unknown CADF EventType requested on factory method'
 
 
-class EventFactory(object):
+class EventFactory:
     """Factory class to create different required attributes for
        the following CADF event types:
        'activity': for tracking any interesting system activities for audit
