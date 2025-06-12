@@ -72,7 +72,7 @@ class FederatedCredential(Credential):
         lambda x: isinstance(x, list))
 
     def __init__(self, token, type, identity_provider, user, groups):
-        super(FederatedCredential, self).__init__(
+        super().__init__(
             token=token,
             type=type)
 
@@ -88,7 +88,7 @@ class FederatedCredential(Credential):
     def is_valid(self):
         """Validation to ensure Credential required attributes are set."""
         return (
-            super(FederatedCredential, self).is_valid()
+            super().is_valid()
             and self._isset(CRED_KEYNAME_TYPE)
             and self._isset(FED_CRED_KEYNAME_IDENTITY_PROVIDER)
             and self._isset(FED_CRED_KEYNAME_USER)
