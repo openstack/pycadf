@@ -1,11 +1,11 @@
 # pyCADF documentation build configuration file
 #
-# This file is execfile()d with the current directory set to its containing dir.
+# This file is execfile()d with the current directory set to its containing dir
 
-# -- General configuration -----------------------------------------------------
+# -- General configuration ----------------------------------------------------
 
-# Add any Sphinx extension module names here, as strings. They can be extensions
-# coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
+# Add any Sphinx extension module names here, as strings. They can be
+# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
     'sphinx.ext.autodoc',
     'sphinxcontrib.apidoc',
@@ -31,7 +31,7 @@ exclude_patterns = ['_build']
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'native'
 
-# -- Options for HTML output ---------------------------------------------------
+# -- Options for HTML output --------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
@@ -43,10 +43,11 @@ html_theme = 'openstackdocs'
 # documentation.
 html_theme_options = {"nosidebar": "false"}
 
-# -- Options for LaTeX output --------------------------------------------------
+# -- Options for LaTeX output -------------------------------------------------
 
 # Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title, author, documentclass [howto/manual]).
+# (source start file, target name, title, author, documentclass
+#  [howto/manual]).
 latex_documents = [
     (
         'index',
