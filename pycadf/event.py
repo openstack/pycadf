@@ -82,9 +82,11 @@ class Event(cadftype.CADFAbstractType):
     initiator = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_INITIATOR,
         (
-            lambda x: isinstance(x, resource.Resource)
-            and x.is_valid()
-            and x.id != 'initiator'
+            lambda x: (
+                isinstance(x, resource.Resource)
+                and x.is_valid()
+                and x.id != 'initiator'
+            )
         ),
     )
     initiatorId = cadftype.ValidatorDescriptor(
@@ -96,9 +98,11 @@ class Event(cadftype.CADFAbstractType):
     target = cadftype.ValidatorDescriptor(
         EVENT_KEYNAME_TARGET,
         (
-            lambda x: isinstance(x, resource.Resource)
-            and x.is_valid()
-            and x.id != 'target'
+            lambda x: (
+                isinstance(x, resource.Resource)
+                and x.is_valid()
+                and x.id != 'target'
+            )
         ),
     )
     targetId = cadftype.ValidatorDescriptor(
