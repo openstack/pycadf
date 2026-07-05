@@ -23,7 +23,7 @@ def get_utc_now(timezone=None):
 
     :param timezone: an optional timezone param to offset time to.
     """
-    utc_datetime = datetime.datetime.now(datetime.timezone.utc)
+    utc_datetime = datetime.datetime.now(datetime.UTC)
     if timezone is not None:
         try:
             tz = zoneinfo.Zoneinfo(timezone)
