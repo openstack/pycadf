@@ -4,4 +4,5 @@
       - lib-forward-testing-python3
       - openstack-cover-jobs
       - openstack-python3-jobs
+      - openstack-python3-next-jobs
       - publish-openstack-docs-pti
