@@ -30,6 +30,19 @@ classifiers = [
 Homepage = "https://docs.openstack.org/pycadf"
 Repository = "https://opendev.org/openstack/pycadf"
 
+[tool.coverage.run]
+source = [
+    "pycadf"
+]
+branch = true
+omit = [
+    "pycadf/tests/*"
+]
+
+[tool.coverage.report]
+ignore_errors = true
+show_missing = true
+
 [tool.setuptools.packages.find]
 include = ["pycadf*"]
 
