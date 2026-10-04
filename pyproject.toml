@@ -35,6 +35,7 @@ source = [
     "pycadf"
 ]
 branch = true
+parallel = true
 omit = [
     "pycadf/tests/*"
 ]
